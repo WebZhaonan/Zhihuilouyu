@@ -24,7 +24,7 @@
         </el-form-item>
     </el-form>     
 </template>
-
+//   第三方开始的疯狂
 <script>
 import { Sms } from '@/axios/api'
 import { Regist } from '@/axios/api'
