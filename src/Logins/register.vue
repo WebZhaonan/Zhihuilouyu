@@ -2,7 +2,7 @@
     <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2"  label-position="left" label-width="0px" class="demo-ruleForm login-container">
         <el-form-item prop="username">
             <i class="fa fa-user-o" aria-hidden="true"></i>
-            <el-input type="text" v-model="ruleForm2.username" autocomplete="off" placeholder="请输入绑定手机号"></el-input>
+            <el-input type="text" v-model="ruleForm2.username" autocomplete="off"  placeholder="请输入绑定手机号"></el-input>
         </el-form-item>
         <el-form-item prop="yzm" class="yzm">
             <i class="fa fa-get-pocket" aria-hidden="true"></i>
@@ -23,8 +23,7 @@
             <!-- <div style="font-size:14px;color: #666;text-align: center;">忘记密码？<router-link to="/logins"><span>立即修改</span></router-link></div> -->
         </el-form-item>
     </el-form>     
-</template>
-//   第三方开始的疯狂 saddasd asda 
+</template> 
 <script>
 import { Sms } from '@/axios/api'
 import { Regist } from '@/axios/api'

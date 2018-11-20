@@ -47,23 +47,20 @@ export default {
     },
     methods:{
         login(){   
-             var tel = this.ruleForm2.username;
+     var tel = this.ruleForm2.username;
       var pw = this.ruleForm2.userpass;
          Login({                    
                 tel: tel,                    
                 pw: pw             
             }).then(res => {
-                if(res.flag == 0){
-                  // localStorage.setItem('user',JSON.stringify(res.data.session))   
-                  // var userInfo=JSON.parse(localStorage.getItem('user'));
-                  // alert(userInfo.tel)         
+                if(res.flag == 0){       
                this.$store.commit('ADD_COUNT',res.data.session);
                 this.$message({
                       message: '登陆成功',
                       type: 'success',
                       duration: 1000
                     }); 
-                  setTimeout(() => { this.$router.replace("/")}, 1000)
+                  setTimeout(() => { this.$router.push("/")}, 1000)
                 } else{
                    this.$message({
                       message: res.data.msg,

@@ -2,6 +2,7 @@
 import Vue from 'vue' //引入vue
 import Router from 'vue-router' //引入路由 
 import { Message } from 'element-ui'
+import { store } from '@/stroe/stroe'
 import logins from '@/Logins/logins'//登录注册
 import forget from '@/Logins/forget'
 import Home from '@/views/Home'  //首页
@@ -133,8 +134,8 @@ const router = new Router({
 //   }
 // })
 // 页面刷新时，重新赋值
-// if (window.sessionStorage.getItem('user')) {
-//   store.commit(ADD_COUNT, window.sessionStorage.getItem('user'))
+// if (sessionStorage.getItem('user')) {
+//   this.$store.commit(ADD_COUNT, sessionStorage.getItem('user'))
 // }
 router.beforeEach((to, from, next) => {
    var userInfo = JSON.parse(sessionStorage.getItem('user'))

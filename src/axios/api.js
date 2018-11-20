@@ -8,3 +8,5 @@ export const Login = params=> post('/builadmin/index/login', params); //登录�
 export const Sms = params => post('/builadmin/index/sms',params);//短信接口
 export const Regist = params => post ('/builadmin/index/regist',params) //注册接口
 export const forget = params => post ('/builadmin/index/forgotpw',params) //忘记密码
+export const logout = params => post ('/builadmin/index/logout',params) //退出登录
+export const getList = params => post ('/builadmin/buil/list',params)  //获取楼宇列表

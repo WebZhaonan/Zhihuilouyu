@@ -42,7 +42,7 @@
           <el-dropdown-item>
              <router-link tag='span' :to="{ path:'/main' }" >个人中心</router-link>
             </el-dropdown-item>
-          <el-dropdown-item>退出登录</el-dropdown-item>
+          <el-dropdown-item><span @click="logout">退出登录</span></el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       </div>
@@ -54,15 +54,15 @@
         <el-aside width="240px" v-show="!collapsed">
     <el-menu style="background-color:#252834">
       <!-- 楼宇列表 -->
-      <el-menu class="Llist">
-        <li v-for="(item, index) in items" :class="[commonClass,item.active ? activeClass :'']" v-on:click="navClickEvent(items,index)">
-          <img :src="item.src" alt="">
+      <div class="Llist">
+        <li v-for="(item, index) in items" :key="index"  v-on:click="navClickEvent(item,index)" class='list___2Hba-li'>
+          <img :src="item.images" alt="">
               <div class="L-tex">
-              <span>{{item.text}}</span><br>
-              <span style="color:#828692">{{item.mianji}}</span>
+              <span>{{item.name}}</span><br>
+              <span style="color:#828692">{{item.area_sum}}</span>
               </div>
         </li>
-      </el-menu>
+      </div>
      <!-- 结束-->
      <!-- 楼宇勾选-->
       <el-collapse accordion>
@@ -102,6 +102,9 @@
  </div>
 </template>
 <script>
+import { logout} from '@/axios/api';  //退出方法
+import { Islogin } from "@/axios/api"  //验证登录
+import { getList} from '@/axios/api' //获取楼宇列表
 export default {
   name: "Home",
   data() {
@@ -114,38 +117,37 @@ export default {
             {name:'/page1',navItem:'工作流'},
         ],
         checkList: [],
-        commonClass:'list___2Hba-li',
-        activeClass:'active',
-          items:[
-          {
-            text: '海荣名城',
-            mianji:'0.31万m²',
-            src: require('../assets/3 (1).png'),
-            active : false
-          },
-          {
-            text: '海荣名城',
-            mianji:'0.31万m²',
-            src:require('../assets/3 (1).png'),
-            active : false
-          },
-          {
-             text: '海荣名城',
-            mianji:'0.31万m²',
-            src:require('../assets/3 (1).png'),
-            active : false
-          },
-          {
-             text: '海荣名城',
-            mianji:'0.31万m²',
-            src:require('../assets/3 (1).png'),
-            active : false
-          }
-        ]
+        isActive:false,
+          items:[]
       }
     },
+    // created(){
+     
+    // },
      mounted () {
-      this.isSelect = this.$route.path
+       let userInfo = JSON.parse(sessionStorage.getItem('user'));
+        let that=this;
+          Islogin({                    
+                id: userInfo.id,                              
+            }).then(res => {
+                if(res.flag != 0){        
+                     that.$message({
+                      message: res.data.msg,
+                      type: '身份验证失败，请登录',
+                      duration: 1000
+                    });
+                    that.$store.commit('REMOVE_COUNT',userInfo);
+                 setTimeout(() => { that.$router.replace("/logins")}, 1000)
+                }
+            }) 
+             getList({                    
+                id: userInfo.id,                              
+            }).then(res => {
+                if(res.flag == 0){  
+                      that.items=res.data;
+                } 
+            }) 
+      that.isSelect = that.$route.path
 },
   methods: {
     handleSelect(key, keyPath) {
@@ -155,15 +157,41 @@ export default {
         this.isSelect = name;
       },
        navClickEvent:function(items,index){
-      items[index].active = !items[index].active;
+         this.active=index
+        //  this.activeClass = this.index
+    //  alert(this.items[index]==
+        this.isActive = true
     },
     //折叠导航栏
 			collapse:function(){
 			this.collapsed=!this.collapsed;
       },
-    // 选中状态
+    // 退出登录
+    logout(){
+      let userInfo = JSON.parse(sessionStorage.getItem('user'));
+           this.$confirm('确定退出？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          logout({                    
+                id: userInfo.id,                              
+            }).then(res => {
+                if(res.flag == 0){        
+               this.$store.commit('REMOVE_COUNT',userInfo);
+                this.$message({
+                      message: res.data.msg,
+                      type: 'success',
+                      duration: 1000
+                    }); 
+                  setTimeout(() => { this.$router.replace("/logins")}, 1000)
+                } 
+            }) 
+        })
+      }
+    }
   }
-};
+
 </script>
 <style>
 .active{
