@@ -80,7 +80,7 @@ display: block
 }
 .container .el-table__row td{
   text-align: center;
-  padding: 0px 0px;
+  /* padding: 0px 0px; */
 }
 .container .el-table th.is-leaf{
   text-align: center

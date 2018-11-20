@@ -38,7 +38,7 @@
        <el-dropdown>
        <i class="fa fa-user-o icon" style="margin-right: 15px"></i>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>赵楠</el-dropdown-item>
+          <el-dropdown-item>{{username}}</el-dropdown-item>
           <el-dropdown-item>
              <router-link tag='span' :to="{ path:'/main' }" >个人中心</router-link>
             </el-dropdown-item>
@@ -55,37 +55,52 @@
     <el-menu style="background-color:#252834">
       <!-- 楼宇列表 -->
       <div class="Llist">
-        <li v-for="(item, index) in items" :key="index"  v-on:click="navClickEvent(item,index)" class='list___2Hba-li'>
+        <li v-for="(item, index) in items" :key="index"  v-on:click="navClickEvent(item)" class='list___2Hba-li' :class="{'label':item.label}">
           <img :src="item.images" alt="">
               <div class="L-tex">
               <span>{{item.name}}</span><br>
-              <span style="color:#828692">{{item.area_sum}}</span>
+              <span style="color:#828692">{{item.area_sum}}m²</span>
               </div>
         </li>
       </div>
      <!-- 结束-->
      <!-- 楼宇勾选-->
-      <el-collapse accordion>
-       <div class="title_list">
+      <el-collapse >
+       <div class="title_list" v-for="(itemlist, index) in itemType" :key="index" style="margin-top:10px">
          <div class="title_info">
-          商业项目
+          {{itemlist.name}}
            </div>
-           <el-collapse-item>
+           <el-collapse-item >
         <i class="el-icon-close"></i>
      <template slot="title">
     </template>
-     <el-checkbox-group v-model="checkList">
-    <el-checkbox label="高科"></el-checkbox>
-    <el-checkbox label="西安绿地"></el-checkbox>
-    <el-checkbox label="恒大绿洲"></el-checkbox>
+     <el-checkbox-group v-model="checkList" v-for="(item, index) in items" :key="index">
+    <el-checkbox :label="item.name"></el-checkbox>
   </el-checkbox-group>
     <el-button type="primary" class="seionBtn">保存</el-button>
   </el-collapse-item>
     </div>
     </el-collapse>
-                <div class="addBtn">
-      <el-button type="primary" style="margin-top:20px">新建集合</el-button>
-      <el-button type="primary">同步集合</el-button>
+    <!-- 隐藏的楼宇列表 -->
+     <el-collapse  v-model="activeNames" style="margin-top:10px;" v-if="showPrise">
+       <div class="title_list">
+         <el-input placeholder="请输入集合名称" v-model="input"  class="title_info"></el-input>
+           <el-collapse-item  name="1">
+        <i class="el-icon-close" @click="hideSet"></i>
+     <template slot="title">
+    </template>
+     <el-checkbox-group v-model="checkList" v-for="(item, index) in items" :key="index">
+    <el-checkbox :label="item.name"></el-checkbox>
+  </el-checkbox-group>
+    <el-button type="primary" class="seionBtn">保存</el-button>
+  </el-collapse-item>
+    </div>
+    </el-collapse>
+     <div class="addBtn" accordion>
+      <el-button type="primary" style="margin-top:20px" @click="newSet" v-if="showBtn">新建集合
+        
+      </el-button>
+      <el-button type="primary" @click="synchroSet">同步集合</el-button>
     </div>
     <!-- 底部两按钮 -->
     </el-menu>
@@ -102,31 +117,40 @@
  </div>
 </template>
 <script>
+import Vue from 'vue'
 import { logout} from '@/axios/api';  //退出方法
 import { Islogin } from "@/axios/api"  //验证登录
 import { getList} from '@/axios/api' //获取楼宇列表
+import { itemType } from '@/axios/api'  //获取楼宇类型列表
 export default {
   name: "Home",
   data() {
       return {
         sysName:'智慧楼宇',
         collapsed:false,
+        username:'',
+        input:'',
         isSelect:'/',
+        activeNames: ['1'],
+        showPrise:false,
+        showBtn:true,
         navList:[
             {name:'/',navItem:'集合'},
             {name:'/page1',navItem:'工作流'},
         ],
         checkList: [],
-        isActive:false,
-          items:[]
+        items:[],
+        itemType:[]
       }
     },
     // created(){
      
     // },
      mounted () {
+      //  登录验证
        let userInfo = JSON.parse(sessionStorage.getItem('user'));
         let that=this;
+        that.username = userInfo.tel
           Islogin({                    
                 id: userInfo.id,                              
             }).then(res => {
@@ -140,11 +164,20 @@ export default {
                  setTimeout(() => { that.$router.replace("/logins")}, 1000)
                 }
             }) 
+            // 获取楼宇类型列表
+             itemType({                                                
+            }).then(res => {
+                if(res.flag == 0){  
+                   that.itemType=res.data;
+                     
+                } 
+            })
+            // 获取楼宇列表
              getList({                    
                 id: userInfo.id,                              
             }).then(res => {
                 if(res.flag == 0){  
-                      that.items=res.data;
+                     that.items=res.data; 
                 } 
             }) 
       that.isSelect = that.$route.path
@@ -156,12 +189,42 @@ export default {
       selectNav (name) {
         this.isSelect = name;
       },
-       navClickEvent:function(items,index){
-         this.active=index
-        //  this.activeClass = this.index
-    //  alert(this.items[index]==
-        this.isActive = true
+      // 添加active类名
+       navClickEvent:function(item){
+         if(item.label){
+                    Vue.set(item,'label',false);
+                }else{
+                    Vue.set(item,'label',true);
+                }
     },
+    // 新建集合
+      newSet:function(){
+         this.showPrise = true;
+         this.showBtn = false;
+      },
+      hideSet:function(){
+         this.showPrise = false;
+           this.showBtn = true;
+      },
+      // 同步集合
+      synchroSet:function(){
+           this.$confirm('此操作将使所有账号与本账号的集合数据一致，确定同步吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '同步成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消成功'
+          });
+        });
+      },
     //折叠导航栏
 			collapse:function(){
 			this.collapsed=!this.collapsed;
@@ -194,7 +257,22 @@ export default {
 
 </script>
 <style>
-.active{
+.title_info{
+height: 30px;
+    line-height: normal;
+    background-color: transparent;
+    color: #fff;
+    border: 0;
+}
+.title_info input{
+  padding: 0;
+    background: #1a1c24;
+    border: none;
+    width: 100%;
+    padding-right: 0 !important;
+    color: #fff;
+}
+.label{
   border: 1px solid rgba(255,141,31,.8) !important;
   border-radius:2px !important;
 }
@@ -203,7 +281,9 @@ export default {
     position: absolute;
     top: 18px;
     left: 12px;
-    font-weight: bold
+    font-weight: bold;
+    z-index: 9999;
+    cursor: pointer;
 }
 .addBtn button:hover{
       background: #ff8d1f;
