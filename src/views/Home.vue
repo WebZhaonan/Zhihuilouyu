@@ -55,29 +55,30 @@
     <el-menu style="background-color:#252834">
       <!-- 楼宇列表 -->
       <div class="Llist">
-        <li v-for="(item, index) in items" :key="index"  v-on:click="navClickEvent(item)" class='list___2Hba-li' :class="{'label':item.label}">
+        <li v-for="(item, index) in items" :key="index"   v-on:click="navClickEvent(item)" class='list___2Hba-li' :class="{'label':item.label}">
           <img :src="item.images" alt="">
-              <div class="L-tex">
+              <div class="L-tex"> 
               <span>{{item.name}}</span><br>
               <span style="color:#828692">{{item.area_sum}}m²</span>
-              </div>
+              </div> 
         </li>
       </div>
      <!-- 结束-->
      <!-- 楼宇勾选-->
-      <el-collapse >
-       <div class="title_list" v-for="(itemlist, index) in itemType" :key="index" style="margin-top:10px">
-         <div class="title_info">
-          {{itemlist.name}}
+      <el-collapse>
+       <div class="title_list" v-for="(itemlist, index) in itemAgg" :key="index"  :class="{ active___1cDXI:index==current}" style="margin-top:10px">
+         <div class="title_info" @click="addClass(index,itemlist.id)">
+           <div  class="title_info">{{itemlist.name}}</div>
            </div>
            <el-collapse-item >
-        <i class="el-icon-close"></i>
+        <el-input :value="itemlist.name" class="title_info disIpt" style="width:70%;" ref="input1"></el-input>
+        <i class="el-icon-close" @click="delectSet(itemlist.id)"></i>
      <template slot="title">
     </template>
-     <el-checkbox-group v-model="checkList" v-for="(item, index) in items" :key="index">
-    <el-checkbox :label="item.name"></el-checkbox>
+     <el-checkbox-group v-model="checkList[index]">
+    <el-checkbox :label="item.id"  v-for="item in items" :key="item.id">{{item.name}}</el-checkbox>
   </el-checkbox-group>
-    <el-button type="primary" class="seionBtn">保存</el-button>
+    <el-button type="primary" class="seionBtn" @click="seionBtn(itemlist.id,index)">保存</el-button>
   </el-collapse-item>
     </div>
     </el-collapse>
@@ -89,10 +90,12 @@
         <i class="el-icon-close" @click="hideSet"></i>
      <template slot="title">
     </template>
-     <el-checkbox-group v-model="checkList" v-for="(item, index) in items" :key="index">
-    <el-checkbox :label="item.name"></el-checkbox>
+    <!-- 循环多选框 -->
+     <el-checkbox-group v-model="checkList1" v-for="(item, index) in items" :key="index">
+    <el-checkbox :label="item.id">{{item.name}}</el-checkbox>
   </el-checkbox-group>
-    <el-button type="primary" class="seionBtn">保存</el-button>
+  <!-- 按钮点击事件 -->
+    <el-button type="primary" class="seionBtn" @click="keepNum()">保存</el-button>
   </el-collapse-item>
     </div>
     </el-collapse>
@@ -121,15 +124,21 @@ import Vue from 'vue'
 import { logout} from '@/axios/api';  //退出方法
 import { Islogin } from "@/axios/api"  //验证登录
 import { getList} from '@/axios/api' //获取楼宇列表
-import { itemType } from '@/axios/api'  //获取楼宇类型列表
+import { itemAgg } from '@/axios/api'  //获取楼宇类型列表
+import { setAdd } from '@/axios/api'   //添加楼宇集合
+import { delectSet } from '@/axios/api' //删除楼宇集合 
+import { editSet } from '@/axios/api'  // 编辑楼宇集合
 export default {
   name: "Home",
+  inject: ['reload'],
   data() {
       return {
         sysName:'智慧楼宇',
         collapsed:false,
+        result: null,
         username:'',
         input:'',
+        editIpt:'',
         isSelect:'/',
         activeNames: ['1'],
         showPrise:false,
@@ -139,13 +148,12 @@ export default {
             {name:'/page1',navItem:'工作流'},
         ],
         checkList: [],
-        items:[],
-        itemType:[]
+        items:[],  
+        itemAgg:[],
+        checkList1: [],
+        current:-1
       }
     },
-    // created(){
-     
-    // },
      mounted () {
       //  登录验证
        let userInfo = JSON.parse(sessionStorage.getItem('user'));
@@ -156,20 +164,23 @@ export default {
             }).then(res => {
                 if(res.flag != 0){        
                      that.$message({
-                      message: res.data.msg,
-                      type: '身份验证失败，请登录',
+                      message: '身份验证失败',
+                      type: "error",
                       duration: 1000
                     });
                     that.$store.commit('REMOVE_COUNT',userInfo);
                  setTimeout(() => { that.$router.replace("/logins")}, 1000)
                 }
             }) 
-            // 获取楼宇类型列表
-             itemType({                                                
+            // 获取楼宇集合列表
+             itemAgg({                                                
             }).then(res => {
-                if(res.flag == 0){  
-                   that.itemType=res.data;
-                     
+                if(res.flag == 0){
+                   that.itemAgg=res.data;
+                  res.data.forEach((arr, index) => {
+                      that.checkList[index] = arr.build;
+                      })
+                  
                 } 
             })
             // 获取楼宇列表
@@ -183,20 +194,97 @@ export default {
       that.isSelect = that.$route.path
 },
   methods: {
+         //  编辑楼宇集合
+      seionBtn:function(id,index){
+       this.result = this.$refs.input1[index].value;
+        var setId = this.checkList[index].toString();
+         editSet({                    
+                id: id, 
+                name:this.result,
+                bid:setId                         
+            }).then(res => {
+                if(res.flag == 0){  
+                   this.$message({
+                      message: '保存成功',
+                      type: 'success',
+                      duration: 1000
+                });
+               }   
+              this.reload(); 
+            }) 
+      },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
       selectNav (name) {
         this.isSelect = name;
       },
-      // 添加active类名
+      // 添加label类名
        navClickEvent:function(item){
          if(item.label){
-                    Vue.set(item,'label',false);
+                    Vue.set(item,'label',false);  
                 }else{
                     Vue.set(item,'label',true);
                 }
     },
+        // 楼宇集合添加class 
+         addClass:function(index1,seIid){ 
+             this.current=index1;
+                this.checkList[index1].forEach((arr1, i) => {  
+                    let arrId = arr1;
+                this.items.forEach((arr, k) => { 
+                  let itemId = arr.id
+                 if(itemId==arrId){   
+                      Vue.set(this.items[k],'label',true); 
+                  }
+                  })  
+                  }) 
+              
+            },
+        // 添加楼与集合
+        keepNum:function(){
+            let setId = this.checkList1.toString();
+            var Setinput = this.input;
+            if(!Setinput){
+              this.$message.error('请输入集合名称');
+              return;
+            }
+            if(this.checkList1.length == 0){
+              this.$message.error('请选择楼盘');
+              return;
+            }
+              setAdd({                    
+                name: Setinput, 
+                bid: setId
+            }).then(res => {
+                if(res.flag == 0){  
+              // console.log(JSON.stringify(res))
+              this.$message({
+                      message: '添加成功',
+                      type: 'success',
+                      duration: 1000
+                });
+                this.reload();
+                }else{
+                  this.$message.error('添加失败');
+                }
+            }) 
+            },
+    // 删除集合
+       delectSet:function(delectId){
+             delectSet({                    
+                id: delectId,                              
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.$message({
+                      message: '删除成功',
+                      type: 'success',
+                      duration: 1000
+                }); 
+                 this.reload();
+                } 
+            }) 
+       },
     // 新建集合
       newSet:function(){
          this.showPrise = true;
@@ -204,7 +292,7 @@ export default {
       },
       hideSet:function(){
          this.showPrise = false;
-           this.showBtn = true;
+         this.showBtn = true;
       },
       // 同步集合
       synchroSet:function(){
@@ -257,6 +345,18 @@ export default {
 
 </script>
 <style>
+.disIpt{
+  z-index: 99 !important;
+}
+.active___1cDXI{
+      background-color: #5d647b !important;
+}
+.active___1cDXI .el-collapse-item__header{
+  background-color: #5d647b !important;
+}
+.title_list .el-checkbox__input.is-checked+.el-checkbox__label{
+color: #fff;
+}
 .title_info{
 height: 30px;
     line-height: normal;

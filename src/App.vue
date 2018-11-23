@@ -1,12 +1,31 @@
 <template>
   <div id="app">
-    <router-view/>
+  <router-view v-if="isRouterAlive"></router-view>
   </div>
 </template>
 
 <script>
+// 通过控制router-view 的显示与隐藏，来重渲染路由区域，重而达到页面刷新的效果
 export default {
-  name: 'App'
+  name: 'App',
+  provide (){
+     return {
+       reload:this.reload
+     }
+  },
+ data(){
+    return {
+       isRouterAlive:true
+    }
+ },
+  methods:{
+    reload (){
+       this.isRouterAlive = false
+       this.$nextTick(function(){
+          this.isRouterAlive = true
+       })
+    }
+  }
 }
 </script>
 <style>

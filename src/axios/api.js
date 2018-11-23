@@ -10,4 +10,7 @@ export const Regist = params => get ('/builadmin/index/regist',params) //注册�
 export const forget = params => post ('/builadmin/index/forgotpw',params) //忘记密码
 export const logout = params => post ('/builadmin/index/logout',params) //退出登录
 export const getList = params => post ('/builadmin/buil/list',params)  //获取楼宇列表
-export const itemType = params => get ('/builadmin/buildtype/list',params)
+export const itemAgg = params => get ('/builadmin/buildgather/list',params) //楼宇集合列表
+export const setAdd = params => post ('/builadmin/buildgather/index',params) // 添加楼宇集合
+export const delectSet = params => post ('/builadmin/buildgather/delete',params) //删除楼宇集合
+export const editSet = params => post ('/builadmin/buildgather/edit',params) //编辑楼宇集合
