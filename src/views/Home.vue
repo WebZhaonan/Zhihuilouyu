@@ -1,7 +1,10 @@
 <template>
+   
   <div style="width:100%;height:100%;">
+    <!-- 返回顶部-->
+      <BackTop   id="to-top-btn" :height="20"></BackTop>   
        <el-container style="width:100%;height:100%;">
-                      <!--头部-->
+            <!--头部-->
 <el-header class="el-header" style="height:51px;line-height:51px;">
     <el-row :gutter="20">
   <el-col :span="4" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
@@ -55,7 +58,7 @@
     <el-menu style="background-color:#252834">
       <!-- 楼宇列表 -->
       <div class="Llist">
-        <li v-for="(item, index) in items" :key="index"   v-on:click="navClickEvent(item)" class='list___2Hba-li' :class="{'label':item.label}">
+        <li v-for="(item, index) in items" :key="index"   v-on:click="navClickEvent(item)" class='list___2Hba-li' :class="item.label ? 'label' : ''">
           <img :src="item.images" alt="">
               <div class="L-tex"> 
               <span>{{item.name}}</span><br>
@@ -67,7 +70,7 @@
      <!-- 楼宇勾选-->
       <el-collapse>
        <div class="title_list" v-for="(itemlist, index) in itemAgg" :key="index"  :class="{ active___1cDXI:index==current}" style="margin-top:10px">
-         <div class="title_info" @click="addClass(index,itemlist.id)">
+         <div class="title_info" @click="addClass(index,itemlist.bid)">
            <div  class="title_info">{{itemlist.name}}</div>
            </div>
            <el-collapse-item >
@@ -109,7 +112,7 @@
     </el-menu>
     <div class="boDiv"></div>
   </el-aside>
- <el-container style="max-height:1000px; border: 1px solid #eee;border-top:0px" :class="collapsed?'closeMainBox':'mainBox'">
+ <el-container style="max-height:1000px;border: 1px solid #eee;border-top:0px" :class="collapsed?'closeMainBox':'mainBox'">
  <!--中间渲染部分-->
     <el-main>
      <router-view>
@@ -117,10 +120,14 @@
     </el-main>
   </el-container>
 </el-container>
+  
  </div>
+ <!--返回顶部 -->
 </template>
 <script>
 import Vue from 'vue'
+import { BackTop } from 'iview';
+Vue.component('BackTop', BackTop);
 import { logout} from '@/axios/api';  //退出方法
 import { Islogin } from "@/axios/api"  //验证登录
 import { getList} from '@/axios/api' //获取楼宇列表
@@ -151,7 +158,8 @@ export default {
         items:[],  
         itemAgg:[],
         checkList1: [],
-        current:-1
+        current:-1,
+        label:false
       }
     },
      mounted () {
@@ -191,7 +199,7 @@ export default {
                      that.items=res.data; 
                 } 
             }) 
-      that.isSelect = that.$route.path
+      that.isSelect = that.$route.path;
 },
   methods: {
          //  编辑楼宇集合
@@ -228,18 +236,20 @@ export default {
                 }
     },
         // 楼宇集合添加class 
-         addClass:function(index1,seIid){ 
-             this.current=index1;
-                this.checkList[index1].forEach((arr1, i) => {  
-                    let arrId = arr1;
-                this.items.forEach((arr, k) => { 
-                  let itemId = arr.id
-                 if(itemId==arrId){   
-                      Vue.set(this.items[k],'label',true); 
+         addClass:function(index1,seIid){
+        this.items.map(item=> Vue.set(item,'label',false));   //每次点击先清除class
+          this.current = index1 
+             this.items.map((item, k,arr) => { 
+                    let itemId = arr[k].id
+                   var arrIDe = this.checkList[index1].map((arr1, i) => {  
+                    let arrId = arr1;                   
+                if(arr[k].id){
+                     if(itemId==arrId){  
+                   Vue.set(arr[k],'label',true); 
                   }
-                  })  
-                  }) 
-              
+                  }
+                  })
+                  })                    
             },
         // 添加楼与集合
         keepNum:function(){

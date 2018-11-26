@@ -8,6 +8,7 @@ import store from './stroe/stroe'
 import router from './router'
 import axios from 'axios'
 import 'font-awesome/css/font-awesome.min.css'
+import 'iview/dist/styles/iview.css'
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios;
 Vue.use(ElementUI);

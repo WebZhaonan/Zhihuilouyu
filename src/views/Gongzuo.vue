@@ -1,8 +1,12 @@
 <template>
-    <h2>工作 Page</h2>
+<div >
+</div>
 </template>
 <script>
+
 export default {
-    name:'Gz'
+    name:'Gz',
+    methods:{
+    }
 }
 </script>

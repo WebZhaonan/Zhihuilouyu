@@ -24,7 +24,7 @@ export default {
        this.$nextTick(function(){
           this.isRouterAlive = true
        })
-    }
+    },
   }
 }
 </script>
@@ -40,7 +40,7 @@ html{
 body{
   margin: 0;
   padding: 0;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
   background-color: #f4f4f4;
   width: 100%;
   height: 100%;
@@ -53,7 +53,7 @@ body{
   color: #2c3e50;
   width: 100%;
   height: 100%;
-  overflow: auto
+  /* overflow: auto */
 }
 ul li{
   list-style: none;
