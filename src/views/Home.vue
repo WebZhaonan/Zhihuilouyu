@@ -135,6 +135,7 @@ import { itemAgg } from '@/axios/api'  //获取楼宇类型列表
 import { setAdd } from '@/axios/api'   //添加楼宇集合
 import { delectSet } from '@/axios/api' //删除楼宇集合 
 import { editSet } from '@/axios/api'  // 编辑楼宇集合
+// 第一次测试mac
 export default {
   name: "Home",
   inject: ['reload'],
