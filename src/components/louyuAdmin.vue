@@ -5,26 +5,15 @@
                 <el-input
                     placeholder="搜索楼宇名称"
                     prefix-icon="el-icon-search"
-                    v-model="input21">
+                    v-model="input21"
+                    class="ly-input">
                 </el-input>
-                <el-button icon="el-icon-plus">楼宇</el-button>
+                <Lydialog></Lydialog>
             </div>
-            <ul class="ly-msg">
-                <li v-for="(item,i) in txtMsg" :key="i">
-                    <div class="li-left">
-                        <div style="padding-right: 14px;">
-                            <div class="li-top">
-                                <span>{{item.name}}</span> 
-                                <span>{{item.bfb}}</span>
-                                <i class="el-icon-question"></i>       
-                            </div>
-                            <div class="li-bottom">{{item.sl}}</div>
-                        </div>
-                    </div>
-                    <div class="li-right"></div>
-                </li>              
-            </ul>
-            <span class="jl"> <i class="el-icon-edit-outline"></i></span>          
+            <div class="ly-content">
+                <lyMsg></lyMsg>
+                <sjpzdialog></sjpzdialog>           
+            </div>          
         </div>
         <div class="Box-bottom">
             <div class="table-header">
@@ -35,190 +24,256 @@
                 :data="tableData"
                 style="width: 100%;border: 1px solid #e0e0e0;background-color: #fff;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;"
                 :default-sort = "{prop: 'date', order: 'descending'}"
-                height="850">
+                height="650"
+                @row-click="skip">
                 <el-table-column
                 prop="date"
                 label="楼宇名称"
-                width="425">
+                width="336">
+                <template slot-scope="scope">
+                    <div class="lymc">
+                        <div class="lymc-left">                           
+                            <img :src="scope.row.date.date01">
+                        </div>
+                        <div class="lymc-right">
+                            <div class="lymc-rigth01">{{scope.row.date.date02}}</div>
+                            <div class="lymc-rigth02">{{scope.row.date.date03}}</div>
+                        </div>
+                    </div>                   
+                </template>
                 </el-table-column>
                 <el-table-column
                 prop="name"
                 label="在租均价"
                 sortable
-                width="255">
+                width="201">
                 </el-table-column>
                 <el-table-column
                 prop="zssl"
                 label="可招商数量"
                 sortable
-                width="212">
+                width="168">
                 </el-table-column>
                 <el-table-column
                 prop="zzsl"
                 label="在租数量"
                 sortable
-                width="284">
+                width="224">
                 </el-table-column>
                 <el-table-column
                 prop="zzhtsl"
                 label="再租合同份数"
                 sortable
-                width="213">
+                width="168">
                 </el-table-column>  
                 <el-table-column
                 prop="yjwcl"
                 label="预计完成率"
                 sortable
-                width="214">
+                width="168">
+                </el-table-column>
+                <el-table-column
+                prop="cs"
+                label="城市"
+                sortable
+                width="168">
+                <template slot-scope="scope">
+                    {{scope.row.cs}}
+                    <sxly></sxly>                                  
+                </template>  
+                </el-table-column>
+                <el-table-column
+                prop="sf"
+                label="省份"
+                sortable
+                width="170">
                 </el-table-column>          
             </el-table>
         </div>        
     </div>
 </template>
 <script>
+import Lydialog from '@/components/louyuAdmin/Dialog'
+import sjpzdialog from '@/components/louyuAdmin/Dialogsjpz'
+import lyMsg from '@/components/zhlyMsg/lyMsg'
+import sxly from '@/components/louyuAdmin/sxly'
+
 export default {
     name:'louyuAdmin',
+    components:{
+        Lydialog,sjpzdialog,lyMsg,sxly
+    },
     data(){
         return{
             input21: '',
-            txtMsg:[
-                {
-                    name:"楼宇数量",
-                    bfb:"",
-                    sl:"10"
-                },
-                {
-                    name:"管理数量",
-                    bfb:"m²",
-                    sl:"169,884.26"
-                },
-                {
-                    name:"在租数量",
-                    bfb:"29.13%",
-                    sl:"49,487.90"
-                },
-                {
-                    name:"在租实时均价",
-                    bfb:"",
-                    sl:"-"
-                },
-                {
-                    name:"在租合同份数",
-                    bfb:"",
-                    sl:"80"
-                },
-                {
-                    name:"可招商数量",
-                    bfb:"70.67%",
-                    sl:"120,052.55"
-                },
-                {
-                    name:"预计完成率",
-                    bfb:"",
-                    sl:"219.32%"
-                }               
-            ],
+            activeIndex: '1',
             tableData: [{               
                 name: '0.00 元/㎡·天',
-                date: '2016-05-02',
+                date: {
+                    date01: require('../assets/3 (1).png'),
+                    date02: 'aaa',
+                    date03: '市辖区'
+                },
                 zssl: '0.31万m² (100%)',
                 zzsl: '0.31万m² (0%)',
                 zzhtsl: '0',
-                yjwcl: '0.00%'
+                yjwcl: '0.00%',
+                cs: '南京市',
+                sf: '江苏省'
                 }, {             
                 name: '0.00 元/㎡·天',
-                date: '2016-05-04',
+                date: {
+                    date01: require('../assets/3 (1).png'),
+                    date02: 'aaa',
+                    date03: '市辖区'
+                },
                 zssl: '0.31万m² (100%)',
                 zzsl: '0.31万m² (0%)',
                 zzhtsl: '0',
-                yjwcl: '0.00%'
+                yjwcl: '0.00%',
+                cs: '南京市',
+                sf: '江苏省'
                 }, {               
                 name: '0.00 元/㎡·天',
-                date: '2016-05-01',
+                date: {
+                    date01: require('../assets/3 (1).png'),
+                    date02: 'aaa',
+                    date03: '市辖区'
+                },
                 zssl: '0.31万m² (100%)',
                 zzsl: '0.31万m² (0%)',
                 zzhtsl: '0',
-                yjwcl: '0.00%'
+                yjwcl: '0.00%',
+                cs: '南京市',
+                sf: '江苏省'
                 }, {              
                 name: '0.00 元/㎡·天',
-                date: '2016-05-03',
+                date: {
+                    date01: require('../assets/3 (1).png'),
+                    date02: 'aaa',
+                    date03: '市辖区'
+                },
                 zssl: '0.31万m² (100%)',
                 zzsl: '0.31万m² (0%)',
                 zzhtsl: '0',
-                yjwcl: '0.00%'
+                yjwcl: '0.00%',
+                cs: '南京市',
+                sf: '江苏省'
                 }, {               
                 name: '0.00 元/㎡·天',
-                date: '2016-05-03',
+                date: {
+                    date01: require('../assets/3 (1).png'),
+                    date02: 'aaa',
+                    date03: '市辖区'
+                },
                 zssl: '0.31万m² (100%)',
                 zzsl: '0.31万m² (0%)',
                 zzhtsl: '0',
-                yjwcl: '0.00%'
+                yjwcl: '0.00%',
+                cs: '南京市',
+                sf: '江苏省'
                 }, {
                 name: '0.00 元/㎡·天',
-                date: '2016-05-03',
+                date: {
+                    date01: require('../assets/3 (1).png'),
+                    date02: 'aaa',
+                    date03: '市辖区'
+                },
                 zssl: '0.31万m² (100%)',
                 zzsl: '0.31万m² (0%)',
                 zzhtsl: '0',
-                yjwcl: '0.00%'
+                yjwcl: '0.00%',
+                cs: '南京市',
+                sf: '江苏省'
                 }, {             
                 name: '0.00 元/㎡·天',
-                date: '2016-05-03',
+                date: {
+                    date01: require('../assets/3 (1).png'),
+                    date02: 'aaa',
+                    date03: '市辖区'
+                },
                 zssl: '0.31万m² (100%)',
                 zzsl: '0.31万m² (0%)',
                 zzhtsl: '0',
-                yjwcl: '0.00%'
+                yjwcl: '0.00%',
+                cs: '南京市',
+                sf: '江苏省'
                 }, {               
                 name: '0.00 元/㎡·天',
-                date: '2016-05-03',
+                date: {
+                    date01: require('../assets/3 (1).png'),
+                    date02: 'aaa',
+                    date03: '市辖区'
+                },
                 zssl: '0.31万m² (100%)',
                 zzsl: '0.31万m² (0%)',
                 zzhtsl: '0',
-                yjwcl: '0.00%'
+                yjwcl: '0.00%',
+                cs: '南京市',
+                sf: '江苏省'
                 }, {              
                 name: '0.00 元/㎡·天',
-                date: '2016-05-03',
+                date: {
+                    date01: require('../assets/3 (1).png'),
+                    date02: 'aaa',
+                    date03: '市辖区'
+                },
                 zssl: '0.31万m² (100%)',
                 zzsl: '0.31万m² (0%)',
                 zzhtsl: '0',
-                yjwcl: '0.00%'
+                yjwcl: '0.00%',
+                cs: '南京市',
+                sf: '江苏省'
                 }, {               
                 name: '0.00 元/㎡·天',
-                date: '2016-05-03',
+                date: {
+                    date01: require('../assets/3 (1).png'),
+                    date02: 'aaa',
+                    date03: '市辖区'
+                },
                 zssl: '0.31万m² (100%)',
                 zzsl: '0.31万m² (0%)',
                 zzhtsl: '0',
-                yjwcl: '0.00%'
-                }]
+                yjwcl: '0.00%',
+                cs: '南京市',
+                sf: '江苏省'
+                }
+            ]  
+        }
+    },
+    methods:{
+        skip(){
+            this.$router.push("/lydetails");
         }
     }
 }
 </script>
 
-<style scoped>
+<style>
 .Box-top{
     background-color: #fff;
-    position: relative;
 }
 .demo-input-suffix{
+    border-bottom: 1px solid #edf0f2;
     overflow: hidden;
 }
-.el-input{
+.ly-input{
     width: calc(100% - 490px);
     float: left;
 }
-.el-input input{
+.ly-input input{
     border: 0;
     height: 50px;
     line-height: 50px;
     font-size: 12px;
     padding-left: 64px !important;   
 }
-.el-input span i{
+.ly-input span i{
     width: 92px;
     font-size: 16px;
     color: #6f7e95;
 }
-.el-button{
+.ly-button{
     float: right;
     font-size: 14px;
     text-align: center;
@@ -230,63 +285,14 @@ export default {
     padding: 0 15px;
     height: 28px;
 }
-.ly-msg{
+.ly-content{
     display: inline-block;
-    background-color: #fff;
-    padding: 20px 20px 0;
-    overflow: hidden;
+    position: relative;
 }
-.ly-msg li{
-    float: left;
-    min-width: 105px;
-}
-.ly-msg li .li-top{
-    height: 25px;
-    line-height: 25px;
-    color: #828692;
-    font-size: 12px;
-}
-.ly-msg li .li-top span:nth-child(1){
-    float: left;
-}
-.ly-msg li .li-top span:nth-child(2){
-    float: right;
-    padding-left: 7px;
-}
-.ly-msg li .li-top i{
-    margin-left: 6px;
-    color: #4494f0;
-    font-size: 16px;
-}
-.ly-msg li .li-bottom{
-    display: inline-block;
-    height: 56px;
-    line-height: 48px;
-    font-size: 24px;
-    color: #353b4b;
-}
-.ly-msg li .li-left{
-    color: #353b4b;
-    display: inline-block;
-    margin-left: 10px;
-    padding-right: 14px;
-    font-size: 14px;
-}
-.ly-msg li .li-right{
-    width: 2px;
-    height: 35px;
-    background-color: #edeef0;
-    display: inline-block;
-    margin-top: 16px;
-}
-.ly-msg li:last-child .li-right{
-    background-color: #fff !important;
-}
-.Box-top .jl{
+.Box-top .sjpz{
     position: absolute;
-    right: 74px;
-    top: 72px;
-    cursor: pointer;
+    right: 14px;
+    top: 22px;
 }
 .Box-bottom{
     margin: 0 auto;
@@ -294,7 +300,7 @@ export default {
     width: 100%;
     box-sizing: border-box;
 }
-.table-header{
+.Box-bottom .table-header{
     font-size: 14px;
     height: 50px;
     background: #fff;
@@ -307,31 +313,75 @@ export default {
     border: 1px solid #e0e0e0;
     border-bottom: 0px;
 }
-.table-header i{
+.Box-bottom .table-header i{
     font-size: 16px;
 }
-.el-table__header-wrapper{
-    border-bottom: 1px solid #e0e0e0;  
-}   
-.el-table thead tr th{
+.Box-bottom .el-table thead tr th{
     font-size: 12px;
     color: #7085a1;
     font-weight: normal; 
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0;
 }
-.el-table thead tr th .cell{
+.Box-bottom .el-table thead tr th .cell{
     padding: 0 20px;
     height: 36px;
     line-height: 36px;
 }
-.el-table tbody tr{
+.Box-bottom .el-table tbody tr{
     padding: 10px 0;
     background: #fff;
     color: #6b809f;
-    font-size: 14px
+    font-size: 14px;
+    height: 65px;
 }
-.el-table tbody tr td .cell{
+.Box-bottom .el-table tbody tr td{
+    padding: 14px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+.Box-bottom .el-table tbody tr td .cell{
     padding: 0 20px;
     height: 36px;
     line-height: 36px;
+}
+.lymc-left{
+    float: left;
+    width: 53px;
+    height: 36px;
+    background-size: 100% 100%;
+}
+.lymc-left img{
+    width: 100%;
+    height: 36px;
+    margin: 0px;
+    border: 0;
+}
+.lymc-right{
+    width: calc(100% - 64px);
+    float: left;
+    margin-left: 10px;
+    font-size: 14px;
+    color: #353b4b;
+    text-align: left;
+}
+.lymc-rigth01{
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    color: #353b4b;
+    font-weight: 500;
+    height: 21px;
+    line-height: 21px;
+}
+.lymc-rigth02{
+    font-size: 12px;
+    color: #9fa1a8;
+    height: 18px;
+    line-height: 18px;
+}
+.Box-bottom .el-table__row{
+    cursor: pointer;
 }
 </style>

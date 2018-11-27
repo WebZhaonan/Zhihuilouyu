@@ -10,7 +10,10 @@ import NotFoud from '@/views/404' //404
 import Jh from '@/views/Jihe'  // 集合
 import Gz from '@/views/Gongzuo' //工作
 import louyuAdmin from '@/components/louyuAdmin'
-import fangyuanAdmin from '@/components/fangyuanAdmin'
+import fangyuanAdmin from '@/components/fangyuanAdmin' //房源
+import fy01 from '@/components/fangyuanAdmin/fy01'
+import fy02 from '@/components/fangyuanAdmin/fy02'
+import fy03 from '@/components/fangyuanAdmin/fy03'
 import Zs from '@/components/zhaoshangAdmin'
 import Zk from '@/components/zukeAdmin'
 import Ht from '@/components/hetongAdmin'
@@ -24,6 +27,12 @@ import Termination from '@/components/profile/Termination'
 import CostTypeTable from '@/components/profile/CostTypeTable'
 import tenantTag from '@/components/profile/tenantTag'
 import customIndustry from '@/components/profile/customIndustry' 
+import lydetails from '@/components/lydetails'   //楼宇详情
+import pmmap from '@/components/lydetails/lydetails01'  
+import fymanage from '@/components/lydetails/lydetails02'
+import zsmanage from '@/components/lydetails/lydetails03'
+import zkmanage from '@/components/lydetails/lydetails04'
+import htmanage from '@/components/lydetails/lydetails05'
 Vue.use(Router)
 const routes  =  [
 
@@ -58,8 +67,25 @@ const routes  =  [
           {
           path:'fangyuanAdmin',   //房源管理
           name:'fangyuanAdmin',
-          component:fangyuanAdmin
-
+          component:fangyuanAdmin,
+          redirect: '/fy01' ,
+          children:[
+              {
+                path: '/fy01',
+                name: 'fy01',
+                component: fy01
+              },
+              {
+                path: '/fy02',
+                name: 'fy02',
+                component: fy02
+              },
+              {
+                path: '/fy03',
+                name: 'fy03',
+                component: fy03
+              }
+            ]
           },
           {
             path:'Zs',
@@ -85,6 +111,39 @@ const routes  =  [
       }
     ]
 
+  },
+  {
+    path: '/lydetails',
+    name: 'lydetails',
+    component: lydetails,
+    redirect:'/pmmap',
+    children:[
+      {
+        path: '/pmmap', 
+        name: 'pmmap',
+        component: pmmap
+      },
+      {
+        path: '/fymanage', 
+        name: 'fymanage',
+        component: fymanage
+      },
+      {
+        path: '/zsmanage', 
+        name: 'zsmanage',
+        component: zsmanage
+      },
+      {
+        path: '/zkmanage', 
+        name: 'zkmanage',
+        component: zkmanage
+      },
+      {
+        path: '/htmanage', 
+        name: 'htmanage',
+        component: htmanage
+      }
+    ]
   },
   {
     path:'/main',   //个人中心

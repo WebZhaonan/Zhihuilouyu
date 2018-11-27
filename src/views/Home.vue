@@ -21,7 +21,7 @@
 </el-menu>
       </div>
       </el-col>
-  <el-col :span="4" style="float:right">
+  <el-col :span="3" >
       <div class="grid-content bg-purple" style="text-align:right">
           <!--问卷调查 -->
       <el-dropdown>
@@ -354,7 +354,7 @@ export default {
   }
 
 </script>
-<style>
+<style scoped>
 .disIpt{
   z-index: 99 !important;
 }
