@@ -135,7 +135,6 @@ import { itemAgg } from '@/axios/api'  //获取楼宇类型列表
 import { setAdd } from '@/axios/api'   //添加楼宇集合
 import { delectSet } from '@/axios/api' //删除楼宇集合 
 import { editSet } from '@/axios/api'  // 编辑楼宇集合
-// 第一次测试mac
 export default {
   name: "Home",
   inject: ['reload'],
@@ -239,8 +238,8 @@ export default {
         // 楼宇集合添加class 
          addClass:function(index1,seIid){
         this.items.map(item=> Vue.set(item,'label',false));   //每次点击先清除class
-          this.current = index1 
-             this.items.map((item, k,arr) => { 
+          this.current = index1  //集合加calss
+             this.items.map((item, k,arr) => {   //循环集合列表。
                     let itemId = arr[k].id
                    var arrIDe = this.checkList[index1].map((arr1, i) => {  
                     let arrId = arr1;                   
