@@ -142,7 +142,7 @@ export default {
         return{
             activeIndex01:'',
             navList:[
-                {name:'/jh',navItem:'集合'},
+                {name:'/',navItem:'集合'},
                 {name:'/page1',navItem:'工作流'},
             ],
             activeIndex02:'/pmmap',

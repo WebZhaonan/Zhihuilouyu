@@ -8,11 +8,11 @@
 				{{collapsed?'':sysName}}
 			</el-col>
       <div class="right">
-         <el-col :span="1"><div class="grid-content bg-purple"  @click.prevent="collapse"><span><i class="el-icon-menu" style="cursor:pointer;"></i></span></div></el-col>
-  <el-col :span="4" style="float:right">
-      <div class="grid-content bg-purple" style="text-align:right">
-          <!--问卷调查 -->
-          <i class="el-icon-back icon" style="margin-right: 15px" @click="goback"></i>
+         <el-col :span="1"><div class="grid-content bg-purple"  @click.prevent="collapse"><span><i class="fa fa-outdent" style="cursor:pointer;font-size:16px"></i></span></div></el-col>
+  <el-col :span="1" style="float:right;text-align:cenetr">
+      <div class="grid-content bg-purple" style="text-align:center;background:#108ee9">
+          <!--返回首页 -->
+          <i class="fa fa-reply icon"  @click="goback"></i>
       </div>
       </el-col>
       </div>
@@ -75,7 +75,7 @@ export default {
                {linkUrl1:'/customIndustry',name:'行业管理'}       //行业管理
              ]
             },
-           {linkUrl:'#',menuItem:'模板管理',class:'el-icon-edit subIcon',
+           {linkUrl:'#',menuItem:'模板管理',class:'el-icon-document subIcon',
           children: [
                 { linkUrl1: '/contractTemplate',  name: '合同模板'}, //内部管理
              ]
@@ -167,7 +167,8 @@ export default {
 .subIcon{
     font-size: 16px;
     color: #ff8d1f;
-    padding-left: 35px
+    padding-left: 35px;
+    padding-right: 25px
 }
 .SubLi .el-submenu__title .el-submenu__icon-arrown{
     color: #fff !important;
@@ -223,8 +224,7 @@ export default {
 .icon{
     font-size:18px;
     font-weight:400;
-    color:#000;
-    margin-right: 30px !important;
+    color:#fff;
     cursor: pointer;
 }
  	.logo {

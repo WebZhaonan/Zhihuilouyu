@@ -61,4 +61,24 @@ ul li{
 .SubLi .el-menu-item-group__title{
   padding: 0;
 }
+.title_list .el-collapse-item__header,.el-collapse-item__wrap{
+  background: #1a1c24;
+  border-bottom: none;
+  color: #fff;
+  
+}
+.title_info input{
+  padding: 0;
+    background: #1a1c24;
+    border: none;
+    width: 100%;
+    padding-right: 0 !important;
+    color: #fff;
+}
+.active___1cDXI{
+      background-color: #5d647b !important;
+}
+.active___1cDXI .el-collapse-item__header{
+  background-color: #5d647b !important;
+}
 </style>

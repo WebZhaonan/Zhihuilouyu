@@ -11,8 +11,8 @@
 				{{collapsed?'':sysName}}
 			</el-col>
       <div class="right">
-         <el-col :span="1"><div class="grid-content bg-purple"  @click.prevent="collapse"><span><i class="fa fa-outdent" style="cursor:pointer;"></i></span></div></el-col>
-  <el-col :span="15"><div class="grid-content bg-purple">
+         <el-col :span="1"><div class="grid-content bg-purple"  @click.prevent="collapse"><span><i class="fa fa-outdent" style="cursor:pointer;font-size:16px"></i></span></div></el-col>
+  <el-col :span="10"><div class="grid-content bg-purple">
       <el-menu :default-active="isSelect" router class="el-menu-demo nav-ul" mode="horizontal"  @select="handleSelect" background-color="#e9eaeb" text-color="#4a5267"
   >
  <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name" class="nav_li" @click="selectNav(item.name)">
@@ -21,7 +21,7 @@
 </el-menu>
       </div>
       </el-col>
-  <el-col :span="3" >
+  <el-col :span="8" style="float:right;width:auto">
       <div class="grid-content bg-purple" style="text-align:right">
           <!--问卷调查 -->
       <el-dropdown>
@@ -355,14 +355,9 @@ export default {
 
 </script>
 <style scoped>
+
 .disIpt{
   z-index: 99 !important;
-}
-.active___1cDXI{
-      background-color: #5d647b !important;
-}
-.active___1cDXI .el-collapse-item__header{
-  background-color: #5d647b !important;
 }
 .title_list .el-checkbox__input.is-checked+.el-checkbox__label{
 color: #fff;
@@ -394,6 +389,7 @@ height: 30px;
     font-weight: bold;
     z-index: 9999;
     cursor: pointer;
+    color: #fff
 }
 .addBtn button:hover{
       background: #ff8d1f;

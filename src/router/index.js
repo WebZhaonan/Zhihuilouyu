@@ -2,27 +2,26 @@
 import Vue from 'vue' //引入vue
 import Router from 'vue-router' //引入路由 
 import { Message } from 'element-ui'
-import { store } from '@/stroe/stroe'
 import logins from '@/Logins/logins'//登录注册
 import forget from '@/Logins/forget'
 import Home from '@/views/Home'  //首页
 import NotFoud from '@/views/404' //404
 import Jh from '@/views/Jihe'  // 集合
 import Gz from '@/views/Gongzuo' //工作
-import louyuAdmin from '@/components/louyuAdmin'
+import louyuAdmin from '@/components/louyuAdmin'   //楼宇
 import fangyuanAdmin from '@/components/fangyuanAdmin' //房源
-import fy01 from '@/components/fangyuanAdmin/fy01'
+import fy01 from '@/components/fangyuanAdmin/fy01' 
 import fy02 from '@/components/fangyuanAdmin/fy02'
 import fy03 from '@/components/fangyuanAdmin/fy03'
-import Zs from '@/components/zhaoshangAdmin'
-import Zk from '@/components/zukeAdmin'
-import Ht from '@/components/hetongAdmin'
-import User from '@/components/profile/main'
-import Internal from '@/components/profile/Internal'
-import accountSetting from '@/components/profile/accountSetting'
-import fyTag from '@/components/profile/fyTag'
+import Zs from '@/components/zhaoshangAdmin'  //招商
+import Zk from '@/components/zukeAdmin'  //租客
+import Ht from '@/components/hetongAdmin'//合同
+import User from '@/components/profile/main' //个人中心
+import Internal from '@/components/profile/Internal' //内部管理
+import accountSetting from '@/components/profile/accountSetting' //账户设置
+import fyTag from '@/components/profile/fyTag' 
 import htTag from '@/components/profile/htTag'
-import contractTemplate from '@/components/profile/contractTemplate'
+import contractTemplate from '@/components/profile/contractTemplate' //合同
 import Termination from '@/components/profile/Termination'
 import CostTypeTable from '@/components/profile/CostTypeTable'
 import tenantTag from '@/components/profile/tenantTag'
@@ -156,7 +155,7 @@ const routes  =  [
       { path: '/main', component: Internal, name: 'Internal'}, //内部管理
       { path:'/accountSetting',component:accountSetting, name:'accountSetting'}, //账户设置
       { path:'/fyTag',component:fyTag, name:'fyTag'}, //房源标签
-      { path:'/htTag',component:htTag, name:'htTag'},
+      { path:'/htTag',component:htTag, name:'htTag'},  //
       { path:'/Termination',component:Termination, name:'Termination'},
       { path:'/CostTypeTable',component:CostTypeTable, name:'CostTypeTable'},
       { path:'/tenantTag',component:tenantTag, name:'tenantTag'},
@@ -171,6 +170,7 @@ const routes  =  [
   }
 ]
 const router = new Router({
+  mode: 'history',
   routes
 })
 // router.beforeEach((to, from, next) => {
