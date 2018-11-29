@@ -52,19 +52,21 @@ const routes  =  [
     meta: {
       requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
     },
+    redirect: "/jh",
     children:[
       {
-        path:'/', //集合
+        path:'jh', //集合
         name:'Jh',
         component:Jh,
+        redirect: "/louyuAdmin",
         children:[
           {
-            path:'/',   //楼宇管理
+            path:'/louyuAdmin',   //楼宇管理
             name:'louyuAdmin',
             component:louyuAdmin
           },
           {
-          path:'fangyuanAdmin',   //房源管理
+          path:'/fangyuanAdmin',   //房源管理
           name:'fangyuanAdmin',
           component:fangyuanAdmin,
           redirect: '/fy01' ,
@@ -87,17 +89,17 @@ const routes  =  [
             ]
           },
           {
-            path:'Zs',
+            path:'/Zs',
             name:'Zs',
             component:Zs
           },
           {
-            path:'Zk',
+            path:'/Zk',
             name:'Zk',
             component:Zk
           },
           {
-            path:'Ht',
+            path:'/Ht',
             name:'Ht',
             component:Ht
           }

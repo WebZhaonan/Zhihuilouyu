@@ -69,7 +69,9 @@
      <!-- 结束-->
      <!-- 楼宇勾选-->
       <el-collapse>
-       <div class="title_list" v-for="(itemlist, index) in itemAgg" :key="index"  :class="{ active___1cDXI:index==current}" style="margin-top:10px">
+      
+       <div class="title_list" v-for="(itemlist, index) in itemAgg" :key="index"  :class="{ active___1cDXI:index==current}" 
+       style="margin-top:10px">
          <div class="title_info" @click="addClass(index,itemlist.bid)">
            <div  class="title_info">{{itemlist.name}}</div>
            </div>
@@ -146,12 +148,12 @@ export default {
         username:'',
         input:'',
         editIpt:'',
-        isSelect:'/',
+        isSelect:'/jh',
         activeNames: ['1'],
         showPrise:false,
         showBtn:true,
         navList:[
-            {name:'/',navItem:'集合'},
+            {name:'/jh',navItem:'集合'},
             {name:'/page1',navItem:'工作流'},
         ],
         checkList: [],
@@ -222,7 +224,8 @@ export default {
             }) 
       },
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+      // console.log(key, keyPath);
+      // console.log( )
     },
       selectNav (name) {
         this.isSelect = name;
@@ -244,7 +247,8 @@ export default {
                    var arrIDe = this.checkList[index1].map((arr1, i) => {  
                     let arrId = arr1;                   
                 if(arr[k].id){
-                     if(itemId==arrId){  
+                  if(itemId==arrId){  
+                    console.log(JSON.stringify(arr[k]))
                    Vue.set(arr[k],'label',true); 
                   }
                   }

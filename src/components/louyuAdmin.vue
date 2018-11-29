@@ -17,33 +17,33 @@
         </div>
         <div class="Box-bottom">
             <div class="table-header">
-                <div>楼宇列表</div>
+                <div v-html="tagName"></div>
                 <i class="el-icon-more"></i>
             </div>
             <el-table
-                :data="tableData"
+                :data="items"
                 style="width: 100%;border: 1px solid #e0e0e0;background-color: #fff;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;"
                 :default-sort = "{prop: 'date', order: 'descending'}"
                 height="650"
                 @row-click="skip">
-                <el-table-column
-                prop="date"
+                <el-table-column 
+                prop="name"
                 label="楼宇名称"
                 width="336">
                 <template slot-scope="scope">
                     <div class="lymc">
                         <div class="lymc-left">                           
-                            <img :src="scope.row.date.date01">
+                            <img :src="scope.row.images">
                         </div>
                         <div class="lymc-right">
-                            <div class="lymc-rigth01">{{scope.row.date.date02}}</div>
-                            <div class="lymc-rigth02">{{scope.row.date.date03}}</div>
+                            <div class="lymc-rigth01">{{scope.row.name}}</div>
+                            <div class="lymc-rigth02">{{scope.row.c_name}}</div>
                         </div>
                     </div>                   
                 </template>
                 </el-table-column>
                 <el-table-column
-                prop="name"
+                prop="items.name"
                 label="在租均价"
                 sortable
                 width="201">
@@ -73,17 +73,17 @@
                 width="168">
                 </el-table-column>
                 <el-table-column
-                prop="cs"
+                prop="c_name"
                 label="城市"
                 sortable
                 width="168">
                 <template slot-scope="scope">
-                    {{scope.row.cs}}
+                    {{scope.row.c_name}}
                     <sxly></sxly>                                  
                 </template>  
                 </el-table-column>
                 <el-table-column
-                prop="sf"
+                prop="p_name"
                 label="省份"
                 sortable
                 width="170">
@@ -97,7 +97,7 @@ import Lydialog from '@/components/louyuAdmin/Dialog'
 import sjpzdialog from '@/components/louyuAdmin/Dialogsjpz'
 import lyMsg from '@/components/zhlyMsg/lyMsg'
 import sxly from '@/components/louyuAdmin/sxly'
-
+import { getList} from '@/axios/api' //获取楼宇列表
 export default {
     name:'louyuAdmin',
     components:{
@@ -107,142 +107,26 @@ export default {
         return{
             input21: '',
             activeIndex: '1',
-            tableData: [{               
-                name: '0.00 元/㎡·天',
-                date: {
-                    date01: require('../assets/3 (1).png'),
-                    date02: 'aaa',
-                    date03: '市辖区'
-                },
-                zssl: '0.31万m² (100%)',
-                zzsl: '0.31万m² (0%)',
-                zzhtsl: '0',
-                yjwcl: '0.00%',
-                cs: '南京市',
-                sf: '江苏省'
-                }, {             
-                name: '0.00 元/㎡·天',
-                date: {
-                    date01: require('../assets/3 (1).png'),
-                    date02: 'aaa',
-                    date03: '市辖区'
-                },
-                zssl: '0.31万m² (100%)',
-                zzsl: '0.31万m² (0%)',
-                zzhtsl: '0',
-                yjwcl: '0.00%',
-                cs: '南京市',
-                sf: '江苏省'
-                }, {               
-                name: '0.00 元/㎡·天',
-                date: {
-                    date01: require('../assets/3 (1).png'),
-                    date02: 'aaa',
-                    date03: '市辖区'
-                },
-                zssl: '0.31万m² (100%)',
-                zzsl: '0.31万m² (0%)',
-                zzhtsl: '0',
-                yjwcl: '0.00%',
-                cs: '南京市',
-                sf: '江苏省'
-                }, {              
-                name: '0.00 元/㎡·天',
-                date: {
-                    date01: require('../assets/3 (1).png'),
-                    date02: 'aaa',
-                    date03: '市辖区'
-                },
-                zssl: '0.31万m² (100%)',
-                zzsl: '0.31万m² (0%)',
-                zzhtsl: '0',
-                yjwcl: '0.00%',
-                cs: '南京市',
-                sf: '江苏省'
-                }, {               
-                name: '0.00 元/㎡·天',
-                date: {
-                    date01: require('../assets/3 (1).png'),
-                    date02: 'aaa',
-                    date03: '市辖区'
-                },
-                zssl: '0.31万m² (100%)',
-                zzsl: '0.31万m² (0%)',
-                zzhtsl: '0',
-                yjwcl: '0.00%',
-                cs: '南京市',
-                sf: '江苏省'
-                }, {
-                name: '0.00 元/㎡·天',
-                date: {
-                    date01: require('../assets/3 (1).png'),
-                    date02: 'aaa',
-                    date03: '市辖区'
-                },
-                zssl: '0.31万m² (100%)',
-                zzsl: '0.31万m² (0%)',
-                zzhtsl: '0',
-                yjwcl: '0.00%',
-                cs: '南京市',
-                sf: '江苏省'
-                }, {             
-                name: '0.00 元/㎡·天',
-                date: {
-                    date01: require('../assets/3 (1).png'),
-                    date02: 'aaa',
-                    date03: '市辖区'
-                },
-                zssl: '0.31万m² (100%)',
-                zzsl: '0.31万m² (0%)',
-                zzhtsl: '0',
-                yjwcl: '0.00%',
-                cs: '南京市',
-                sf: '江苏省'
-                }, {               
-                name: '0.00 元/㎡·天',
-                date: {
-                    date01: require('../assets/3 (1).png'),
-                    date02: 'aaa',
-                    date03: '市辖区'
-                },
-                zssl: '0.31万m² (100%)',
-                zzsl: '0.31万m² (0%)',
-                zzhtsl: '0',
-                yjwcl: '0.00%',
-                cs: '南京市',
-                sf: '江苏省'
-                }, {              
-                name: '0.00 元/㎡·天',
-                date: {
-                    date01: require('../assets/3 (1).png'),
-                    date02: 'aaa',
-                    date03: '市辖区'
-                },
-                zssl: '0.31万m² (100%)',
-                zzsl: '0.31万m² (0%)',
-                zzhtsl: '0',
-                yjwcl: '0.00%',
-                cs: '南京市',
-                sf: '江苏省'
-                }, {               
-                name: '0.00 元/㎡·天',
-                date: {
-                    date01: require('../assets/3 (1).png'),
-                    date02: 'aaa',
-                    date03: '市辖区'
-                },
-                zssl: '0.31万m² (100%)',
-                zzsl: '0.31万m² (0%)',
-                zzhtsl: '0',
-                yjwcl: '0.00%',
-                cs: '南京市',
-                sf: '江苏省'
-                }
-            ]  
+            items: [] ,
+            tagName:'楼宇列表',
         }
+    },
+    mounted () {
+        let userInfo = JSON.parse(sessionStorage.getItem('user'));
+        let that=this;
+         // 获取楼宇列表
+             getList({                    
+                id: userInfo.id,                              
+            }).then(res => {
+                if(res.flag == 0){  
+                     that.items=res.data; 
+                } 
+            }) 
+            // that.tagName = that.$route.params.num
     },
     methods:{
         skip(){
+        let that =this;
             this.$router.push("/lydetails");
         }
     }

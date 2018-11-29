@@ -1,8 +1,9 @@
 <template>
   <div>
+     
       <el-menu :default-active="activeIndex" router class="el-menu-demo List_nav" mode="horizontal" @select="handleSelect">
   <el-menu-item v-for="(item,i) in List_nav" :key="i" :index="item.name" @click="selectNav(item.name)">
-      {{ item.navItem }}
+      {{ item.navItem }} 
   </el-menu-item>
 </el-menu>
 <!-- <div class="line"></div> -->
@@ -17,9 +18,9 @@ export default {
     name:'Jh',
         data() {
       return {
-        activeIndex:'/',
+        activeIndex:'/louyuAdmin',
         List_nav:[
-            {name:'/',navItem:'楼宇管理'},
+            {name:'/louyuAdmin',navItem:'楼宇管理'},
             {name:'/fangyuanAdmin',navItem:'房源管理'},
             {name:'/Zs',navItem:'招商管理'},
             {name:'/Zk',navItem:'租客管理'},
@@ -29,7 +30,7 @@ export default {
       };
     },
          mounted () {
-             this.activeIndex = this.$route.path
+             this.activeIndex = this.$route.path;
             },
     methods: {
       handleSelect(key, keyPath) {
