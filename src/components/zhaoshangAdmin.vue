@@ -18,7 +18,7 @@ import zsOne from '@/components/zhaoshangAdmin/zsOne'
 import zsTwo from '@/components/zhaoshangAdmin/zsTwo'
 
 export default {
-    name:'Zs',
+    name:'Attract',
     components:{
         zsOne,zsTwo
     },
@@ -31,6 +31,8 @@ export default {
             ],
             nowIndex: 0
         }
+    },
+    mounted(){
     },
     methods:{
         toggleTab:function (tab,i){
@@ -49,7 +51,7 @@ export default {
     background-color: #fff;
     border-bottom: 1px solid #edf0f2;
     position: relative;
-    z-index: 999;
+    z-index: 1;
 }    
 .zs .tabs .tab{
     float: left;

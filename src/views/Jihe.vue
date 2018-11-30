@@ -22,7 +22,7 @@ export default {
         List_nav:[
             {name:'/louyuAdmin',navItem:'楼宇管理'},
             {name:'/fangyuanAdmin',navItem:'房源管理'},
-            {name:'/Zs',navItem:'招商管理'},
+            {name:'/Attract',navItem:'招商管理'},
             {name:'/Zk',navItem:'租客管理'},
             {name:'/Ht',navItem:'合同管理'},
         ],

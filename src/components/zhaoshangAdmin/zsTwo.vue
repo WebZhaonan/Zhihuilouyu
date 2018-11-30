@@ -46,7 +46,7 @@
         width="262">
       </el-table-column>
       <el-table-column
-        prop="qdlx"
+        prop="name"
         label="渠道类型"
         sortable
         width="262">
@@ -57,7 +57,7 @@
         width="262">
       </el-table-column>
       <el-table-column
-        prop="zxdksj"
+        prop="createtime"
         label="最新带看时间"
         sortable
         width="264">
@@ -68,6 +68,7 @@
 </template>
 
 <script>
+import { channel } from '@/axios/api' //客户来访渠道列表
 export default {
   name: 'zsTwo',
   data () {
@@ -82,23 +83,20 @@ export default {
         {name:"第三方个人",sl:"0"},
         {name:"同行介绍",sl:"0"}
       ],  
-      tableData: [{
-          name: '小凡',
-          lxfs: '18591770409',
-          sq: '长河商圈',
-          qdlx: '',
-          dkl: '0',
-          zxdksj: '2017-11-30'
-        }, {
-          name: '马佳',
-          lxfs: '15829088129',
-          sq: '彩虹城商圈',
-          qdlx: '自由经纪人',
-          dkl: '1',
-          zxdksj: '2017-01-30'
-        }
-      ]   
+      tableData: []   
     }
+  },
+  mounted(){
+       let that = this
+            // 获取客户列表
+             channel({                    
+                id: this.$store.state.user.id,                              
+            }).then(res => {
+              console.log(JSON.stringify(res))
+                if(res.flag == 0){  
+                     that.tableData=res.data; 
+                } 
+            }) 
   },
   methods: {
     

@@ -13,7 +13,7 @@ import fangyuanAdmin from '@/components/fangyuanAdmin' //房源
 import fy01 from '@/components/fangyuanAdmin/fy01' 
 import fy02 from '@/components/fangyuanAdmin/fy02'
 import fy03 from '@/components/fangyuanAdmin/fy03'
-import Zs from '@/components/zhaoshangAdmin'  //招商
+import Attract  from '@/components/zhaoshangAdmin'  //招商
 import Zk from '@/components/zukeAdmin'  //租客
 import Ht from '@/components/hetongAdmin'//合同
 import User from '@/components/profile/main' //个人中心
@@ -89,9 +89,9 @@ const routes  =  [
             ]
           },
           {
-            path:'/Zs',
-            name:'Zs',
-            component:Zs
+            path:'/Attract',
+            name:'Attract ',
+            component:Attract 
           },
           {
             path:'/Zk',
