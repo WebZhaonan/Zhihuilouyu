@@ -609,6 +609,7 @@ color: #fff;
 }
 .el-aside::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
     border-radius: 10px;
+    box-shadow: inset 0 0 0px rgba(0,0,0,0.2);
     -webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0.2);
     background: #5d647b;
 }

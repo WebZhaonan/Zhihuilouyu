@@ -16,4 +16,5 @@ export const delectSet = params => post ('/builadmin/buildgather/delete',params)
 export const editSet = params => post ('/builadmin/buildgather/edit',params) //编辑楼宇集合
 export const CustomerList = params => get ('/builadmin/client/list',params) //客户列表
 export const channel = params => get ('/builadmin/channels/list',params) //客户来访渠道列表
+export const zkList = params => post ('/builadmin/customer/index?a=getlist',params) //租客列表
 

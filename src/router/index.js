@@ -14,8 +14,8 @@ import fy01 from '@/components/fangyuanAdmin/fy01'
 import fy02 from '@/components/fangyuanAdmin/fy02'
 import fy03 from '@/components/fangyuanAdmin/fy03'
 import Attract  from '@/components/zhaoshangAdmin'  //招商
-import Zk from '@/components/zukeAdmin'  //租客
-import Ht from '@/components/hetongAdmin'//合同
+import Tenant from '@/components/zukeAdmin'  //租客
+import contract from '@/components/hetongAdmin'//合同
 import User from '@/components/profile/main' //个人中心
 import Internal from '@/components/profile/Internal' //内部管理
 import accountSetting from '@/components/profile/accountSetting' //账户设置
@@ -94,14 +94,14 @@ const routes  =  [
             component:Attract 
           },
           {
-            path:'/Zk',
-            name:'Zk',
-            component:Zk
+            path:'/Tenant',
+            name:'Tenant',
+            component:Tenant
           },
           {
-            path:'/Ht',
-            name:'Ht',
-            component:Ht
+            path:'/contract',
+            name:'contract',
+            component:contract
           }
         ]
       },

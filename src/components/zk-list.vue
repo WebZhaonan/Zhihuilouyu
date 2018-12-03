@@ -31,15 +31,15 @@
 </el-row>
     </div>
     <el-table :data="tableData3" height="650" border style="width: 100%;text-alig:center" :default-sort = "{prop: '', order: 'descending'}">
-    <el-table-column prop="Zkname" label="租客名" width="300">
+    <el-table-column prop="name" label="租客名" width="300">
     </el-table-column>
-      <el-table-column prop="number" label="证件号码" width="220">
+      <el-table-column prop="num" label="证件号码" width="220">
     </el-table-column>
-    <el-table-column prop="fenlei" label="行业分类" width="100">
+    <el-table-column prop="industry" label="行业分类" width="100">
     </el-table-column>
-    <el-table-column prop="Lyname" label="楼宇名" width="300">
+    <el-table-column prop="name" label="楼宇名" width="300">
     </el-table-column>
-    <el-table-column prop="name" label="法人" width="150">
+    <el-table-column prop="contacts" label="法人" width="150">
     </el-table-column>
     <el-table-column prop="money"  label="注册资本/万" width="150">
     </el-table-column>
@@ -64,6 +64,7 @@
 </template>
 <script>
 import searchTit from '../components/searchTit'; //引入搜索和标签组件
+import { zkList } from '@/axios/api' //获取租客列表
 export default {
   name: "zkList",
   components:{
@@ -72,45 +73,22 @@ export default {
   data() {
     return {
       visible: true,
-      tableData3: [{
-          date: '2016-05-03',
-          number:'913301857544204076',
-          fenlei:'-',
-          Zkname:'赵楠',
-          dateTime:'2031-06-20',
-          name: '王小虎',
-          Lyname:'南京研创园',
-          HzTime:'2031-06-20',
-          money:'24350',
-          tips:'政府扶持',
-          phone: '13125467896'
-        },{
-          date: '2016-05-03',
-          number:'913301857544204076',
-          fenlei:'-',
-          Zkname:'赵楠',
-          dateTime:'2031-06-20',
-          name: '王小虎',
-          Lyname:'南京研创园',
-          HzTime:'2031-06-20',
-          money:'24350',
-          tips:'百强',
-          phone: '13125467896'
-        },{
-          date: '2016-05-03',
-          number:'913301857544204076',
-          fenlei:'-',
-          Zkname:'赵楠',
-          dateTime:'2031-06-20',
-          name: '王小虎',
-          Lyname:'南京研创园',
-          HzTime:'2031-06-20',
-          money:'24350',
-          tips:'国企',
-          phone: '13125467896'
-        }]
+      tableData3: []
     };
   },
+  mounted (){
+      // 租客列表
+       let that = this
+         zkList({                                                  
+            }).then(res => {
+                if(res.flag == 0){  
+                     that.tableData3=res.data; 
+                } 
+            }) 
+  },
+  methods: {
+
+  }
 };
 </script>
 <style>

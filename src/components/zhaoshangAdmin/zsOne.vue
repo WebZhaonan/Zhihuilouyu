@@ -109,8 +109,8 @@
 </template>
 
 <script>
-import { CustomerList } from '@/axios/api' // 客户列表
-import zsMsg from '@/components/zhlyMsg/zsMsg' 
+import zsMsg from '@/components/zhlyMsg/zsMsg'
+import { CustomerList } from '@/axios/api' // 客户列表 
 export default {
   name: 'zsOne',
   components:{

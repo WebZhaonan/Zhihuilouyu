@@ -17,7 +17,7 @@ import zkList from '../components/zk-list';
 // import zkDetail from '../components/zk-detail';
 
 export default {
-    name:'Zk',
+    name:'Tenant',
       data() {
       return {
        activeIndex: '../components/zk-list',

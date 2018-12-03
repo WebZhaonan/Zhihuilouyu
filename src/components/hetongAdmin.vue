@@ -18,7 +18,7 @@ import htList from '../components/ht-list';
 import htGd from '../components/htGd';
 
 export default {
-    name:'Ht',
+    name:'contract',
       data() {
       return {
        activeIndex: '../components/ht-list',
