@@ -1,6 +1,6 @@
 <template>
     <el-container class="lydetails">
-        <el-header>
+        <el-main>
             <div class="header-top">
                 <div class="lydetails-logo" @click="back"></div>
                 <el-menu :default-active="activeIndex01" router class="el-menu-demo nav-ul01" mode="horizontal" background-color="#e9eaeb" text-color="#4a5267">
@@ -37,13 +37,13 @@
             <div class="header-content">
                 <el-row :gutter="20" style="display:flex;align-items: center;">
                     <el-col :span="4" style="width:180px;"><img src="../assets/login.jpg" style="width:160px;"></el-col>
-                    <el-col :span="4" style="height: 120px; min-width: 300px;">
+                    <el-col :span="4" style="height: 120px; min-width: 300px;text-align: left;margin-left:10px;">
                         <p style="font-size: 32px; margin-top: 10px;">中青大厦</p>
                         <p style="color: rgb(61, 67, 85);margin-top: 20px;font-size: 14px;">
                             <span>北京市</span>,<span>市辖区</span>
                             &nbsp;&nbsp;&nbsp;&nbsp;
-                            <span class="ckxq" @click="value1 = true">查看详情</span>                              
-                            <Drawer :closable="true" v-model="value1" width="1000" class="ct">
+                            <span class="ckxq" @click="value1 = true" v-if="isif">查看详情</span>                              
+                            <Drawer :closable="true" v-model="value1" width="1000" class="ct" @on-close="aaa">
                                 <div slot="header" class="drawer-header">楼宇信息</div>
                                 <bjDialog></bjDialog>
                                 <div class="xx">
@@ -104,39 +104,42 @@
                             </Drawer>                              
                         </p>
                     </el-col>
-                    <el-col :span="16" style="min-width: 900px;">
-                        <pmMsg></pmMsg>
+                    <el-col :span="16" style="min-width: 750px;text-align: left;">
+                        <pmMsg :is="isMsg"></pmMsg>
                     </el-col>
                 </el-row>
             </div>    
             <div class="header-botton">
                 <el-menu :default-active="activeIndex02" router class="el-menu-demo List_nav" mode="horizontal">
-                    <el-menu-item v-for="(item,i) in List_nav" :key="i" :index="item.name">
+                    <el-menu-item v-for="(item,i) in List_nav" :key="i" :index="item.name" @click="qh(item.sub,i)">
                         {{ item.navItem }}
                     </el-menu-item>
                 </el-menu>
+                <lydetailsDialog v-if="islyDialog"></lydetailsDialog>
                 <router-view/>
             </div>
-        </el-header>
-        <el-main>
-            
-        </el-main>
+        </el-main>      
+        <BackTop   id="to-top-btn" :height="20"></BackTop> 
+        <!-- 返回顶部 -->
     </el-container>
 </template>
 <script>
 import Vue from 'vue'
 import { Drawer } from 'iview';
+import { BackTop } from 'iview';
 Vue.component('Drawer', Drawer);
+Vue.component('BackTop', BackTop);
 import pmMsg from '@/components/zhlyMsg/pmMsg'
 import fyMsg from '@/components/zhlyMsg/fyMsg'
 import zsMsg from '@/components/zhlyMsg/zsMsg'
 import zkMsg from '@/components/zhlyMsg/zkMsg'
 import bjDialog from '@/components/louyuAdmin/bjDialog'
+import lydetailsDialog from '@/components/lydetailsDialog/lydetailsDialog'   //楼宇详情页弹窗
 
 export default {
     name: 'lydetails',
     components:{
-        pmMsg,fyMsg,zsMsg,zkMsg,bjDialog
+        pmMsg,fyMsg,zsMsg,zkMsg,bjDialog,lydetailsDialog
     },
     data(){
         return{
@@ -147,33 +150,59 @@ export default {
             ],
             activeIndex02:'/pmmap',
             List_nav:[
-                {name:'/pmmap',navItem:'剖面图'},
-                {name:'/fymanage',navItem:'房源管理'},
-                {name:'/zsmanage',navItem:'招商管理'},
-                {name:'/zkmanage',navItem:'租客管理'},
-                {name:'/htmanage',navItem:'合同管理'},
+                {name:'/pmmap',navItem:'剖面图',sub:'pmMsg'},
+                {name:'/fymanage',navItem:'房源管理',sub:'fyMsg'},
+                {name:'/zsmanage',navItem:'招商管理',sub:'zsMsg'},
+                {name:'/zkmanage',navItem:'租客管理',sub:'zkMsg'},
+                {name:'/htmanage',navItem:'合同管理',sub:''},
             ],
             value1: false,
+            isMsg: 'pmMsg',
+            isif: true,
+            islyDialog: true
         }
     },
     methods:{
-        back(){
-            this.$router.go(-1);
+        back(){       
+            this.$router.push("/");
+        },
+        qh(sub,i){
+            this.isMsg=sub;
+            if( i!==0 ){
+                this.isif=false;
+                this.islyDialog=false;
+            }else{
+                this.isif=true;
+                this.islyDialog=true;
+            }
+        },
+        aaa(){
+
+        }
+    },
+    mounted () {
+        this.activeIndex02 = this.$route.path
+        if(this.$route.path!=='/pmmap'){
+            this.isif=false;
+            this.islyDialog=false;
+        }else{
+            this.isif=true;
+            this.islyDialog=true;
         }
     }
 }
 </script>
 <style>
-.lydetails .el-header{
+.lydetails .el-main{
     padding: 0;
     height: auto !important;
 }
-.lydetails .el-header .header-top{
+.lydetails .el-main .header-top{
     width: 100%;
     overflow: hidden;
     background-color: #e9eaeb;
 }
-.lydetails .el-header .header-top .lydetails-logo{
+.lydetails .el-main .header-top .lydetails-logo{
     width: 90px;
     height: 50px;
     background: url('../assets/logo.png') no-repeat;
@@ -181,55 +210,61 @@ export default {
     float: left; 
     cursor: pointer;
 }
-.lydetails .el-header .header-top .nav-ul01{
+.lydetails .el-main .header-top .nav-ul01{
     float: left;
     border-bottom: 0px;
 }
-.lydetails .el-header .header-top .nav-ul01 .nav_li{
+.lydetails .el-main .header-top .nav-ul01 .nav_li{
     width: 160px;
     height: 50px;
     line-height: 50px;
     text-align: center;
 }
-.lydetails .el-header .header-top .nav-ul01 .nav_li:focus, .nav_li:not(.is-disabled):hover{
+.lydetails .el-main .header-top .nav-ul01 .nav_li:focus, .nav_li:not(.is-disabled):hover{
     background-color:#f2f3f5 !important;
 }
-.lydetails .el-header .header-top .bg-purple{
+.lydetails .el-main .header-top .bg-purple{
     height: 50px;
     line-height: 50px;
 }
-.lydetails .el-header .header-top .bg-purple i{
+.lydetails .el-main .header-top .bg-purple i{
     font-size: 18px;
     font-weight:400;
     color:#000;
     cursor: pointer;
 }
-.lydetails .el-header .header-content{
+.lydetails .el-main .header-content{
     background-color: #fff;
     padding: 20px;
 }
-.lydetails .el-header .header-content .ckxq{
+.lydetails .el-main .header-content .el-row .el-col{
+    padding: 0 !important;
+}
+.lydetails .el-main .header-content .ckxq{
     cursor: pointer;
     font-size: 14px;
     color: #4494f0;
 }
-.lydetails .el-header .header-botton .el-menu.el-menu--horizontal{
+.lydetails .el-main .header-botton{
+    position: relative;
+}
+.lydetails .el-main .header-botton .el-menu.el-menu--horizontal{
     border-bottom: 1px solid #edf0f2;
 }
-.lydetails .el-header .header-botton .List_nav .is-active{
+.lydetails .el-main .header-botton .List_nav .is-active{
     border-bottom:2px solid #4494f0 !important;
     position: relative;
     color:#4494f0 !important;
 }
-.lydetails .el-header .header-botton .List_nav .el-menu-item{
+.lydetails .el-main .header-botton .List_nav .el-menu-item{
     width: auto;
     height: 50px;
     line-height: 50px;
 }
-.lydetails .el-header .header-botton .List_nav .el-menu-item:nth-child(1){
+.lydetails .el-main .header-botton .List_nav .el-menu-item:nth-child(1){
     margin-left: 20px;
 }
-.lydetails .el-header .header-botton .List_nav .el-menu-item:hover{
+.lydetails .el-main .header-botton .List_nav .el-menu-item:hover{
     border-bottom: 2px solid #4494f0 !important;
 }
 .ct .ivu-drawer-header{

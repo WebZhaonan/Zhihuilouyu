@@ -27,112 +27,24 @@
       </div>
       <zsMsg></zsMsg>  
     </div>
-    <div class="zs-table">
-      <div class="table-header">
-          <div>可招商</div>
-          <i class="el-icon-more"></i>
-      </div>
-      <el-table
-        :data="tableData"
-        style="width: 100%;border: 1px solid #e0e0e0;background-color: #fff;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;"
-        height="650"
-        :default-sort = "{prop: 'lc', order: 'descending'}">
-        <el-table-column
-          prop="name"
-          label="客户"
-          width="289">
-        <template slot-scope="scope">
-          <span style="color: #353b4b;font-size: 14px;display:block;height:16px;line-height:16px;margin-bottom: 4px;">{{ scope.row.name }}</span>
-          <span style="color: #7085a1;font-size: 12px;margin-left: 4px;display:block;height:16px;line-height:16px;">跟进人:{{ scope.row.linkman }}</span>
-        </template>
-        </el-table-column>
-        <el-table-column
-          prop="visittime"
-          label="来访时间"
-          sortable
-          width="194">
-        </el-table-column>
-        <el-table-column
-          prop="linkman"
-          label="最新备注"
-          sortable
-          width="220">
-        <template slot-scope="scope">
-          <span style="color: #353b4b;font-size: 14px;display:block;height:16px;line-height:16px;margin-bottom: 4px;">{{ scope.row.linkman }}<i style="color:red;">●</i>{{ scope.row.createtime }}</span>
-          <span style="color: #7085a1;font-size: 12px;margin-left: 4px;display:block;height:16px;line-height:16px;">{{scope.row.i_name}}</span>
-        </template>
-        </el-table-column>
-        <el-table-column
-          prop="s_name"
-          label="客户状态"
-          sortable
-          width="194">
-          <template slot-scope="scope">
-            <span>{{scope.row.s_name}}</span><i class="el-icon-arrow-down" style="margin-left: 8px;"></i>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="c_name"
-          label="渠道"
-          width="194">
-        </el-table-column>
-        <el-table-column
-          prop="xqmjd"
-          label="需求面积段"
-          width="195">
-        </el-table-column>
-        <el-table-column
-          prop="xqgwd"
-          label="需求工位段"
-          sortable
-          width="195">
-        </el-table-column>
-        <el-table-column
-          prop="i_name"
-          label="行业"
-          width="194">
-        </el-table-column>
-        <el-table-column
-          prop="createtime"
-          label="预计签约时间"
-          width="194">
-        </el-table-column>
-        <el-table-column
-          prop="linkman"
-          label="跟进人"
-          width="195">
-        </el-table-column>
-      </el-table>
-    </div>
+    <zsOnetable></zsOnetable>
   </div>
   
 </template>
 
 <script>
 import zsMsg from '@/components/zhlyMsg/zsMsg'
-import { CustomerList } from '@/axios/api' // 客户列表 
+import zsOnetable from '@/components/zhaoshangAdmin/zsOnetable'
+
 export default {
   name: 'zsOne',
   components:{
-    zsMsg
+    zsMsg,zsOnetable
   },
   data () {
     return {
-      value6: '',
-      tableData: [
-      ]     
+      value6: ''
     }
-  },
-  mounted(){
-              let that = this
-            // 获取客户列表
-             CustomerList({                    
-                id: this.$store.state.user.id,                              
-            }).then(res => {
-                if(res.flag == 0){  
-                     that.tableData=res.data; 
-                } 
-            }) 
   },
   methods: {
     

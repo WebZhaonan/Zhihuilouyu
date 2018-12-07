@@ -8,20 +8,17 @@ import Home from '@/views/Home'  //首页
 import NotFoud from '@/views/404' //404
 import Jh from '@/views/Jihe'  // 集合
 import Gz from '@/views/Gongzuo' //工作
-import louyuAdmin from '@/components/louyuAdmin'   //楼宇
+import louyuAdmin from '@/components/louyuAdmin'
 import fangyuanAdmin from '@/components/fangyuanAdmin' //房源
-import fy01 from '@/components/fangyuanAdmin/fy01' 
-import fy02 from '@/components/fangyuanAdmin/fy02'
-import fy03 from '@/components/fangyuanAdmin/fy03'
-import Attract  from '@/components/zhaoshangAdmin'  //招商
-import Tenant from '@/components/zukeAdmin'  //租客
-import contract from '@/components/hetongAdmin'//合同
-import User from '@/components/profile/main' //个人中心
-import Internal from '@/components/profile/Internal' //内部管理
-import accountSetting from '@/components/profile/accountSetting' //账户设置
-import fyTag from '@/components/profile/fyTag' 
+import Zs from '@/components/zhaoshangAdmin'
+import Zk from '@/components/zukeAdmin'
+import Ht from '@/components/hetongAdmin'
+import User from '@/components/profile/main'
+import Internal from '@/components/profile/Internal'
+import accountSetting from '@/components/profile/accountSetting'
+import fyTag from '@/components/profile/fyTag'
 import htTag from '@/components/profile/htTag'
-import contractTemplate from '@/components/profile/contractTemplate' //合同
+import contractTemplate from '@/components/profile/contractTemplate'
 import Termination from '@/components/profile/Termination'
 import CostTypeTable from '@/components/profile/CostTypeTable'
 import tenantTag from '@/components/profile/tenantTag'
@@ -69,39 +66,21 @@ const routes  =  [
           path:'/fangyuanAdmin',   //房源管理
           name:'fangyuanAdmin',
           component:fangyuanAdmin,
-          redirect: '/fy01' ,
-          children:[
-              {
-                path: '/fy01',
-                name: 'fy01',
-                component: fy01
-              },
-              {
-                path: '/fy02',
-                name: 'fy02',
-                component: fy02
-              },
-              {
-                path: '/fy03',
-                name: 'fy03',
-                component: fy03
-              }
-            ]
           },
           {
-            path:'/Attract',
-            name:'Attract ',
-            component:Attract 
+            path:'/Zs',
+            name:'Zs ',
+            component:Zs 
           },
           {
-            path:'/Tenant',
-            name:'Tenant',
-            component:Tenant
+            path:'/Zk',
+            name:'Zk',
+            component:Zk
           },
           {
-            path:'/contract',
-            name:'contract',
-            component:contract
+            path:'/Ht',
+            name:'Ht',
+            component:Ht
           }
         ]
       },

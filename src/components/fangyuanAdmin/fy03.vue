@@ -1,7 +1,7 @@
 <template>
     <div class="fy-table">
       <div class="table-header">
-          <div>已租房源</div>
+          <div>所有房源</div>
           <i class="el-icon-more"></i>
       </div>
       <el-table

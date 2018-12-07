@@ -18,59 +18,18 @@
       </ul>
     </div>  
   </div>
-  <div class="zs-table">
-    <div class="table-header">
-        <div>可招商</div>
-        <i class="el-icon-more"></i>
-    </div>
-    <el-table
-      :data="tableData"
-      style="width: 100%;border: 1px solid #e0e0e0;background-color: #fff;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;"
-      height="650"
-      :default-sort = "{prop: 'lc', order: 'descending'}">
-      <el-table-column
-        prop="name"
-        label="联系人"
-        width="262">
-      </el-table-column>
-      <el-table-column
-        prop="lxfs"
-        label="联系方式"
-        sortable
-        width="291">
-      </el-table-column>
-      <el-table-column
-        prop="sq"
-        label="商圈"
-        sortable
-        width="262">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="渠道类型"
-        sortable
-        width="262">
-      </el-table-column>
-      <el-table-column
-        prop=""
-        label="带看量"
-        width="262">
-      </el-table-column>
-      <el-table-column
-        prop="createtime"
-        label="最新带看时间"
-        sortable
-        width="264">
-      </el-table-column>
-    </el-table>
-  </div>
+  <zsTwotable></zsTwotable>
 </div>
 </template>
 
 <script>
-import { channel } from '@/axios/api' //客户来访渠道列表
+import zsTwotable from '@/components/zhaoshangAdmin/zsTwotable'
+
 export default {
   name: 'zsTwo',
+  components:{
+    zsTwotable
+  },
   data () {
     return {
       value6: '',
@@ -83,20 +42,7 @@ export default {
         {name:"第三方个人",sl:"0"},
         {name:"同行介绍",sl:"0"}
       ],  
-      tableData: []   
     }
-  },
-  mounted(){
-       let that = this
-            // 获取客户列表
-             channel({                    
-                id: this.$store.state.user.id,                              
-            }).then(res => {
-              console.log(JSON.stringify(res))
-                if(res.flag == 0){  
-                     that.tableData=res.data; 
-                } 
-            }) 
   },
   methods: {
     

@@ -19,10 +19,7 @@
 
 <script>
 export default {
-  name:'Zkdetail',
-  // data(){
-      
-  // }
+  name:'Zkdetail'
 }
 </script>
 
