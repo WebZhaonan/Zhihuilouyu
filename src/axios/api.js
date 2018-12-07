@@ -17,4 +17,7 @@ export const editSet = params => post ('/builadmin/buildgather/edit',params) //�
 export const CustomerList = params => get ('/builadmin/client/list',params) //客户列表
 export const channel = params => get ('/builadmin/channels/list',params) //客户来访渠道列表
 export const zkList = params => post ('/builadmin/customer/index?a=getlist',params) //租客列表
-
+export const province = params => get ('/builadmin/buil/city?type=province',params) //获取省
+export const city = params => get ('/builadmin/buil/city?type=city',params) //获取市
+export const area = params => get ('/builadmin/buil/city?type=area',params) //获取区县
+export const creatLy = params => post ('/builadmin/buil/index',params) //创建楼宇

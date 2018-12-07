@@ -54,6 +54,7 @@
  </div>
 </template>
 <script>
+import { Islogin } from "@/axios/api"  //验证登录
 export default {
   name: "UserIndex",
   data() {
@@ -92,10 +93,26 @@ export default {
          
         this.active =  this.$route.path
     },
-    // mounted () {
-            
-    //         //  this.index =  this.$route.path
-    //     },
+    mounted () {
+            // 验证是否登录
+            let userInfo = JSON.parse(sessionStorage.getItem('user'));
+               let that=this;
+        that.username = userInfo.tel
+          Islogin({                    
+                id: userInfo.id,                              
+            }).then(res => {
+                if(res.flag != 0){        
+                     that.$message({
+                      message: '身份验证失败',
+                      type: "error",
+                      duration: 1000
+                    });
+                    that.$store.commit('REMOVE_COUNT',userInfo);
+                 setTimeout(() => { that.$router.replace("/logins")}, 1000)
+                }
+            }) 
+            //  this.index =  this.$route.path
+        },
   methods: {
       handleopen() {
 				console.log('handleopen');

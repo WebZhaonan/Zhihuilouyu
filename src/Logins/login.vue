@@ -6,7 +6,7 @@
         </el-form-item>
         <el-form-item prop="userpass">
             <i class="fa fa-unlock-alt" aria-hidden="true"></i>
-            <el-input type="password" v-model="ruleForm2.userpass" autocomplete="off" placeholder="密码"></el-input>
+            <el-input type="password" v-model="ruleForm2.userpass" autocomplete="off" placeholder="密码" @keyup.enter.native="login"></el-input>
         </el-form-item>
         <el-form-item style="width:100%;padding-top: 20px;">
             <el-button type="primary" style="width:100%;" @click="login">登录</el-button>

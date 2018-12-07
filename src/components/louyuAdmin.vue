@@ -111,23 +111,37 @@ export default {
             tagName:'楼宇列表',
         }
     },
-    mounted () {
-        let userInfo = JSON.parse(sessionStorage.getItem('user'));
+        computed: {
+            Itime () {
+                return this.$store.state.items  
+            }
+        },
+        created(){
+              let userInfo = JSON.parse(sessionStorage.getItem('user'));
         let that=this;
          // 获取楼宇列表
              getList({                    
                 id: userInfo.id,                              
             }).then(res => {
                 if(res.flag == 0){  
-                     that.items=res.data; 
+                that.items = res.data
                 } 
             }) 
+        },
+    mounted () {
+        let that=this;
+        that.sayNode()
             // that.tagName = that.$route.params.num
     },
     methods:{
         skip(){
         let that =this;
             this.$router.push("/lydetails");
+        },
+        sayNode() {
+            this.$store.state.items = []
+            this.items = this.$store.state.items
+            // console.log(JSON.stringify(this.$store.state.items))
         }
     }
 }

@@ -4,25 +4,27 @@
             <div class="form-public form-01">
                 <el-form-item label="楼宇类型">
                     <el-select v-model="form.region" placeholder="请选择楼宇类型">
-                    <el-option label="写字楼" value="xiezilou"></el-option>
-                    <el-option label="联合办公" value="lianhebangong"></el-option>
+                    <el-option :label="itemType.name" :value="itemType.id" v-for="(itemType, index) in itemAgg" :key="index"></el-option>
                     </el-select>
                 </el-form-item>
             </div>
             <div class="form-public form-02">
                 <el-form-item label="省份">
-                    <el-select v-model="form.shengfen" placeholder="选择省份">
-                    <el-option label="" value=""></el-option>
+                    <el-select v-model="form.shengfen"  clearable placeholder="选择省份" >
+                    <el-option :label="item.name" :value="item.adcode" v-for="(item, index) in province" :key="index" @click.native="provinceAd(item.adcode)">
+                         <span style="float: left">{{ item.name }}</span>
+                         <span style="float: right; color: #8492a6; font-size: 13px">{{ item.pinyin }}</span>
+                    </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="城市">
-                    <el-select v-model="form.chengshi" placeholder="选择城市">
-                    <el-option label="" value=""></el-option>
+                    <el-select v-model="form.chengshi"  clearable placeholder="选择城市">
+                    <el-option :label="cityItem.name" :value="cityItem.name" v-for="(cityItem, index) in city" :key="index" @click.native="cityAd(cityItem.adcode)"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="区域">
-                    <el-select v-model="form.quyu" placeholder="选择区域">
-                    <el-option label="" value=""></el-option>
+                    <el-select v-model="form.quyu"  clearable placeholder="选择区域">
+                    <el-option :label="areaItem.name" :value="areaItem.name" v-for="(areaItem, index) in area" :key="index"></el-option>
                     </el-select>
                 </el-form-item>
             </div>
@@ -148,6 +150,11 @@
 </template>
 
 <script>
+import {province} from '@/axios/api' //获取省份
+import {city} from '@/axios/api' // 获取市
+import {area} from '@/axios/api' // 获取区县
+import { creatLy } from '@/axios/api'  //创建楼宇
+import { itemAgg } from '@/axios/api' //获取楼宇类型
 export default {
     name: 'Dialog01',
     data(){
@@ -176,8 +183,30 @@ export default {
             },
             htbh: false,
             imageUrl: '',
-            show: false
+            show: false,
+            value: '',
+            province:[],
+            city: [],
+            area: [],
+            itemAgg:[]
         }
+    },
+    mounted () {
+        let that = this;
+          // 获取省
+             province({                                             
+            }).then(res => {
+                if(res.flag == 0){  
+                     that.province=res.data;
+                } 
+            }) 
+            // 获取楼宇类型
+              itemAgg({                                                
+            }).then(res => {
+                if(res.flag == 0){
+                   that.itemAgg=res.data;
+                } 
+            })
     },
     methods: {
         handleAvatarSuccess(res, file) {
@@ -197,6 +226,24 @@ export default {
         },
         msgShow(){
           this.show= !this.show;
+        },
+        provinceAd(adcode){
+              city({                    
+                 adcode:adcode                            
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.city = res.data
+                } 
+            }) 
+        },
+        cityAd(adcode){
+            area({                    
+                 adcode:adcode                            
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.area = res.data
+                } 
+            })  
         }
     }
 }

@@ -117,7 +117,7 @@
  <el-container style="max-height:1000px;border: 1px solid #eee;border-top:0px" :class="collapsed?'closeMainBox':'mainBox'">
  <!--中间渲染部分-->
     <el-main>
-     <router-view>
+     <router-view ref="children">
     </router-view>
     </el-main>
   </el-container>
@@ -240,15 +240,17 @@ export default {
     },
         // 楼宇集合添加class 
          addClass:function(index1,seIid){
+        this.current = index1  //集合加calss
+        this.$refs.children.say();
         this.items.map(item=> Vue.set(item,'label',false));   //每次点击先清除class
-          this.current = index1  //集合加calss
              this.items.map((item, k,arr) => {   //循环集合列表。
                     let itemId = arr[k].id
                    var arrIDe = this.checkList[index1].map((arr1, i) => {  
                     let arrId = arr1;                   
                 if(arr[k].id){
                   if(itemId==arrId){  
-                    console.log(JSON.stringify(arr[k]))
+                  //  console.log(JSON.stringify(arr[k]))
+                   this.$store.commit('ADD_ITEMS',arr[k]);
                    Vue.set(arr[k],'label',true); 
                   }
                   }

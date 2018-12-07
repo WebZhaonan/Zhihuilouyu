@@ -8,7 +8,7 @@
 </el-menu>
 <!-- <div class="line"></div> -->
     <div class="main-box">
-        <router-view>
+        <router-view ref="childrenNode">
     </router-view>
     </div>
   </div>
@@ -16,6 +16,12 @@
 <script>
 export default {
     name:'Jh',
+     //父组件通过props属性传递进来的数据
+     computed:{
+        items (){
+            return this.$store.state.items
+        }
+     },
         data() {
       return {
         activeIndex:'/louyuAdmin',
@@ -26,19 +32,21 @@ export default {
             {name:'/Tenant',navItem:'租客管理'},
             {name:'/contract',navItem:'合同管理'},
         ],
-        
       };
     },
          mounted () {
              this.activeIndex = this.$route.path;
             },
-    methods: {
+            methods: {
+        
       handleSelect(key, keyPath) {
-        console.log(key, keyPath);
       },
        selectNav (name) {
         this.activeIndex = name;
       },
+        say(){
+           this.$refs.childrenNode.sayNode();
+          }
     }
 }
 </script>
