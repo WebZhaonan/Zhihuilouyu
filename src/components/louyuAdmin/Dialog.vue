@@ -1,7 +1,7 @@
 <template>
     <div>
      <el-button class="ly-button" icon="el-icon-plus" @click="dialogFormVisible = true">楼宇</el-button>
-        <el-dialog title="编辑楼宇" :visible.sync="dialogFormVisible" class="ly-dialog" width="700px" top="100px" center @close="gb">               
+        <el-dialog title="新建楼宇" :visible.sync="dialogFormVisible" class="ly-dialog" width="700px" top="100px" center @close="gb">               
             <el-menu class="el-menu-demo" mode="horizontal">
                 <el-menu-item v-for="(item,i) in lyformmsg" :key="i" :index="item.sub" :class="{itemtab:i === selectIndex}">{{item.msg}}</el-menu-item>
             </el-menu>
@@ -10,9 +10,9 @@
                     <Dialog01 v-for="(item,index) in lyformmsg" :key="index" :is="item.sub" v-show="index===selectIndex"></Dialog01>
                 </div>
             </div>
-            <div slot="footer" class="dialog-footer">
+            <!-- <div slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="clickLeft">{{footermsg}}</el-button>
-            </div>                  
+            </div>                   -->
         </el-dialog>
     </div>
 </template>
@@ -32,7 +32,6 @@ export default {
         return{
             dialogFormVisible: false,
             selectIndex:0,
-            footermsg: '保存&下一步',
             isRouterAlive:false,
             i:0,
             index: 0,
@@ -57,21 +56,21 @@ export default {
         }
     },
     methods:{
-        clickLeft:function(){
-            if(this.selectIndex>2){ 
-                this.dialogFormVisible = false;                
-                this.footermsg= '保存&下一步';       
-                return
-              }
-            else if(this.selectIndex==2){
-                this.footermsg='保存'
-                this.selectIndex++; 
-                return
-            }
-            else{ 
-                this.selectIndex++;             
-            }          
-        },
+    //     clickLeft:function(){
+    //         if(this.selectIndex>2){ 
+    //             this.dialogFormVisible = false;                
+    //             this.footermsg= '保存&下一步';       
+    //             return
+    //           }
+    //         else if(this.selectIndex==2){
+    //             this.footermsg='保存'
+    //             this.selectIndex++; 
+    //             return
+    //         }
+    //         else{ 
+    //             this.selectIndex++;             
+    //         }          
+    //     },
         gb(){
             this.selectIndex = 0; 
         }

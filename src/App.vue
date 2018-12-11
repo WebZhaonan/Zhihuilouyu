@@ -81,4 +81,7 @@ ul li{
 .active___1cDXI .el-collapse-item__header{
   background-color: #5d647b !important;
 }
+.LyruleForm .el-form-item__label{
+justify-content:end !important;
+}
 </style>

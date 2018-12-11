@@ -10,45 +10,41 @@
         height="650"
        >
         <el-table-column
-          type="selection"
-          width="62">
-        </el-table-column>
-        <el-table-column
           prop="name"
           label="客户"
           width="289">
         <template slot-scope="scope">
           <span style="color: #353b4b;font-size: 14px;display:block;height:16px;line-height:16px;margin-bottom: 4px;">{{ scope.row.name }}</span>
-          <span style="color: #7085a1;font-size: 12px;margin-left: 4px;display:block;height:16px;line-height:16px;">跟进人:{{ scope.row.gjr }}</span>
+          <span style="color: #7085a1;font-size: 12px;margin-left: 4px;display:block;height:16px;line-height:16px;">跟进人:{{ scope.row.linkman }}</span>
         </template>
         </el-table-column>
         <el-table-column
-          prop="lfsj"
+          prop="visittime"
           label="来访时间"
           sortable
           width="194">
         </el-table-column>
         <el-table-column
-          prop="zxbz"
+          prop="linkman"
           label="最新备注"
           sortable
-          width="194">
+          width="250">
         <template slot-scope="scope">
-          <span style="color: #353b4b;font-size: 14px;display:block;height:16px;line-height:16px;margin-bottom: 4px;">{{ scope.row.gjr }}<i style="color:red;">●</i>{{ scope.row.lfsj }}</span>
-          <span style="color: #7085a1;font-size: 12px;margin-left: 4px;display:block;height:16px;line-height:16px;">{{scope.row.zxbz}}</span>
+          <span style="color: #353b4b;font-size: 14px;display:block;height:16px;line-height:16px;margin-bottom: 4px;">{{ scope.row.linkman }}<i style="color:red;">●</i><small>{{ scope.row.createtime }}</small></span>
+          <span style="color: #7085a1;font-size: 12px;margin-left: 4px;display:block;height:16px;line-height:16px;">{{scope.row.i_name}}</span>
         </template>
         </el-table-column>
         <el-table-column
-          prop="khzt"
+          prop="s_name"
           label="客户状态"
           sortable
           width="194">
           <template slot-scope="scope">
-            <span>{{scope.row.khzt}}</span><i class="el-icon-arrow-down" style="margin-left: 8px;"></i>
+            <span>{{scope.row.s_name}}</span><i class="el-icon-arrow-down" style="margin-left: 8px;"></i>
           </template>
         </el-table-column>
         <el-table-column
-          prop="qd"
+          prop="c_name"
           label="渠道"
           width="194">
         </el-table-column>
@@ -64,17 +60,17 @@
           width="195">
         </el-table-column>
         <el-table-column
-          prop="hy"
+          prop="i_name"
           label="行业"
           width="194">
         </el-table-column>
         <el-table-column
-          prop="yjqysj"
+          prop="createtime"
           label="预计签约时间"
           width="194">
         </el-table-column>
         <el-table-column
-          prop="gjr"
+          prop="linkman"
           label="跟进人"
           width="195">
         </el-table-column>
@@ -82,57 +78,26 @@
     </div>
 </template>
 <script>
+import { CustomerList } from '@/axios/api'  // 编辑楼宇集合
 export default {
     name: 'zsOnetable',
     data(){
         return{
-            tableData: [{
-                name: '西安希网',
-                lfsj: '2018/10/30',
-                zxbz: '跟进',
-                khzt: '潜在客户',
-                qd: '电话',
-                xqmjd: '300-350㎡',
-                xqgwd: '',
-                hy: '网络科技',
-                yjqysj: '2017-11-30',
-                gjr: '111111'
-                }, {
-                name: '天涯海角',
-                lfsj: '2018/06/30',
-                zxbz: '第二次来',
-                khzt: '意向客户',
-                qd: '上门',
-                xqmjd: '300-500㎡',
-                xqgwd: '',
-                hy: '教育',
-                yjqysj: '2017-12-30',
-                gjr: '111111'
-                }, {
-                name: '西安希网',
-                lfsj: '2018/10/30',
-                zxbz: '跟进',
-                khzt: '潜在客户',
-                qd: '电话',
-                xqmjd: '300-350㎡',
-                xqgwd: '',
-                hy: '网络科技',
-                yjqysj: '2017-11-30',
-                gjr: '111111'
-                }, {
-                name: '西安希网',
-                lfsj: '2018/10/30',
-                zxbz: '跟进',
-                khzt: '潜在客户',
-                qd: '电话',
-                xqmjd: '300-350㎡',
-                xqgwd: '',
-                hy: '网络科技',
-                yjqysj: '2017-11-30',
-                gjr: '111111'
-                }
+            tableData: [
             ]     
         }
+    },
+    created(){
+         // 获取楼宇集合列表
+         let that = this;
+         let userInfo = JSON.parse(sessionStorage.getItem('user'));
+             CustomerList({   
+              //  id:userInfo.id                                             
+            }).then(res => {
+                if(res.flag == 0){
+                   that.tableData=res.data;
+                } 
+            })
     }
 }
 </script>

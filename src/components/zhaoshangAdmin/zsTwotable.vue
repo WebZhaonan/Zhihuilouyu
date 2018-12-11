@@ -4,70 +4,69 @@
             <div>可招商</div>
             <i class="el-icon-more"></i>
         </div>
-        <el-table
-            :data="tableData"
-            style="width: 100%;border: 1px solid #e0e0e0;background-color: #fff;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;"
-            height="650"
-            :default-sort = "{prop: 'lc', order: 'descending'}">
-            <el-table-column
-            prop="name"
-            label="联系人"
-            width="262">
-            </el-table-column>
-            <el-table-column
-            prop="lxfs"
-            label="联系方式"
-            sortable
-            width="291">
-            </el-table-column>
-            <el-table-column
-            prop="sq"
-            label="商圈"
-            sortable
-            width="262">
-            </el-table-column>
-            <el-table-column
-            prop="qdlx"
-            label="渠道类型"
-            sortable
-            width="262">
-            </el-table-column>
-            <el-table-column
-            prop=""
-            label="带看量"
-            width="262">
-            </el-table-column>
-            <el-table-column
-            prop="zxdksj"
-            label="最新带看时间"
-            sortable
-            width="264">
-            </el-table-column>
-        </el-table>
+  <el-table
+      :data="tableData"
+      style="width: 100%;border: 1px solid #e0e0e0;background-color: #fff;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;"
+      height="650"
+      :default-sort = "{prop: 'lc', order: 'descending'}">
+      <el-table-column
+        prop="name"
+        label="联系人"
+        width="262">
+      </el-table-column>
+      <el-table-column
+        prop="lxfs"
+        label="联系方式"
+        sortable
+        width="291">
+      </el-table-column>
+      <el-table-column
+        prop="sq"
+        label="商圈"
+        sortable
+        width="262">
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="渠道类型"
+        sortable
+        width="262">
+      </el-table-column>
+      <el-table-column
+        prop=""
+        label="带看量"
+        width="262">
+      </el-table-column>
+      <el-table-column
+        prop="createtime"
+        label="最新带看时间"
+        sortable
+        width="264">
+      </el-table-column>
+    </el-table>
     </div>
 </template>
 <script>
+import { channel } from '@/axios/api' //客户来访渠道列表
 export default {
     name: 'zsTwotable',
     data(){
         return{
-            tableData: [{
-                name: '小凡',
-                lxfs: '18591770409',
-                sq: '长河商圈',
-                qdlx: '',
-                dkl: '0',
-                zxdksj: '2017-11-30'
-                }, {
-                name: '马佳',
-                lxfs: '15829088129',
-                sq: '彩虹城商圈',
-                qdlx: '自由经纪人',
-                dkl: '1',
-                zxdksj: '2017-01-30'
-                }
+            tableData: [
             ]   
         }   
+    },
+    created(){
+            let that = this
+            // 获取客户列表
+             channel({                    
+                id: this.$store.state.user.id,                              
+            }).then(res => {
+              console.log(JSON.stringify(res))
+                if(res.flag == 0){  
+                     that.tableData=res.data; 
+                } 
+            }) 
     }
 }
 </script>

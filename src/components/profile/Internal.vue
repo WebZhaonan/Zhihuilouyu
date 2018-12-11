@@ -115,7 +115,7 @@ export default {
 .searchTit .el-menu-item.is-active{
      color: #409EFF !important
  }
- .searchTit .el-input__inner {
+ .searchTit .searchIpt .el-input__inner {
   border: none;
 }
 .searchTit .el-input__icon {

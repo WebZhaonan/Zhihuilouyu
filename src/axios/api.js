@@ -21,3 +21,4 @@ export const province = params => get ('/builadmin/buil/city?type=province',para
 export const city = params => get ('/builadmin/buil/city?type=city',params) //获取市
 export const area = params => get ('/builadmin/buil/city?type=area',params) //获取区县
 export const creatLy = params => post ('/builadmin/buil/index',params) //创建楼宇
+export const buildType = params => get ('/builadmin/buildtype/list',params)

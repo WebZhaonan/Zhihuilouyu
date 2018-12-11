@@ -12,7 +12,7 @@
             </div>
             <div class="ly-content">
                 <lyMsg></lyMsg>
-                <sjpzdialog></sjpzdialog>           
+                <!-- <sjpzdialog></sjpzdialog>            -->
             </div>          
         </div>
         <div class="Box-bottom">
