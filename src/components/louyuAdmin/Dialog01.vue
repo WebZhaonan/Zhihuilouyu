@@ -1,4 +1,5 @@
 <template>
+  <div>
     <el-form :model="ruleForm" ref="ruleForm" :rules="rules" class="LyruleForm">               
         <div class="form-top">
             <div class="form-public form-01">
@@ -145,11 +146,15 @@
                     </div>                   
                 </div>
             </transition> 
-               <div slot="footer" class="dialog-footer" @click="commitUp('ruleForm')">
+                <!-- <div slot="footer" class="dialog-footer">
                 <el-button type="primary">{{footermsg}}</el-button>
-            </div>  
-        </div>
+            </div>   -->
+         </div>
     </el-form>
+         <div class="xyb">
+            <el-button type="primary"  @click="commitUp('ruleForm')">保存&下一步</el-button>
+        </div>  
+      </div>
 </template>
 
 <script>
@@ -203,7 +208,8 @@ export default {
             province:[],
             city: [],
             area: [],
-            itemAgg:[]
+            itemAgg:[],
+            selectIndex: 1
         }
     },
     mounted () {
@@ -272,6 +278,7 @@ export default {
         },
         // 创建楼宇详细信息
         commitUp(formName){
+        this.$emit("fsval",this.selectIndex); 
           this.$refs[formName].validate((valid) => {
           if (valid) {
         creatLy({   
@@ -298,9 +305,11 @@ export default {
             more_bank_number:this.ruleForm.khxmc,
             more_notice_address:this.ruleForm.tzdz                      
             }).then(res => {
-                console.log(JSON.stringify(res))
                 if(res.flag == 0){  
-                } 
+                this.$store.commit('ADD_BID',res.data);
+                }else{
+                    this.$message.error(res.data.msg); 
+                }
             }) 
           }
         });

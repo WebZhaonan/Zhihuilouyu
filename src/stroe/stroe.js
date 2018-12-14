@@ -26,6 +26,7 @@ Vue.use(Vuex);
 const ADD_COUNT = 'ADD_COUNT';  //用常量代替事件类型。使代码更清晰。 //登录
 const REMOVE_COUNT = 'REMOVE_COUNT';  //退出登录
 const ADD_ITEMS = 'ADD_ITEMS'   //点击集合取得选中列表
+const ADD_BID = 'ADD_BID'  //创建楼宇保存返回来的楼宇id
 // 注册状态管理全局参数
 export default new Vuex.Store({
   state:{
@@ -34,7 +35,8 @@ export default new Vuex.Store({
       pw:'',
       id:''
     },
-    items:[]
+    items:[],
+    Bid:''
   },
   mutations: {
     //写法与getters相类似
@@ -52,6 +54,11 @@ export default new Vuex.Store({
     [ADD_ITEMS] (state ,items) {
       // state.items items
       state.items.push(items)
+    },
+    [ADD_BID]  (state ,bid) {
+      sessionStorage.setItem('bid',JSON.stringify(bid));
+      state.bid = bid
     }
+    
   }
 })

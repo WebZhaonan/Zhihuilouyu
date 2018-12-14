@@ -1,18 +1,13 @@
 <template>
     <div>
-     <el-button class="ly-button" icon="el-icon-plus" @click="dialogFormVisible = true">楼宇</el-button>
-        <el-dialog title="新建楼宇" :visible.sync="dialogFormVisible" class="ly-dialog" width="700px" top="100px" center @close="gb">               
+        <el-button class="ly-button" icon="el-icon-plus" @click="dialogFormVisible = true">楼宇</el-button>
+        <el-dialog title="编辑楼宇" :visible.sync="dialogFormVisible" class="ly-dialog" width="700px" top="100px" center @close="gb">               
             <el-menu class="el-menu-demo" mode="horizontal">
-                <el-menu-item v-for="(item,i) in lyformmsg" :key="i" :index="item.sub" :class="{itemtab:i === selectIndex}">{{item.msg}}</el-menu-item>
+                <el-menu-item v-for="(item,index) in lyformmsg" :key="index" :index="item.sub" :class="{itemtab:index === selectIndex}">{{item.msg}}</el-menu-item>
             </el-menu>
-            <div class="menu-content">
-                <div class="menu-ul">
-                    <Dialog01 v-for="(item,index) in lyformmsg" :key="index" :is="item.sub" v-show="index===selectIndex"></Dialog01>
-                </div>
+            <div class="menu-ul">
+                <Dialog01 v-for="(item,index) in lyformmsg" :key="index" :is="item.sub" v-show="index===selectIndex" v-on:fsval="fsval"></Dialog01>
             </div>
-            <!-- <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="clickLeft">{{footermsg}}</el-button>
-            </div>                   -->
         </el-dialog>
     </div>
 </template>
@@ -22,6 +17,7 @@ import Dialog01 from '@/components/louyuAdmin/Dialog01'
 import Dialog02 from '@/components/louyuAdmin/Dialog02'
 import Dialog03 from '@/components/louyuAdmin/Dialog03'
 import Dialog04 from '@/components/louyuAdmin/Dialog04'
+
 
 export default {
     name: 'Dialog',
@@ -33,44 +29,34 @@ export default {
             dialogFormVisible: false,
             selectIndex:0,
             isRouterAlive:false,
-            i:0,
             index: 0,
             lyformmsg:[
                 {
                     msg: '详细信息',
-                    sub: 'Dialog01'
+                    sub: 'Dialog01',                   
                 },
                 {
                     msg: '创建楼层',
-                    sub: 'Dialog02'
+                    sub: 'Dialog02',                  
                 },
                 {
                     msg: '默认设置',
-                    sub: 'Dialog03'
+                    sub: 'Dialog03',                  
                 },
                 {
                     msg: '收入目标',
-                    sub: 'Dialog04'
+                    sub: 'Dialog04',
                 }
             ]
         }
     },
     methods:{
-    //     clickLeft:function(){
-    //         if(this.selectIndex>2){ 
-    //             this.dialogFormVisible = false;                
-    //             this.footermsg= '保存&下一步';       
-    //             return
-    //           }
-    //         else if(this.selectIndex==2){
-    //             this.footermsg='保存'
-    //             this.selectIndex++; 
-    //             return
-    //         }
-    //         else{ 
-    //             this.selectIndex++;             
-    //         }          
-    //     },
+        fsval(selectIndex,dialogFormVisible){
+            this.selectIndex=selectIndex;
+            if(this.selectIndex==4){
+                this.dialogFormVisible=false;
+            }
+        },
         gb(){
             this.selectIndex = 0; 
         }
@@ -115,16 +101,10 @@ export default {
     color: #303133;
     cursor: pointer;
 }
-.ly-dialog .el-dialog__body .menu-content{
+.ly-dialog .el-dialog__body .menu-ul .el-form{
     padding: 20px;
-    overflow: hidden;
 }
-.ly-dialog .el-dialog__body .menu-content .menu-ul{
-    width: 100%;
-    overflow: hidden;
-    float: left;
-}
-.ly-dialog .el-dialog__body .menu-content .menu-ul .el-form .form-top{
+.ly-dialog .el-dialog__body .menu-ul .el-form .form-top{
     width: 100%;
     background-color: #fff;
     border: 1px solid #e0e0e0;
@@ -132,14 +112,14 @@ export default {
     padding: 20px;
     box-sizing: border-box;
 }
-.ly-dialog .el-dialog__body .menu-content .menu-ul .el-form .form-public{
+.ly-dialog .el-dialog__body .menu-ul .el-form .form-public{
     display: flex;
     justify-content: space-between;
 }
 .form-01 .el-form-item{
     width: 100%;
 }
-.ly-dialog .el-dialog__body .menu-content .menu-ul .el-form label{
+.ly-dialog .el-dialog__body .menu-ul .el-form label{
     width: 100%;
     min-height: 22px;
     font-size: 12px;
@@ -149,38 +129,38 @@ export default {
     justify-content: space-between;
     text-align: left !important;
 }
-.ly-dialog .el-dialog__body .menu-content .menu-ul .el-form .el-form-item__content{
+.ly-dialog .el-dialog__body .menu-ul .el-form .el-form-item__content{
     line-height: 30px;
 }
-.ly-dialog .el-dialog__body .menu-content .menu-ul .el-form .el-form-item__content .form-03-span{
+.ly-dialog .el-dialog__body .menu-ul .el-form .el-form-item__content .form-03-span{
     position: absolute;
     right: 10px;
     top: 22px;
     color: #353b4b;
     font-size: 14px;
 }
-.ly-dialog .el-dialog__body .menu-content .menu-ul .el-form .el-select{
+.ly-dialog .el-dialog__body .menu-ul .el-form .el-select{
     width: 100%;
 }
-.ly-dialog .el-dialog__body .menu-content .menu-ul .el-form input{
+.ly-dialog .el-dialog__body .menu-ul .el-form input{
     height: 30px;
     line-height: 30px;
     display: block;
     font-size: 12px;
     padding: 0 8px;
 }
-.ly-dialog .el-dialog__body .menu-content .menu-ul .el-form .el-input__icon{
+.ly-dialog .el-dialog__body .menu-ul .el-form .el-input__icon{
     line-height: 30px;
     font-size: 12px;
     width: 18px;
 }
-.ly-dialog .el-dialog__body .menu-content .menu-ul .el-form .el-input__inner:hover{
+.ly-dialog .el-dialog__body .menu-ul .el-form .el-input__inner:hover{
     border-color: #49a9ee;
 }
-.ly-dialog .el-dialog__body .menu-content .menu-ul  .el-form .el-input__inner[disabled]:hover{
+.ly-dialog .el-dialog__body .menu-ul  .el-form .el-input__inner[disabled]:hover{
     border-color: #e2e2e2;
 }
-.ly-dialog .el-dialog__body .menu-content .menu-ul  .el-form .el-input__inner:focus{
+.ly-dialog .el-dialog__body .menu-ul  .el-form .el-input__inner:focus{
     box-shadow: 0 0 0 2px rgba(16,142,233,.2);
 }
 .el-popper[x-placement^=bottom]{
@@ -383,14 +363,14 @@ export default {
     cursor: pointer;
     z-index: 999;
 }
-.ly-dialog .el-dialog__body .menu-content .menu-ul .el-form .el-radio{
+.ly-dialog .el-dialog__body .menu-ul .el-form .el-radio{
     display: inline-block;
     width: auto;
     color: rgba(0,0,0,.65);
     margin-left: 0;
     margin-right: 16px;
 }
-.ly-dialog .el-dialog__body .menu-content .menu-ul .el-form .el-radio span{
+.ly-dialog .el-dialog__body .menu-ul .el-form .el-radio span{
     font-size: 12px;
 }
 
@@ -501,7 +481,7 @@ export default {
     padding: 20px;
     box-sizing: border-box;
 }
-.ly-dialog .el-dialog__footer{
+.ly-dialog .xyb{
     height: 60px;
     padding: 10px 20px;
     display: flex;

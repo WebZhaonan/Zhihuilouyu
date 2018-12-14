@@ -1,11 +1,12 @@
 <template>
+<div>
     <el-form :model="form" :rules="rules2" ref="form">
         <div class="form-top">
             <div class="form-public form-06">
                 <el-form-item label="添加楼层数量">
                     <el-select v-model="form.luoceng">
                     <el-option label="单层" value="danceng"></el-option>
-                    <el-option label="多层" value="duoceng"></el-option>
+                    <!-- <el-option label="多层" value="duoceng"></el-option> -->
                     </el-select>
                 </el-form-item>
                 <el-form-item
@@ -17,7 +18,7 @@
                     <el-input v-model="form.lcmj" disabled="disabled"></el-input>
                 </el-form-item>
             </div>
-            <div class="tjly"><button @click="addlcs('form')"><i class="el-icon-plus"></i>添加楼层</button></div>
+            <div class="tjly"><el-button @click="addlcs('form')"><i class="el-icon-plus"></i>添加楼层</el-button></div>
         </div>
         <div class="form-bottom">
             <ul class="bottom-ul">
@@ -26,9 +27,9 @@
                 <li>房源数量</li>
             </ul>
             <div style="height: 390px;overflow: auto;margin-top: 4px;">
-                <div class="form-public form-07" v-for="(item,i) in lcs" :key="i">
+                <div class="form-public form-07" v-for="(item,i) in form.lcs" :key="i">
                     <el-form-item>
-                        <el-input v-model="form.name01"></el-input>
+                        <el-input v-model="item.name"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-input v-model="form.name02" disabled></el-input>
@@ -41,15 +42,19 @@
             </div>        
         </div>
     </el-form>
+    <div class="xyb">
+        <el-button type="primary" @click="fs">保存&下一步</el-button>
+    </div>
+</div>
 </template>
-
 <script>
+import { buildlevel } from '@/axios/api' //添加楼层
 export default {
     name: 'Dialog02',
     data(){
         var lcevent = (rule, value, callback) => {
             if (value === '') {
-                callback(new Error('请再次输入密码'));
+                callback(new Error('请输入楼层名称'));
             }else {
                 callback();
             }
@@ -57,28 +62,30 @@ export default {
         return{
             form:{
                 region: '',
-                name01: '',
                 name02: '',
                 name03: '',
                 lcname: '',
                 lcmj: '',
                 nianyue: '年月',
                 luoceng: '单层',
+               lcs:[],
             },
-            lcs:[],
             rules2: {              
                 lcname: [
                     { validator: lcevent, trigger: 'blur' }
                 ]
-            }
+            },
+            selectIndex: 2
         }
+    },
+    mounted(){
     },
     methods:{
         addlcs(refName){
-            this.form.name01=this.form.lcname;
             this.$refs[refName].validate((valid) => {
                 if (valid) {
-                    this.lcs.push({});
+                    this.form.lcs.push({name:this.form.lcname})
+                
                 } else {
                     return false;
                 }
@@ -86,7 +93,7 @@ export default {
             });
         },
         move(item){
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+            this.$confirm('你确定要删除楼层?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -95,16 +102,34 @@ export default {
                     type: 'success',
                     message: '删除成功!'
                 });
-                var index = this.lcs.indexOf(item);
+                var index = this.form.lcs.indexOf(item);
                 if(index !==-1){
-                    this.lcs.splice(index,1);
+                     this.form.lcs.splice(index,1);
                 }
-                }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });          
+                }).catch(() => {         
             });
+        },
+        // 添加路层点击方法
+        fs(){
+        let bid = JSON.parse(sessionStorage.getItem('bid'));
+        var lcs = this.form.lcs;
+        var newArr = [];
+                    for (const i in lcs) {
+                        newArr.push(lcs[i].name)
+                    }
+             buildlevel({
+                 bid:bid.id,
+                 name:newArr                                                
+            }).then(res => {
+                if(res.flag == 0){
+                    this.$message({
+                      message: '保存成功',
+                      type: 'success',
+                      duration: 1000
+                    });
+                   this.$emit("fsval",this.selectIndex);
+                } 
+            })
         }
     }
 }

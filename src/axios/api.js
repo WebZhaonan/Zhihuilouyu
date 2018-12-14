@@ -21,4 +21,10 @@ export const province = params => get ('/builadmin/buil/city?type=province',para
 export const city = params => get ('/builadmin/buil/city?type=city',params) //获取市
 export const area = params => get ('/builadmin/buil/city?type=area',params) //获取区县
 export const creatLy = params => post ('/builadmin/buil/index',params) //创建楼宇
-export const buildType = params => get ('/builadmin/buildtype/list',params)
+export const buildType = params => get ('/builadmin/buildtype/list',params) //获取楼宇类型
+export const buildlevel = params => post ('/builadmin/buildlevel/index',params) //添加楼层
+export const costtype = params => get ('/builadmin/costtype/list',params) //通用费用类型列表
+export const goodsname = params => get ('/builadmin/goodsname/list',params) //货物名称
+export const buildset = params =>post ('/builadmin/buildset/index',params) //默认设置
+export const receiptrule = params => get ('/builadmin/receiptrule/list',params) //收据编号规格
+export const monthly = params => get ('/builadmin/goodsname/monthly',params) //生成月收入目标
