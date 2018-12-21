@@ -7,20 +7,20 @@
                     <el-select v-model="ruleForm.region" placeholder="请选择楼宇类型">
                     <el-option :label="itemType.name" :value="itemType.id" v-for="(itemType, index) in itemAgg" :key="index"></el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item> 
             </div>
             <div class="form-public form-02">
                 <el-form-item label="省份" prop="shengfen">
-                    <el-select v-model="ruleForm.shengfen"  clearable placeholder="选择省份">
-                    <el-option :label="item.name" :value="item.adcode" v-for="(item, index) in province" :key="index" @click.native="provinceAd(item.adcode)">
+                    <el-select v-model="ruleForm.shengfen"  clearable placeholder="选择省份" @change="provinceAd" > 
+                    <el-option :label="item.name" :value="item.adcode" v-for="(item, index) in province" :key="index">
                          <span style="float: left">{{ item.name }}</span>
                          <span style="float: right; color: #8492a6; font-size: 13px">{{ item.pinyin }}</span>
                     </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="城市" prop="chengshi">
-                    <el-select v-model="ruleForm.chengshi"  clearable placeholder="选择城市">
-                    <el-option :label="cityItem.name" :value="cityItem.adcode" v-for="(cityItem, index) in city" :key="index" @click.native="cityAd(cityItem.adcode)"></el-option>
+                    <el-select v-model="ruleForm.chengshi"  clearable placeholder="选择城市"  @change="cityAd">
+                    <el-option :label="cityItem.name" :value="cityItem.adcode" v-for="(cityItem, index) in city" :key="index"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="区域" prop="quyu">
@@ -163,9 +163,14 @@ import {city} from '@/axios/api' // 获取市
 import {area} from '@/axios/api' // 获取区县
 import { creatLy } from '@/axios/api'  //创建楼宇
 import { buildType } from '@/axios/api' //获取楼宇类型
-
+import { getList } from '@/axios/api' //楼宇列表详情
+import { editLy } from '@/axios/api' //编辑楼宇
 export default {
     name: 'Dialog01',
+       props: {
+      rowId: String,
+      required: true
+    },
     data(){
         return{
              footermsg:'保存&下一步',
@@ -189,7 +194,12 @@ export default {
                 khh: '',
                 khxmc: '',
                 tzdz: '',
-                nianyue: '年月'
+                nianyue: '年月',
+                shengfen:'',
+                chengshi:'',
+                quyu:'',
+                syrq:'',
+                value:'',
             },
          rules: {
           region: [{ required: true, message: '请选择楼宇类型', trigger: 'change' }],
@@ -209,10 +219,10 @@ export default {
             city: [],
             area: [],
             itemAgg:[],
-            selectIndex: 1
+            selectIndex: 1,
         }
     },
-    mounted () {
+    created () {
         let that = this;
           // 获取省
              province({                                             
@@ -228,6 +238,38 @@ export default {
                    that.itemAgg=res.data;
                 } 
             })
+    //  判断为新建还是编辑
+      if(this.rowId){
+        // 获取楼宇详情
+           getList({                    
+                id: this.rowId,                              
+            }).then(res => {
+                if(res.flag == 0){  
+                 this.ruleForm.region = res.data[0].tid
+                 this.ruleForm.lymc = res.data[0].name;
+                 this.ruleForm.shengfen = res.data[0].province;
+                 this.ruleForm.chengshi = res.data[0].city;
+                 this.ruleForm.quyu = res.data[0].area;
+                 this.ruleForm.jtwz = res.data[0].address
+                 this.ruleForm.zslxdh = res.data[0].phone;
+                 this.ruleForm.syrq = res.data[0].username;
+                 this.ruleForm.lyjzmj = res.data[0].build_area;
+                 this.ruleForm.yt =res.data[0].use;
+                 this.ruleForm.zdmj = res.data[0].floor_area;
+                 this.ruleForm.value = res.data[0].buildtime;
+                 this.ruleForm.zdtq =res.data[0].bill_reminders;
+                 this.ruleForm.htbh = res.data[0].contract_number;
+                 this.imageUrl = res.data[0].images;
+                 this.ruleForm.xmmc = res.data[0].more_name;
+                 this.ruleForm.zcdz =res.data[0].more_address;
+                 this.ruleForm.skr = res.data[0].more_payee;
+                 this.ruleForm.skgs = res.data[0].more_company;
+                 this.ruleForm.khh = res.data[0].more_bank;
+                 this.ruleForm.khxmc = res.data[0].more_bank_number;
+                 this.ruleForm.tzdz = res.data[0].more_notice_address;
+                } 
+            }) 
+      }
     },
     methods: {
         handleAvatarSuccess(res, file) {
@@ -258,30 +300,76 @@ export default {
         msgShow(){
           this.show= !this.show;
         },
-        provinceAd(adcode){
+        provinceAd(){
               city({                    
-                 adcode:adcode                            
+                 adcode:this.ruleForm.shengfen                           
             }).then(res => {
                 if(res.flag == 0){  
                     this.city = res.data
                 } 
             }) 
         },
-        cityAd(adcode){
+        cityAd(){
             area({                    
-                 adcode:adcode                            
+                 adcode:this.ruleForm.chengshi                            
             }).then(res => {
                 if(res.flag == 0){  
                     this.area = res.data
                 } 
             })  
         },
-        // 创建楼宇详细信息
+      
         commitUp(formName){
-        this.$emit("fsval",this.selectIndex); 
+            //  this.$options.methods.provinceAd()
+            //  this.$options.methods.cityAd()
+            
           this.$refs[formName].validate((valid) => {
           if (valid) {
-        creatLy({   
+             if(this.rowId){
+                //  alert(this.ruleForm.shengfen)
+            editLy({                    
+             id:this.rowId,
+             name:this.ruleForm.lymc,
+            tid:this.ruleForm.region,
+            build_area:this.ruleForm.lyjzmj,
+            floor_area:this.ruleForm.zdmj,   
+            province:this.ruleForm.shengfen,
+            city:this.ruleForm.chengshi,
+            area:this.ruleForm.quyu,
+            address:this.ruleForm.jtwz,
+            username:this.ruleForm.syrq,
+            phone:this.ruleForm.zslxdh,
+            use:this.ruleForm.yt,
+            buildtime:this.ruleForm.value,
+            bill_reminders:this.ruleForm.zdtq,
+            contract_number:this.ruleForm.htph,
+            images:this.imageUrl,
+            more_name:this.ruleForm.xmmc,
+            more_address:this.ruleForm.zcdz,
+            more_payee:this.ruleForm.skr,
+            more_company:this.ruleForm.skgs,
+            more_bank:this.ruleForm.khh,
+            more_bank_number:this.ruleForm.khxmc,
+            more_notice_address:this.ruleForm.tzdz                       
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.$message({
+                      message: '修改成功',
+                      type: 'success',
+                      duration: 1000
+                });
+                this.$emit("fsval",this.selectIndex); 
+                }else{
+                      this.$message({
+                      message: res.msg,
+                      type: 'error',
+                      duration: 1000
+                });  
+                }
+            }) 
+              }else{
+            // 创建楼宇详细信息
+             creatLy({   
             name:this.ruleForm.lymc,
             tid:this.ruleForm.region,
             build_area:this.ruleForm.lyjzmj,
@@ -307,10 +395,12 @@ export default {
             }).then(res => {
                 if(res.flag == 0){  
                 this.$store.commit('ADD_BID',res.data);
+                 this.$emit("fsval",this.selectIndex); 
                 }else{
                     this.$message.error(res.data.msg); 
                 }
             }) 
+              }
           }
         });
         }

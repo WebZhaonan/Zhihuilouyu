@@ -273,7 +273,7 @@
                  <div class="form-public form-09">
                             <el-form-item label="收据编号规则" prop="bhruls">
                                 <el-select v-model="form.bhruls"> 
-                                    <el-option :label="ruleItem.name" :value="ruleItem.name" v-for="(ruleItem, index) in rule" :key="index"></el-option>
+                                    <el-option :label="ruleItem.name" :value="ruleItem.id" v-for="(ruleItem, index) in rule" :key="index"></el-option>
                                 </el-select>
                             </el-form-item>
      
@@ -292,7 +292,7 @@
             </div> 
         </el-form>
         <div class="xyb">
-            <el-button  type="primary" @click="commitUp('numberValidateForm')">保存&下一步</el-button>
+            <el-button  type="primary" @click="commitUp('numberValidateForm')">保存</el-button>
         </div>     
     </div>  
 </template>
@@ -302,11 +302,19 @@ import { costtype }  from '@/axios/api'; //通用费用类型
 import { goodsname } from '@/axios/api' //货物名称
 import { buildset } from '@/axios/api' //默认设置
 import { receiptrule } from '@/axios/api' //收据编号规格
+import { buildsetDetail } from '@/axios/api' //获取默认设置详情
+import { buildsetEdit } from '@/axios/api' //编辑默认设置
 export default {
     name: 'Dialog03',
+    inject: ['reload'],
+       props: {
+      rowId: String,
+      required: true
+    },
     data(){
         return{
             form:{
+                lyjzmj:'',
                 mryjdw: '1',
                 mrzldwsl: '1',
                 mrjcdjdw: '1',
@@ -327,11 +335,13 @@ export default {
                 wy_mrjsjd:'1', 
                 wymrnts:'365',      
                 wyzqhffs:'1',  
-                wyhsgz:'1',       
+                wyhsgz:'1',  
+                mrwyf:'',     
                 djblxsd: '2',
                 mrwyfjflx: '2',
                 yhName:'',
-                hyname:''
+                hyname:'',
+                bhruls:'',
             },
              rules: {
           lyjzmj: [{ required: true, message: '请输入默认支付类型(数字)', trigger: 'change' }],
@@ -351,6 +361,49 @@ export default {
         }
     },
     mounted(){
+        // 获取默认设置详情
+      if(this.rowId){
+           buildsetDetail({   
+            id:this.rowId                                             
+            }).then(res => {
+                // console.log(JSON.stringify(res))
+                if(res.flag == 0){ 
+                    this.form.mryjdw = res.data.deposit_unit;
+                    this.form.mrzldwsl = res.data.number_unit;
+                    this.form.mrjcdjdw = res.data.price_unit;
+                    this.form.mrjsjd =res.data.precision;
+                    this.form.lyjzmj = res.data.pay_type;
+                    this.form.jf =res.data.billing_type;
+                    this.form.fktime = res.data.pay_time;
+                    this.form.rq = res.data.pay_time_type;
+                    this.form.mrnts = res.data.year_num;
+                    this.form.xsd = res.data.pay_retain;
+                    this.form.zqhffs = res.data.divide;
+                    this.form.hsgz = res.data.matrixing;
+                    this.form.wylx = res.data.wy_type;
+                    this.form.wyzflx = res.data.wy_pay_type;
+                    this.form.mrwyf = res.data.wy_price;
+                    this.form.wyytf = res.data.wy_price_unit;
+                    this.form.wyfkrq = res.data.wy_pay_time;
+                    this.form.wyrq = res.data.wy_pay_time_type;
+                    this.form.wyyjdw = res.data.wy_deposit_unit;
+                    this.form.wy_mrjsjd = res.data.wy_precision;
+                    this.form.djblxsd = res.data.wy_pay_retain;
+                    this.form.mrwyfjflx = res.data.wy_billing_type;
+                    this.form.wymrnts = res.data.wy_year_num;
+                    // this.form.bhruls = res.data.wy_receipt
+                    if(res.data.wy_receipt ==0){
+                        this.form.bhruls=''
+                    }else{
+                       this.form.bhruls= res.data.wy_receipt 
+                    }
+                    this.radio01 = res.data.wy_post_way;
+                    this.radio02 = res.data.wy_amortization;
+                    this.shuilvs = res.data.tax;	
+                    // console.log(JSON.stringify(this.shuilvs))
+                }
+            })
+      }
  // 通用费用类型
             let that = this
              costtype({                                                
@@ -366,13 +419,13 @@ export default {
                  this.restaurants =res.data
                 }
             }) 
-// 收据编号receiptrule
+// 收据编号
           receiptrule({                                                
             }).then(res => {
                 if(res.flag == 0){ 
                  this.rule =res.data
                 }
-            }) 
+            })
          
     },
     methods: {
@@ -384,7 +437,7 @@ export default {
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
           cb(results);
-        }, 3000 * Math.random());
+        }, 1000 * Math.random());
       },
       createStateFilter(queryString) {
         return (state) => {
@@ -395,32 +448,100 @@ export default {
       },
     //   添加税率信息
        addsls(){
-           this.shuilvs.push({
+          if(this.rowId){
+                 this.shuilvs.push({
+               id: 0
+           }); 
+          }else{
+               this.shuilvs.push({
             //    key: Date.now()
            });
+          }
        },
     //    删除税率
        hide(item){
            var index = this.shuilvs.indexOf(item);
            if(index !== -1){
                 this.shuilvs.splice(index,1);
+                console.log(JSON.stringify(this.shuilvs))
            }        
        },
     //    保存提交
        commitUp(formName){
-             this.$emit("fsval",this.selectIndex);
+           if(this.rowId){
+               let bid = this.rowId;
+               let shuilvs = this.shuilvs;
+               let BigArr = []
+                   for (const i in shuilvs) {
+                     BigArr = this.shuilvs;
+                     BigArr[i].bid = bid
+                }
+                console.log(JSON.stringify(BigArr))
+             this.$refs[formName].validate((valid) => {
+            if (valid) {
+                // 编辑默认设置
+                 buildsetEdit({
+                 bid:bid,
+                 deposit_unit:this.form.mryjdw,
+                 number_unit:this.form.mrzldwsl,
+                 price_unit:this.form.mrjcdjdw,
+                 precision:this.form.mrjsjd,
+                 pay_type:this.form.lyjzmj,
+                 billing_type:this.form.jf,
+                 pay_time:this.form.fktime,
+                 pay_time_type:this.form.rq,
+                 year_num:this.form.mrnts,
+                 pay_retain:this.form.xsd,
+                 divide:this.form.zqhffs,
+                 matrixing:this.form.hsgz,
+                 wy_type:this.form.wylx,
+                 wy_pay_type:this.form.wyzflx,
+                 wy_price:this.form.mrwyf,
+                 wy_price_unit:this.form.wyytf,
+                 wy_pay_time:this.form.wyfkrq,
+                 wy_pay_time_type:this.form.wyrq,
+                 wy_deposit_unit:this.form.wyyjdw,
+                 wy_precision:this.form.wy_mrjsjd,
+                 wy_pay_retain:this.form.djblxsd,
+                 wy_billing_type:this.form.mrwyfjflx,
+                 wy_year_num:this.form.wymrnts,
+                 wy_divide:this.form.wyzqhffs,
+                 wy_matrixing:this.form.wyhsgz,
+                 wy_post_way:this.radio01,
+                 wy_amortization:this.radio02,
+                 wy_receipt:this.form.bhruls,
+                 tax:BigArr,
+            }).then(res => {
+                if(res.flag == 0){ 
+                     this.$message({
+                      message: '修改成功',
+                      type: 'success',
+                      duration: 1000
+                    });
+                    this.reload();
+                  this.$emit("fsval",this.selectIndex);
+                }else{
+                       this.$message({
+                      message: res.msg,
+                      type: 'error',
+                      duration: 1000
+                    });
+                }
+            }) 
+            }
+                })
+           }else{
+            //    新建默认设置
             let bid = JSON.parse(sessionStorage.getItem('bid'));
             let shuilvs = this.shuilvs;
-            let newArr = [];
             let BigArr = []
                    for (const i in shuilvs) {
-                     newArr = this.shuilvs;
-                     newArr[i].bid = bid.id
+                     BigArr = this.shuilvs;
+                     BigArr[i].bid = bid.id
                 }
-                BigArr=newArr
                 this.$refs[formName].validate((valid) => {
             if (valid) {
-                           buildset({
+                 buildset({
                  bid:bid.id,
                  deposit_unit:this.form.mryjdw,
                  number_unit:this.form.mrzldwsl,
@@ -452,13 +573,14 @@ export default {
                  wy_receipt:this.form.bhruls,
                  tax:BigArr,
             }).then(res => {
-                console.log(JSON.stringify(res))
                 if(res.flag == 0){ 
                      this.$message({
                       message: '保存成功',
                       type: 'success',
                       duration: 1000
                     });
+                    this.reload();
+                  this.$emit("fsval",this.selectIndex);
                 }else{
                        this.$message({
                       message: res.msg,
@@ -469,6 +591,7 @@ export default {
             }) 
             }
                 })
+           }
             // this.$emit("fsval",this.selectIndex);
         }
     }

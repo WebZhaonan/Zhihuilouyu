@@ -37,12 +37,12 @@
             </ul>
             <div style="height: auto;overflow: auto;margin-top: 4px;">
                 
-                <div class="form-public form-07" v-for="(item,i) in form.lcs" :key="i">  
+                <div class="form-public form-07" v-for="(item,i) in lcs" :key="i">  
                     <el-form-item>
                         <el-input  disabled :value="i"></el-input> 
                     </el-form-item>
                     <el-form-item>
-                        <el-input :value="item"></el-input>
+                        <el-input :value="item"></el-input> 
                     </el-form-item>
                
                 </div>
@@ -65,9 +65,10 @@ export default {
             form:{
                 wy: '',
                 yssj: '',
-                lcs:[],
             },
+            value:'',
             srmbs:[],
+            lcs:[],
             selectIndex: 4
         }
     },
@@ -91,7 +92,7 @@ export default {
                 money: item.srmb                                        
             }).then(res => {
                 if(res.flag == 0){  
-                    this.form.lcs = res.data.month
+                    this.lcs = res.data.month
              }
                 })
         },

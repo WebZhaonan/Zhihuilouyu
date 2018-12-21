@@ -18,8 +18,15 @@ D<template>
                                 </el-form-item>
                             </div>
                             <div class="tc-form-contents">
-                                <el-form-item label="行业" prop="hy">
-                                    <el-input v-model="ruleForm.hy" placeholder="请选择行业"></el-input>
+                                  <el-form-item label="行业" prop="hy">    
+                                    <el-select v-model="ruleForm.hy">
+                                        <el-option
+                                        v-for="item in hy"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">               
+                                        </el-option>
+                                    </el-select>
                                 </el-form-item>
                                 <el-form-item label="客户联系人" prop="khlxr">    
                                     <el-input v-model="ruleForm.khlxr" placeholder="请填写客户联系人"></el-input>
@@ -52,8 +59,8 @@ D<template>
                                         <el-option
                                         v-for="item in khzt"
                                         :key="item.id"
-                                        :label="item.label"
-                                        :value="item.value">               
+                                        :label="item.name"
+                                        :value="item.id">               
                                         </el-option>
                                     </el-select>
                                 </el-form-item>
@@ -64,8 +71,8 @@ D<template>
                                         <el-option
                                         v-for="item in lfqd"
                                         :key="item.id"
-                                        :label="item.label"
-                                        :value="item.value">               
+                                        :label="item.name"
+                                        :value="item.id">               
                                         </el-option>
                                     </el-select>
                                 </el-form-item>
@@ -191,7 +198,9 @@ D<template>
 </template>
 <script>
 import fymsg from '@/components/fangyuanAdmin/fymsg'
-
+import { clientstatusList } from '@/axios/api'  // 获取客户状态
+import { channels } from '@/axios/api' //获取来访渠道列表
+import { industrylet } from '@/axios/api' //行业
 export default {
     name: 'zsOneDialog',
     components:{
@@ -204,34 +213,19 @@ export default {
                 kh: '',
                 gjr: '111111111',
                 lfsj: new Date(),
-                khzt: '01',
-                lfqd: '08',
+                khzt: '',
+                lfqd: '',
                 qwjgdw: '03',
                 dqzls02: '01',
                 dqzj02: '01'
             },
             rules: {        
-                
             },
             khzt:[
-                { label:'初次接触',value:'01' },
-                { label:'潜在客户',value:'02' },
-                { label:'意向客户',value:'03' },
-                { label:'成交客户',value:'04' },
-                { label:'流失客户',value:'05' }
             ],
             lfqd:[
-                { label:'自由经纪人',value:'01' },
-                { label:'公司经纪人',value:'02' },
-                { label:'老客户介绍',value:'03' },
-                { label:'政府关系',value:'04' },
-                { label:'股东关系',value:'05' },
-                { label:'第三方个人',value:'06' },
-                { label:'同行介绍',value:'07' },
-                { label:'上门',value:'08' },
-                { label:'电话',value:'09' },
-                { label:'网络',value:'10' }
             ],
+            hy:[],
             xsgd: '显示更多',
             qwjgdw:[
                 { label:'元/㎡·天',value:'01' },
@@ -243,8 +237,31 @@ export default {
             show2: false
         }
     },
+    mounted(){
+        let that =this
+         // 获取客户状态列表
+             clientstatusList({                                                 
+            }).then(res => {
+                if(res.flag == 0){  
+                     that.khzt=res.data; 
+                } 
+            }) 
+        //获取来访渠道
+            channels({                                                 
+            }).then(res => {
+                if(res.flag == 0){  
+                     that.lfqd=res.data; 
+                } 
+            }) 
+            //行业
+               industrylet({                                                 
+            }).then(res => {
+                if(res.flag == 0){  
+                     that.hy=res.data; 
+                } 
+            }) 
+      },
     methods:{
-        
         isbh(){
             if(this.xsgd=="显示更多"){
                 this.xsgd="收起";

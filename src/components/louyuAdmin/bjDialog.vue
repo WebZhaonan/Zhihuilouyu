@@ -7,16 +7,16 @@
             </el-menu>
             <div class="menu-ul">
                 <div class="menu-li">
-                    <Dialog01 v-for="(item,i) in lyformmsg" :key="i" :is="item.sub" v-show="i === selectIndex"></Dialog01>
+                    <Dialog01 v-for="(item,i) in lyformmsg" :key="i" :is="item.sub" v-show="i === selectIndex" :rowId ='inputName' v-on:fsval="fsval"></Dialog01>
                 </div>
             </div>
-            <div slot="footer" class="dialog-footer">
+            <!-- <div slot="footer" class="dialog-footer">
                 <div class="bz">
                     <el-button plain v-show="isshang" @click="shang">上一步</el-button>
                     <el-button plain @click="xia" v-show="isxia">下一步</el-button>
                 </div>
                 <el-button type="primary">保存</el-button>
-            </div>                  
+            </div>                   -->
         </el-dialog>
     </div>
 </template>
@@ -25,12 +25,17 @@
 import Dialog01 from '@/components/louyuAdmin/Dialog01'
 import Dialog02 from '@/components/louyuAdmin/Dialog02'
 import Dialog03 from '@/components/louyuAdmin/Dialog03'
-import Dialog04 from '@/components/louyuAdmin/Dialog04'
+// import Dialog04 from '@/components/louyuAdmin/Dialog04'
 
 export default {
     name: 'Dialog',
+    inject: ['reload'],
     components:{
-        Dialog01,Dialog02,Dialog03,Dialog04
+        Dialog01,Dialog02,Dialog03
+    },
+      props: {
+      inputName: String,
+      required: true
     },
     data(){
         return{          
@@ -54,10 +59,10 @@ export default {
                     msg: '默认设置',
                     sub: 'Dialog03'
                 },
-                {
-                    msg: '收入目标',
-                    sub: 'Dialog04'
-                }
+                // {
+                //     msg: '收入目标',
+                //     sub: 'Dialog04'
+                // }
             ]
         }
     },
@@ -79,28 +84,35 @@ export default {
             this.selectIndex=0;
             this.isshang=false;
             this.isxia=true;
+            this.reload();
         },
-        xia(){
-            this.isshang = true;
-            if(this.selectIndex==2){
-                this.isxia = false;
-                this.isshang = true;
-                this.selectIndex++;
+         fsval(selectIndex,dialogFormVisible){
+            this.selectIndex=selectIndex;
+            if(this.selectIndex==4){
+                this.dialogFormVisible=false;
             }
-            else{
-                this.selectIndex++;
-            }           
         },
-        shang(){
-            this.isxia = true;
-            if(this.selectIndex==1){
-                this.isshang = false;               
-                this.selectIndex--;
-            }
-            else{
-                this.selectIndex--;
-            }
-        }
+        // xia(){
+        //     this.isshang = true;
+        //     if(this.selectIndex==2){
+        //         this.isxia = false;
+        //         this.isshang = true;
+        //         this.selectIndex++;
+        //     }
+        //     else{
+        //         this.selectIndex++;
+        //     }           
+        // },
+        // shang(){
+        //     this.isxia = true;
+        //     if(this.selectIndex==1){
+        //         this.isshang = false;               
+        //         this.selectIndex--;
+        //     }
+        //     else{
+        //         this.selectIndex--;
+        //     }
+        // }
     }
 }
 </script>

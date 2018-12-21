@@ -49,8 +49,14 @@
 </template>
 <script>
 import { buildlevel } from '@/axios/api' //添加楼层
+import { buildlevelList } from '@/axios/api' //获取楼层列表
+import { buildEdit } from '@/axios/api' //编辑楼层
 export default {
     name: 'Dialog02',
+      props: {
+      rowId: String,
+      required: true
+    },
     data(){
         var lcevent = (rule, value, callback) => {
             if (value === '') {
@@ -79,13 +85,28 @@ export default {
         }
     },
     mounted(){
+            if(this.rowId){
+                 buildlevelList({                    
+                 id:this.rowId                           
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.form.lcs = res.data;
+                } 
+            }) 
+            }
     },
     methods:{
         addlcs(refName){
             this.$refs[refName].validate((valid) => {
                 if (valid) {
-                    this.form.lcs.push({name:this.form.lcname})
-                
+                    if(this.rowId){
+                    this.form.lcs.push({
+                    name:this.form.lcname,
+                    id:0
+                    })
+                    }else{
+                        this.form.lcs.push({name:this.form.lcname})
+                    }
                 } else {
                     return false;
                 }
@@ -109,8 +130,34 @@ export default {
                 }).catch(() => {         
             });
         },
-        // 添加路层点击方法
         fs(){
+            if(this.rowId){
+            // 编辑路层
+            let bid = this.rowId;
+            let editLcs = this.form.lcs;
+            let editArr = [];
+              for (const i in editLcs) {
+                editArr.push({
+                    name:editLcs[i].name,
+                    id:editLcs[i].id
+                })
+                buildEdit({
+                 bid:bid,
+                 name:editArr                                                
+            }).then(res => {
+                if(res.flag == 0){
+                    this.$message({
+                      message: '修改成功',
+                      type: 'success',
+                      duration: 1000
+                    });
+                   this.$emit("fsval",this.selectIndex);
+                } 
+            })
+            }
+            console.log(JSON.stringify(editArr))
+            }else{
+        // 添加路层点击方法
         let bid = JSON.parse(sessionStorage.getItem('bid'));
         var lcs = this.form.lcs;
         var newArr = [];
@@ -130,6 +177,7 @@ export default {
                    this.$emit("fsval",this.selectIndex);
                 } 
             })
+            }
         }
     }
 }

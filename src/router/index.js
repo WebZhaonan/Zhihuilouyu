@@ -96,13 +96,13 @@ const routes  =  [
     path: '/lydetails',
     name: 'lydetails',
     component: lydetails,
-    redirect:'/pmmap',
+    redirect:'/fymanage',
     children:[
-      {
-        path: '/pmmap', 
-        name: 'pmmap',
-        component: pmmap
-      },
+      // {
+      //   path: '/pmmap', 
+      //   name: 'pmmap',
+      //   component: pmmap
+      // },
       {
         path: '/fymanage', 
         name: 'fymanage',

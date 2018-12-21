@@ -36,67 +36,67 @@
             </div>
             <div class="header-content">
                 <el-row :gutter="20" style="display:flex;align-items: center;">
-                    <el-col :span="4" style="width:180px;"><img src="../assets/login.jpg" style="width:160px;"></el-col>
+                    <el-col :span="4" style="width:180px;"><img :src="info.images" style="width:160px;"></el-col>
                     <el-col :span="4" style="height: 120px; min-width: 300px;text-align: left;margin-left:10px;">
-                        <p style="font-size: 32px; margin-top: 10px;">中青大厦</p>
+                        <p style="font-size: 32px; margin-top: 10px;">{{info.name}}</p>
                         <p style="color: rgb(61, 67, 85);margin-top: 20px;font-size: 14px;">
-                            <span>北京市</span>,<span>市辖区</span>
+                            <span>{{info.address}}</span>,<span>{{info.p_name}}</span>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <span class="ckxq" @click="value1 = true" v-if="isif">查看详情</span>                              
                             <Drawer :closable="true" v-model="value1" width="1000" class="ct" @on-close="aaa">
                                 <div slot="header" class="drawer-header">楼宇信息</div>
-                                <bjDialog></bjDialog>
+                                <bjDialog :inputName='this.$route.query.id'></bjDialog>
                                 <div class="xx">
                                     <div class="xx01">
                                         <div class="xx01-top">楼宇信息</div>
                                         <ul class="xx01-buttom">
                                             <li>
                                                 <div>省份</div>
-                                                <div>北京市</div>
+                                                <div>{{info.p_name}}</div>
                                             </li>
                                             <li>
-                                                <div>省份</div>
-                                                <div>北京市</div>
+                                                <div>城市</div>
+                                                <div>{{info.c_name}}</div>
                                             </li>
                                             <li>
-                                                <div>省份</div>
-                                                <div>北京市</div>
+                                                <div>区域</div>
+                                                <div>{{info.a_name}}</div>
                                             </li>
                                             <li>
-                                                <div>省份</div>
-                                                <div>北京市</div>
+                                                <div>楼宇名称</div>
+                                                <div>{{info.name}}</div>
                                             </li>
                                             <li>
-                                                <div>省份</div>
-                                                <div>北京市</div>
+                                                <div>具体位置</div>
+                                                <div>{{info.address}}</div>
                                             </li>
                                             <li>
-                                                <div>省份</div>
-                                                <div>北京市</div>
+                                                <div>招商联系电话</div>
+                                                <div>{{info.phone}}</div>
                                             </li>
                                             <li>
-                                                <div>省份</div>
-                                                <div>北京市</div>
+                                                <div>所有权人</div>
+                                                <div>{{info.username}}</div>
                                             </li>
                                             <li>
-                                                <div>省份</div>
-                                                <div>北京市</div>
+                                                <div>楼宇建筑面积/m²</div>
+                                                <div>{{info.build_area}}</div>
                                             </li>
                                             <li>
-                                                <div>省份</div>
-                                                <div>北京市</div>
+                                                <div>用途</div>
+                                                <div>{{info.use}}</div>
                                             </li>
                                             <li>
-                                                <div>省份</div>
-                                                <div>北京市</div>
+                                                <div>占地面积</div>
+                                                <div>{{info.floor_area}}</div>
                                             </li>
                                             <li>
-                                                <div>省份</div>
-                                                <div>北京市</div>
+                                                <div>建成时间</div>
+                                                <div>{{info.buildtime}}</div>
                                             </li>
                                             <li>
-                                                <div>省份</div>
-                                                <div>北京市</div>
+                                                <div>管理面积</div> 
+                                                <div>-</div>
                                             </li>
                                         </ul> 
                                     </div>
@@ -115,7 +115,7 @@
                         {{ item.navItem }}
                     </el-menu-item>
                 </el-menu>
-                <lydetailsDialog v-if="islyDialog"></lydetailsDialog>
+                <lydetailsDialog  :inputName='this.$route.query.id' v-if="islyDialog"></lydetailsDialog>
                 <router-view/>
             </div>
         </el-main>      
@@ -129,17 +129,16 @@ import { Drawer } from 'iview';
 import { BackTop } from 'iview';
 Vue.component('Drawer', Drawer);
 Vue.component('BackTop', BackTop);
-import pmMsg from '@/components/zhlyMsg/pmMsg'
 import fyMsg from '@/components/zhlyMsg/fyMsg'
 import zsMsg from '@/components/zhlyMsg/zsMsg'
 import zkMsg from '@/components/zhlyMsg/zkMsg'
 import bjDialog from '@/components/louyuAdmin/bjDialog'
 import lydetailsDialog from '@/components/lydetailsDialog/lydetailsDialog'   //楼宇详情页弹窗
-
+import { getList} from '@/axios/api'  //楼宇列表详情
 export default {
     name: 'lydetails',
     components:{
-        pmMsg,fyMsg,zsMsg,zkMsg,bjDialog,lydetailsDialog
+       fyMsg,zsMsg,zkMsg,bjDialog,lydetailsDialog
     },
     data(){
         return{
@@ -148,18 +147,19 @@ export default {
                 {name:'/',navItem:'集合'},
                 {name:'/page1',navItem:'工作流'},
             ],
-            activeIndex02:'/pmmap',
+            activeIndex02:'/fymanage',
             List_nav:[
-                {name:'/pmmap',navItem:'剖面图',sub:'pmMsg'},
+                // {name:'/pmmap',navItem:'剖面图',sub:'pmMsg'},
                 {name:'/fymanage',navItem:'房源管理',sub:'fyMsg'},
                 {name:'/zsmanage',navItem:'招商管理',sub:'zsMsg'},
                 {name:'/zkmanage',navItem:'租客管理',sub:'zkMsg'},
                 {name:'/htmanage',navItem:'合同管理',sub:''},
             ],
             value1: false,
-            isMsg: 'pmMsg',
+            isMsg: 'fyMsg',
             isif: true,
-            islyDialog: true
+            islyDialog: true,
+            info:[],
         }
     },
     methods:{
@@ -181,15 +181,25 @@ export default {
         }
     },
     mounted () {
+     
         this.activeIndex02 = this.$route.path
-        if(this.$route.path!=='/pmmap'){
+        if(this.$route.path!=='/fymanage'){
             this.isif=false;
             this.islyDialog=false;
         }else{
             this.isif=true;
             this.islyDialog=true;
         }
+        // 获取楼宇详情
+           getList({                    
+                id: this.$route.query.id,                              
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.info = res.data[0];
+                } 
+            }) 
     }
+
 }
 </script>
 <style>

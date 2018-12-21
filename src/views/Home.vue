@@ -189,13 +189,13 @@ export default {
                    that.itemAgg=res.data;
                   res.data.forEach((arr, index) => {
                       that.checkList[index] = arr.build;
+
                       })
                   
                 } 
             })
             // 获取楼宇列表
-             getList({                    
-                id: userInfo.id,                              
+             getList({                                                 
             }).then(res => {
                 if(res.flag == 0){  
                      that.items=res.data; 

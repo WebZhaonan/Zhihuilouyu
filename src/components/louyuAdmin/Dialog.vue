@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-button class="ly-button" icon="el-icon-plus" @click="dialogFormVisible = true">楼宇</el-button>
-        <el-dialog title="编辑楼宇" :visible.sync="dialogFormVisible" class="ly-dialog" width="700px" top="100px" center @close="gb">               
+        <el-dialog title="新建楼宇" :visible.sync="dialogFormVisible" class="ly-dialog" width="700px" top="100px" center @close="gb">               
             <el-menu class="el-menu-demo" mode="horizontal">
                 <el-menu-item v-for="(item,index) in lyformmsg" :key="index" :index="item.sub" :class="{itemtab:index === selectIndex}">{{item.msg}}</el-menu-item>
             </el-menu>
@@ -16,13 +16,14 @@
 import Dialog01 from '@/components/louyuAdmin/Dialog01'
 import Dialog02 from '@/components/louyuAdmin/Dialog02'
 import Dialog03 from '@/components/louyuAdmin/Dialog03'
-import Dialog04 from '@/components/louyuAdmin/Dialog04'
+// import Dialog04 from '@/components/louyuAdmin/Dialog04'
 
 
 export default {
     name: 'Dialog',
+    inject: ['reload'],
     components:{
-        Dialog01,Dialog02,Dialog03,Dialog04
+        Dialog01,Dialog02,Dialog03
     },
     data(){
         return{
@@ -43,10 +44,10 @@ export default {
                     msg: '默认设置',
                     sub: 'Dialog03',                  
                 },
-                {
-                    msg: '收入目标',
-                    sub: 'Dialog04',
-                }
+                // {
+                //     msg: '收入目标',
+                //     sub: 'Dialog04',
+                // }
             ]
         }
     },
@@ -59,6 +60,7 @@ export default {
         },
         gb(){
             this.selectIndex = 0; 
+            this.reload();
         }
     }
 }

@@ -79,7 +79,7 @@
                 width="168">
                 <template slot-scope="scope">
                     {{scope.row.c_name}}
-                    <sxly></sxly>                                  
+                    <sxly :inputName="scope.row.id"></sxly>                                  
                 </template>  
                 </el-table-column>
                 <el-table-column
@@ -120,8 +120,7 @@ export default {
               let userInfo = JSON.parse(sessionStorage.getItem('user'));
         let that=this;
          // 获取楼宇列表
-             getList({                    
-                id: userInfo.id,                              
+             getList({                                                  
             }).then(res => {
                 if(res.flag == 0){  
                 that.items = res.data
@@ -134,9 +133,14 @@ export default {
             // that.tagName = that.$route.params.num
     },
     methods:{
-        skip(){
-        let that =this;
-            this.$router.push("/lydetails");
+        skip(row){
+            let that =this;
+            this.$router.push({
+                path:"/lydetails",
+                query:{
+                    id:row.id
+                }
+            });
         },
         sayNode() {
             this.$store.state.items = []

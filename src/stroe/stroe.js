@@ -36,7 +36,7 @@ export default new Vuex.Store({
       id:''
     },
     items:[],
-    Bid:''
+    Bid:'',
   },
   mutations: {
     //写法与getters相类似

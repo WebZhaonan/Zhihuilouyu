@@ -1,6 +1,5 @@
 <template>     
-    <div> 
-        <el-dialog title="新增房源" :visible.sync="visible" class="fy-dialog" width="700px" top="100px" center :before-close="modalClose" :append-to-body="true">               
+    <div>             
             <div class="empty"></div> 
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
                 <div class="fyform">
@@ -8,10 +7,11 @@
                         <el-select v-model="ruleForm.ly" @change="getLc">
                             <el-option
                             v-for="item in xzly"
-                            :key="item.id"
+                            :key="item.name"
                             :label="item.name"
                             :value="item.id"                            
-                            style="height:58px;line-height:58px;display:flex;">               
+                            style="height:58px;line-height:58px;display:flex;">     
+                            {{item.name}}          
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -100,9 +100,8 @@
                 </div>
             </el-form>
              <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="submitForm01('ruleForm')">保存</el-button>
+                <el-button type="primary" @click="submitForm01('ruleForm')">修改</el-button>
             </div>         
-        </el-dialog>
         <el-dialog
             :visible.sync="dialogVisible01"
             width="400px"
@@ -110,8 +109,8 @@
             center
             class="fy-dialog02">
             <div class="fy-dialog02-div">
-                <i class="el-icon-warning"></i>
-                <p>新建成功</p>
+                <i class="el-icon-success"></i>
+                <p>修改成功</p>
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="gb01('ruleForm')">确 定</el-button>
@@ -125,15 +124,15 @@ import { roomAdd } from '@/axios/api'; //添加房源
 import { getList} from '@/axios/api' //获取楼宇列表
 import { buildlevelList} from '@/axios/api'  //获取楼层
 import { roomTip } from '@/axios/api' //获取房源标签
+import { roomDetail } from '@/axios/api'  //获取房源详情
+import { roomEdit } from '@/axios/api' //编辑房源
 // const cityOptions = [];
 export default {
-    name: 'fyDialog',
+    name: 'editDialig',
     inject: ['reload'],
-    props:{
-        visible: {
-            type: Boolean,
-            default: false
-        }
+     props: {
+      rowId: String,
+      required: true
     },
     components:{
         
@@ -198,6 +197,26 @@ export default {
     },
     mounted(){
         let that = this;
+        // 获取详情
+          roomDetail({
+            id:this.rowId                                                 
+            }).then(res => {
+                if(res.flag == 0){  
+                this.ruleForm.ly = res.data[0].bid;
+                this.ruleForm.fh = res.data[0].room_number;
+                this.ruleForm.lc = res.data[0].lid;
+                this.ruleForm.mj = res.data[0].area;
+                this.ruleForm.zx = res.data[0].adorn_type;
+                this.ruleForm.yzdj = res.data[0].price;
+                this.ruleForm.dj = res.data[0].unit;
+                this.ruleForm.zszt = res.data[0].let_type;
+                    let checkArr = []
+                    for (const key in res.data[0].label) {
+                        checkArr.push(res.data[0].label[key].id);
+                    }
+                 this.ruleForm.checkboxGroup1 = checkArr;
+                } 
+            }) 
         // 获取楼宇列表
           getList({                                                 
             }).then(res => {
@@ -231,8 +250,9 @@ export default {
         submitForm01(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    //新建房源
-                      roomAdd({
+                    //编辑房源
+                      roomEdit({
+                          id:this.rowId,
                           bid:this.ruleForm.ly,
                           lid:this.ruleForm.lc,
                           room_number:this.ruleForm.fh,
@@ -245,7 +265,6 @@ export default {
                         }).then(res => {
                             if(res.flag == 0){   
                                 this.dialogVisible01=true;
-                                this.reload();
                             } 
                         }) 
                     
@@ -255,8 +274,7 @@ export default {
             });
         },
         gb01(formName){
-            this.dialogVisible01=false;       
-            setTimeout(()=>{this.$emit('update:visible', false);this.$refs[formName].resetFields();},1000);  
+            this.dialogVisible01=false;  
             this.reload()                
         },
         modalClose(){
@@ -412,7 +430,7 @@ export default {
     box-shadow: none;
     border: 1px solid #d9d9d9;
 }
-.fy-dialog .el-dialog__footer{
+ .dialog-footer{
     height: 60px;
     padding: 10px 20px;
     display: flex;

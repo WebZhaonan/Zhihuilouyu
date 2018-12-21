@@ -1,22 +1,22 @@
 <template>
     <div class="bjly">
-        <el-button plain class="bily-button" @click.stop="dialogFormVisible = true"><i class="el-icon-plus"></i>编辑楼宇</el-button>
-        <el-dialog title="编辑楼宇" :visible.sync="dialogFormVisible" class="bj-dialog" width="700px" top="100px" center :append-to-body="isbody"  @close="gb">               
+        <el-button plain class="bily-button" @click.stop="dialogFormVisible = true" ><i class="el-icon-plus"></i>编辑楼宇</el-button>
+        <el-dialog title="编辑楼宇" :visible.sync="dialogFormVisible" class="bj-dialog" width="700px" top="100px" center :append-to-body="isbody" @close="gb">               
             <el-menu class="el-menu-demo" :default-active="activeIndex" mode="horizontal">
                 <el-menu-item v-for="(item,i) in lyformmsg" :key="i" :index="item.sub" @click="dj(i)" :class="{itemtab:i === selectIndex}">{{item.msg}}</el-menu-item>
             </el-menu>
             <div class="menu-ul">
                 <div class="menu-li">
-                    <Dialog01 v-for="(item,i) in lyformmsg" :key="i" :is="item.sub" v-show="i === selectIndex"></Dialog01>
-                </div>
+                    <Dialog01 v-for="(item,i) in lyformmsg" :key="i" :is="item.sub" v-show="i === selectIndex" :rowId ='inputName' v-on:fsval="fsval">
+                    </Dialog01></div>
             </div>
-            <div slot="footer" class="dialog-footer">
+            <!-- <div slot="footer" class="dialog-footer">
                 <div class="bz">
                     <el-button plain v-show="isshang" @click="shang">上一步</el-button>
                     <el-button plain @click="xia" v-show="isxia">下一步</el-button>
                 </div>
                 <el-button type="primary">保存</el-button>
-            </div>                  
+            </div>                   -->
         </el-dialog>
     </div>
 </template>
@@ -25,12 +25,17 @@
 import Dialog01 from '@/components/louyuAdmin/Dialog01'
 import Dialog02 from '@/components/louyuAdmin/Dialog02'
 import Dialog03 from '@/components/louyuAdmin/Dialog03'
-import Dialog04 from '@/components/louyuAdmin/Dialog04'
+// import Dialog04 from '@/components/louyuAdmin/Dialog04'
 
 export default {
     name: 'sxly',
+     inject: ['reload'],
     components:{
-        Dialog01,Dialog02,Dialog03,Dialog04
+        Dialog01,Dialog02,Dialog03
+    },
+      props: {
+      inputName: String,
+      required: true
     },
     data(){
         return{          
@@ -47,21 +52,26 @@ export default {
                     sub: 'Dialog01'
                 },
                 {
-                    msg: '创建楼层',
+                    msg: '楼层编辑',
                     sub: 'Dialog02'
                 },
                 {
                     msg: '默认设置',
                     sub: 'Dialog03'
                 },
-                {
-                    msg: '收入目标',
-                    sub: 'Dialog04'
-                }
-            ]
+                // {
+                //     msg: '收入目标',
+                //     sub: 'Dialog04'
+                // }
+            ],
         }
     },
+    mounted(){
+    },
     methods:{
+         Diopen(){
+            //  alert(this.inputName)
+            },
         dj(i){
             this.selectIndex=i;
             if(i>2){
@@ -75,32 +85,39 @@ export default {
                 this.isshang = true; 
             }
         },
+        fsval(selectIndex,dialogFormVisible){
+            this.selectIndex=selectIndex;
+            if(this.selectIndex==4){
+                this.dialogFormVisible=false;
+            }
+        },
         gb(){
             this.selectIndex=0;
             this.isshang=false;
             this.isxia=true;
+            this.reload();
         },
-        xia(){
-            this.isshang = true;
-            if(this.selectIndex==2){
-                this.isxia = false;
-                this.isshang = true;
-                this.selectIndex++;
-            }
-            else{
-                this.selectIndex++;
-            }           
-        },
-        shang(){
-            this.isxia = true;
-            if(this.selectIndex==1){
-                this.isshang = false;               
-                this.selectIndex--;
-            }
-            else{
-                this.selectIndex--;
-            }
-        }
+        // xia(){
+        //     this.isshang = true;
+        //     if(this.selectIndex==2){
+        //         this.isxia = false;
+        //         this.isshang = true;
+        //         this.selectIndex++;
+        //     }
+        //     else{
+        //         this.selectIndex++;
+        //     }           
+        // },
+        // shang(){
+        //     this.isxia = true;
+        //     if(this.selectIndex==1){
+        //         this.isshang = false;               
+        //         this.selectIndex--;
+        //     }
+        //     else{
+        //         this.selectIndex--;
+        //     }
+        // }
     }
 }
 </script>
@@ -552,5 +569,13 @@ export default {
     width: 100%;
     display: flex;
     justify-content: space-between;
+}
+.xyb{
+    height: 60px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border-top: 1px solid #e9e9e9;
 }
 </style>
