@@ -14,45 +14,57 @@
           width="149">
         </el-table-column>
         <el-table-column
-          prop="lc"
+          prop="level_name"
           label="楼层"
           sortable
           width="150">
         </el-table-column>
         <el-table-column
-          prop="fh"
+          prop="room_number"
           label="房号"
           sortable
           width="150">
         </el-table-column>
         <el-table-column
-          prop="zx"
+          prop="adorn_type"
           label="装修"
           width="150">
+            <template  slot-scope="scope">
+            <span v-if="scope.row.adorn_type=='0'">
+              暂无
+            </span>
+            <span v-else-if="scope.row.adorn_type=='1'">
+              不限
+            </span>
+             <span v-else-if="scope.row.adorn_type=='2'">
+              毛坯
+            </span>
+             <span v-else-if="scope.row.adorn_type=='3'">
+              简装
+            </span>
+             <span v-else-if="scope.row.adorn_type=='4'">
+              精装
+            </span>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="mj"
+          prop="area"
           label="面积"
-          sortable
-          width="150">
-        </el-table-column>
-        <el-table-column
-          prop="gw"
-          label="工位"
           sortable
           width="150">
         </el-table-column>
         <el-table-column
           prop="tag"
           label="房源标签"
-          :filters="[{ text: '朝南', value: '朝南' }, { text: '朝北', value: '朝北' }, { text: '有窗', value: '有窗' }, { text: '自用', value: '自用' }]"
-          :filter-method="filterTag"
-          filter-placement="bottom-end"
-          width="150">
+          width="300">
           <template slot-scope="scope">
             <el-tag
               type="primary" plan
-              disable-transitions>{{scope.row.tag}}</el-tag>
+              disable-transitions
+              v-for="item in scope.row.label" :label="item.id" :key="item.id"
+              style="margin-right:10px"
+              >
+              {{item.name}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column
@@ -90,74 +102,27 @@
 </template>
 
 <script>
+import { roomFy } from '@/axios/api' //获取房源列表
 export default {
   name: 'fy03',
   data () {
     return {
-      tableData: [{
-          name: '004',
-          lc: '01',
-          fh: '01',
-          zx: '-',
-          mj: '100.00',
-          gw: '',
-          tag: '',
-          zk: '-',
-          jzr: '-',
-          jsr: '-',
-          htdj: '-',
-          htdjdw: '-',
-          ssdj: '-'
-        }, {
-          name: '001',
-          lc: '01',
-          fh: '01',
-          zx: '-',
-          mj: '100.00',
-          gw: '',
-          tag: '',
-          zk: '-',
-          jzr: '-',
-          jsr: '-',
-          htdj: '-',
-          htdjdw: '-',
-          ssdj: '-'
-        }, {
-          name: '003',
-          lc: '01',
-          fh: '01',
-          zx: '-',
-          mj: '100.00',
-          gw: '',
-          tag: '',
-          zk: '-',
-          jzr: '-',
-          jsr: '-',
-          htdj: '-',
-          htdjdw: '-',
-          ssdj: '-'
-        }, {
-          name: '002',
-          lc: '01',
-          fh: '01',
-          zx: '-',
-          mj: '100.00',
-          gw: '',
-          tag: '',
-          zk: '-',
-          jzr: '-',
-          jsr: '-',
-          htdj: '-',
-          htdjdw: '-',
-          ssdj: '-'
-        }
+      tableData: [
       ]
     }
   },
+  mounted(){
+     let that = this;
+      // 获取房源列表
+         roomFy({                                                 
+            }).then(res => {
+                if(res.flag == 0){ 
+                     that.tableData=res.data; 
+                } 
+            }) 
+  },
   methods: {
-    filterTag(value, row) {
-      return row.tag === value;
-    }
+
   }
 }
 </script>

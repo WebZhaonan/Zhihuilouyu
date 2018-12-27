@@ -1,4 +1,4 @@
-D<template>
+<template>
     <div class="zsOneDialog">
         <el-button class="button-dialog" icon="el-icon-plus" plain @click="dialogFormVisible = true">客户</el-button>
         <el-dialog title="新建客户" :visible.sync="dialogFormVisible" class="zsOne-dialog" width="1000px" top="100px" center append-to-body>               
@@ -78,8 +78,16 @@ D<template>
                                 </el-form-item>
                             </div>
                             <div class="tc-form-contents tc-form-contents02">
-                                <el-form-item label="渠道联系人" prop="qdlxr">    
-                                    <el-input v-model="ruleForm.qdlxr" placeholder="请填写渠道联系人"></el-input>
+                                <el-form-item label="渠道联系人" prop="qdlxr">   
+                                      <el-select v-model="ruleForm.qdlxr">
+                                        <el-option
+                                        v-for="item in qdlxr"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">               
+                                        </el-option>
+                                    </el-select> 
+                                    <!-- <el-input v-model="ruleForm.qdlxr" placeholder="请填写渠道联系人"></el-input> -->
                                 </el-form-item>
                             </div>
                             <div class="tc-form-contents tc-form-contents02">
@@ -95,17 +103,62 @@ D<template>
                             </div>
                             <div class="tc-form-contents tc-form-contents02">
                                 <el-form-item label="成交几率" prop="cjjl">    
-                                    <el-slider v-model="ruleForm.cjjl" style="float:left;width:90%;"></el-slider><span style="float:right;margin-top:4px;">111</span>
+                                    <el-slider v-model="ruleForm.cjjl" style="float:left;width:90%;"></el-slider><span style="float:right;margin-top:4px;"></span>
                                 </el-form-item>
                             </div>
                         </div>
                     </div>
-                    <div class="tc-form-tops">
-                        <div class="tc-form-txt">
-                            <span>房源信息</span>
-                        </div>
-                        <div class="tc-form-content" style="overflow:hidden;height: 610px;">
-                            <fymsg></fymsg>
+                    <!-- 房源 -->
+                <div class="tc-form-tops">
+                                    <div class="tc-form-txt">
+                                        <span>房源信息</span>
+                                    </div>
+                     <div class="tc-form-content" style="overflow:hidden;height: 610px;">
+                    <div class="scroll" style="overflow-y: scroll;height: 100%;width: 471px;;">
+                    <el-menu class="el-menu-vertical-demo" background-color="#fff" text-color="rgba(0,0,0,.85)" 
+                    active-background-color="#fff"
+                    :default-active="activeIndex"
+                     @open="handleSelect"
+                     mode="vertical"
+                     unique-opened
+                    >
+                    <template v-for="item  in fyList">
+                        <el-submenu  :index='item.id' :key="item.id">
+                            <template slot="title">
+                                <div style="position: relative;">
+                                    <img :src="item.images" style="height:38px;width:60px">
+                                    <div style="display: inline-block;margin-left:6px;">
+                                        <div style="line-height:22px;">{{item.name}}
+                                       </div>
+                                       <div style="line-height:18px;color: #9fa1a8;font-size: 12px;">{{item.p_name}}{{item.c_name}}{{item.a_name}}</div>
+                                    </div>
+                                </div>
+                            </template>
+                            <el-menu-item-group>
+                                <el-tabs v-model="activeName2" type="card">
+                                    <el-tab-pane label="可招商" name="first" >
+                                        <el-checkbox-group v-model="checkList">
+                                            <div class="checkli" v-for="(item,index) in kzs" :key="index">
+                                                <el-checkbox :label="item.id">
+                                                    <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.name}}</span>
+                                                      <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.level_name}}</span>
+                                                        <span style="display:inline-block;width:46%;">{{item.area}}/m²</span>
+                                                </el-checkbox>
+                                            </div>
+                                        </el-checkbox-group>
+                                    </el-tab-pane>
+                                    <el-tab-pane label="已租" name="second" >
+                                        
+                                    </el-tab-pane>
+                                    <el-tab-pane label="所有房源" name="third" >
+                                        
+                                    </el-tab-pane>
+                                </el-tabs>
+                            </el-menu-item-group>                                     
+                        </el-submenu>   
+                        </template>     
+                    </el-menu>    
+                </div>
                         </div>
                     </div>
                 </div>
@@ -166,7 +219,7 @@ D<template>
                                                 <el-select v-model="ruleForm.dqzls02" style="width: calc(50% - 40px);padding-left: 10px;box-szie:border-box;">
                                                     <el-option
                                                     label="m²"
-                                                    value="01">               
+                                                    value="0">               
                                                     </el-option>
                                                 </el-select>
                                             </el-form-item>
@@ -174,7 +227,7 @@ D<template>
                                                 <el-input v-model="ruleForm.dqzj01" placeholder="请输入当前租金"></el-input>
                                                 <el-select v-model="ruleForm.dqzj02" style="width: calc(50% - 10px);padding-left: 10px;box-szie:border-box;">
                                                     <el-option
-                                                    v-for="item in qwjgdw"
+                                                    v-for="item in userUnit"
                                                     :key="item.id"
                                                     :label="item.label"
                                                     :value="item.value">               
@@ -197,27 +250,32 @@ D<template>
     </div>
 </template>
 <script>
-import fymsg from '@/components/fangyuanAdmin/fymsg'
 import { clientstatusList } from '@/axios/api'  // 获取客户状态
 import { channels } from '@/axios/api' //获取来访渠道列表
 import { industrylet } from '@/axios/api' //行业
+import { getList } from '@/axios/api'  //楼宇列表
+import { roomFy} from '@/axios/api'  //获取房源
+import { client } from '@/axios/api' //添加楼层
+import { broker } from '@/axios/api' //获取经纪人列表
 export default {
     name: 'zsOneDialog',
+    inject: ['reload'],
     components:{
-        fymsg
     },
     data(){
         return{
             dialogFormVisible: false,
             ruleForm:{
                 kh: '',
-                gjr: '111111111',
+                gjr: '',
+                khlxr:'',
+                yjqysj:'',
+                xqsl01:'',
+                xqsl02:'',
                 lfsj: new Date(),
-                khzt: '',
-                lfqd: '',
-                qwjgdw: '03',
-                dqzls02: '01',
-                dqzj02: '01'
+                qwjgdw: '0',
+                dqzls02: 'm2',
+                dqzj02: '0'
             },
             rules: {        
             },
@@ -227,14 +285,27 @@ export default {
             ],
             hy:[],
             xsgd: '显示更多',
+            qdlxr:[],
             qwjgdw:[
-                { label:'元/㎡·天',value:'01' },
-                { label:'元/㎡·月',value:'02' },
-                { label:'元/天',value:'03' },
-                { label:'元/月',value:'04' }
+                { label:'元/㎡·天',value:'0' },
+                { label:'元/㎡·月',value:'1' },
+                { label:'元/天',value:'2' },
+                { label:'元/月',value:'3' }
+            ],
+            userUnit:[
+                { label:'元/㎡·天',value:'0' },
+                { label:'元/㎡·月',value:'1' },
+                { label:'元/天',value:'2' },
+                { label:'元/月',value:'3' }
             ],
             badgeval: '',
-            show2: false
+            show2: false,
+            activeIndex:'0',
+            activeName2: 'first',
+            fyList:[],
+            checkList: [],
+            kzs:[
+            ]
         }
     },
     mounted(){
@@ -260,8 +331,32 @@ export default {
                      that.hy=res.data; 
                 } 
             }) 
+            // 楼宇列表
+               getList({                                                 
+            }).then(res => {
+                if(res.flag == 0){
+                that.fyList=res.data; 
+                } 
+            }) 
+            // 获取经纪人列表
+              broker({                                                 
+            }).then(res => {
+                if(res.flag == 0){
+                that.qdlxr=res.data; 
+                } 
+            }) 
       },
     methods:{
+         handleSelect(key) {
+               //获取房源列表
+           roomFy({ 
+               id:key                                               
+            }).then(res => {
+                if(res.flag == 0){ 
+                this.kzs=res.data; 
+                } 
+            }) 
+            },
         isbh(){
             if(this.xsgd=="显示更多"){
                 this.xsgd="收起";
@@ -271,12 +366,55 @@ export default {
             
         },
         save(formName){
+
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    this.dialogFormVisible=false;
-                } else {
-                    return false;
-                }
+                    // 新建合同
+                     client({   
+                        name:this.ruleForm.kh,
+                        iid:this.ruleForm.hy,
+                        linkman:this.ruleForm.khlxr,
+                        signtime:this.ruleForm.yjqysj,
+                        need_min:this.ruleForm.xqsl01,
+                        need_max:this.ruleForm.xqsl02,
+                        visittime:this.ruleForm.lfsj,
+                        sid:this.ruleForm.khzt,
+                        cid:this.ruleForm.lfqd,
+                        bid:this.ruleForm.qdlxr,
+                        remark:this.ruleForm.bz,
+                        probability:this.ruleForm.cjjl,
+                        region:this.ruleForm.cqs,
+                        price_min:this.ruleForm.qwjg01,
+                        price_max:this.ruleForm.qwjg02,
+                        unit:this.ruleForm.qwjgdw,
+                        user_address:this.ruleForm.dqdz,
+                        user_time:this.ruleForm.dqhtdqr,
+                        rent_num:this.ruleForm.dqzls01,
+                        user_money:this.ruleForm.dqzj01,
+                        user_unit:this.ruleForm.dqzj02,
+                        rid:this.checkList
+
+                    }).then(res => {
+                        console.log(JSON.stringify(res))
+                        if(res.flag == 0){  
+                            // that.lfqd=res.data; 
+                             this.$message({
+                            showClose: true,
+                            message: '新建成功',
+                            type: 'success'
+                            });
+                        this.dialogFormVisible=false;
+                        this.reload();
+                        }else{
+                            this.$message({
+                            showClose: true,
+                            message: res.msg,
+                            type: 'error'
+                            });
+                        }
+                    }) 
+                  
+                } 
             });
         },
         cancel(formName){

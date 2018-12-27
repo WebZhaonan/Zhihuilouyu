@@ -163,7 +163,6 @@
 import Vue from 'vue'
 import { Drawer } from 'iview';
 Vue.component('Drawer', Drawer);
-// import htDialog from '@/components/hetongAdmin/htDialog'
 import fydetailsDialog from '@/components/fangyuanAdmin/fydetailsDialog'
 import fangyuanAdminVue from '../fangyuanAdmin.vue';
 import { roomFy } from '@/axios/api' //获取房源列表

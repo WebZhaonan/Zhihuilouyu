@@ -41,3 +41,9 @@ export const roomEdit = params => post ('http://dev.xibei.co/builadmin/room/edit
 export const clientstatusList = params => get ('/builadmin/clientstatus/list',params)//获取客户状态
 export const channels = params => get ('/builadmin/channels/list',params)//获取客户来访渠道列表
 export const industrylet = params => get ('/builadmin/industrylet/list',params) //行业
+export const client = params => post ('/builadmin/client/index',params) //添加客户
+export const broker = params => get ('/builadmin/broker/list',params) //经纪人列表
+export const Addbroker = params => post ('/builadmin/broker/index',params) //添加经纪人
+export const clientList = params => get ('/builadmin/client/list',params) //客户列表
+export const delectClient = params => get ('/builadmin/client/editstatus',params) //删除客户
+export const editClisent = params => post('/builadmin/client/edit',params) //编辑客户

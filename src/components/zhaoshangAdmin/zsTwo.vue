@@ -12,7 +12,7 @@
         <li v-for="(item,i) in wdqd" :key="i">
           <div class="wdqd-content">
             <div>{{item.name}}</div>
-            <div>{{item.sl}}</div>
+            <div>{{item.status}}</div>
           </div>
         </li>
       </ul>
@@ -24,7 +24,7 @@
 
 <script>
 import zsTwotable from '@/components/zhaoshangAdmin/zsTwotable'
-
+import { channels } from '@/axios/api'
 export default {
   name: 'zsTwo',
   components:{
@@ -34,15 +34,18 @@ export default {
     return {
       value6: '',
       wdqd:[
-        {name:"自由经纪人",sl:"2"},
-        {name:"公司经纪人",sl:"0"},
-        {name:"老客户介绍",sl:"0"},
-        {name:"政府关系",sl:"0"},
-        {name:"股东关系",sl:"0"},
-        {name:"第三方个人",sl:"0"},
-        {name:"同行介绍",sl:"0"}
       ],  
     }
+  },
+  mounted(){
+    let that = this
+     //获取来访渠道
+            channels({                                                 
+            }).then(res => {
+                if(res.flag == 0){  
+                     that.wdqd=res.data; 
+                } 
+            }) 
   },
   methods: {
     

@@ -13,14 +13,31 @@
                         </el-form-item>
                     </div>
                     <div class="tc-form-contents">
-                        <el-form-item label="公司名称" prop="gsmc">
-                            <el-input v-model="ruleForm.gsmc" placeholder="请填写公司名称"></el-input>
-                        </el-form-item>
+                      <el-form-item label="来访渠道" prop="lfqd">    
+                                    <el-select v-model="ruleForm.lfqd" style="width:100%">
+                                        <el-option
+                                        v-for="item in lfqd"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">               
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
                         <el-form-item label="所属城市/区域/商圈" prop="ss">    
-                            <el-input v-model="ruleForm.ss" placeholder="请选择商圈"></el-input>
+                              <el-select v-model="ruleForm.ss" style="width:100%">
+                                        <el-option
+                                        v-for="item in ss"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">               
+                                        </el-option>
+                                    </el-select>
                         </el-form-item>
                     </div>
                     <div class="tc-form-contents">
+                        <el-form-item label="邮箱" prop="email">
+                            <el-input v-model="ruleForm.email" placeholder="请填写邮箱"></el-input>
+                        </el-form-item>
                         <el-form-item label="公司名称" prop="gsmc">
                             <el-input v-model="ruleForm.gsmc" placeholder="请填写公司名称"></el-input>
                         </el-form-item>
@@ -30,7 +47,7 @@
                             <el-input
                             type="textarea"
                             :rows="4"
-                            placeholder="请填写公司名称"
+                            placeholder="请填写地址"
                             v-model="ruleForm.textarea">
                             </el-input>
                         </el-form-item>
@@ -60,8 +77,11 @@
     </div>
 </template>
 <script>
+import { Addbroker } from '@/axios/api' //添加经纪人
+import { channels } from '@/axios/api'
 export default {
     name: 'zsTwoDialog',
+    inject: ['reload'],
     data(){
         return{
             dialogFormVisible: false,
@@ -76,14 +96,45 @@ export default {
                 dh: [
                     { required: true, message: '公司电话不能为空', trigger: 'change' }
                 ]
-            }
+            },
+            lfqd:[],
+            ss:[
+            ]
         }
+    },
+    mounted(){
+         //获取来访渠道
+            channels({                                                 
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.lfqd=res.data; 
+                } 
+            })
     },
     methods:{
         save(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    this.dialogVisible=true; 
+                    // this.dialogVisible=true; 
+                    Addbroker({    
+                    name:this.ruleForm.xm,
+                    tel:this.ruleForm.dh,
+                    bid:this.ruleForm.lfqd,
+                    buid:'1',
+                    email:this.ruleForm.email,
+                    company:this.ruleForm.gsmc,
+                    address:this.ruleForm.textarea
+                    }).then(res => {
+                if(res.flag == 0){ 
+                       this.$message({
+                            showClose: true,
+                            message: '新建成功',
+                            type: 'success'
+                            });
+                        this.dialogFormVisible=false;
+                        this.reload(); 
+                } 
+            }) 
                 } else {    
                     return false;
                 }

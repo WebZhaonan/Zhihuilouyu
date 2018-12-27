@@ -53,7 +53,7 @@ export default {
     background-color: #fff;
     border-bottom: 1px solid #edf0f2;
     position: relative;
-    z-index: 999;
+    z-index: 1;
 }    
 .zs .tabs .tab{
     float: left;
