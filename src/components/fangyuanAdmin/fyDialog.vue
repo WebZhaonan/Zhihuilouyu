@@ -1,6 +1,10 @@
 <template>     
     <div> 
-        <el-dialog title="新增房源" :visible.sync="visible" class="fy-dialog" width="700px" top="100px" center :before-close="modalClose" :append-to-body="true">               
+        <el-dialog title="新增房源" :visible.sync="visible" class="fy-dialog" width="700px" top="100px" center 
+        :before-close="modalClose" 
+        :append-to-body="true"
+        :close-on-click-modal="false"
+        >               
             <div class="empty"></div> 
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
                 <div class="fyform">

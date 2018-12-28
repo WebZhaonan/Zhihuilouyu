@@ -186,6 +186,7 @@ export default {
          roomFy({                                                 
             }).then(res => {
                 if(res.flag == 0){ 
+
                      that.tableData=res.data; 
                 } 
             }) 

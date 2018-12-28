@@ -70,7 +70,7 @@ export default {
           children: [
                 { linkUrl1: '/fyTag',  name: '房源管理'}, //内部管理
                 {linkUrl1:'/htTag',name:'合同标签'},   //合同标签
-                {linkUrl1:'/Termination',name:'退租原因管理'},   // 退租原因管理
+                // {linkUrl1:'/Termination',name:'退租原因管理'},   // 退租原因管理
                 {linkUrl1:'/CostTypeTable',name:'费用类型管理'},    // 费用类型管理
                 {linkUrl1:'/tenantTag',name:'租客标签'},     //租客标签
                {linkUrl1:'/customIndustry',name:'行业管理'}       //行业管理
@@ -85,12 +85,6 @@ export default {
       }
     },
     created(){
-        // let that=this;
-        // that.menuList.forEach((event)=>{
-        //     //   that.openeds.push(event.linkUrl)
-        // })
-       
-         
         this.active =  this.$route.path
     },
     mounted () {

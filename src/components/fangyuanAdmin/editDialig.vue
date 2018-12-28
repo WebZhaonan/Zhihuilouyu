@@ -4,7 +4,7 @@
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
                 <div class="fyform">
                     <el-form-item label="选择楼宇">
-                        <el-select v-model="ruleForm.ly" @change="getLc">
+                        <el-select v-model="info.bid" ref="ly" disabled>
                             <el-option
                             v-for="item in xzly"
                             :key="item.name"
@@ -20,8 +20,8 @@
                     <div class="fyform02-txt">房源信息</div>
                     <div class="fyform-content">
                         <div class="fyform-contents">
-                            <el-form-item label="选择楼层">
-                                <el-select v-model="ruleForm.lc" placeholder="请选择楼层" no-data-text="没有楼层呀">
+                            <el-form-item label="选择楼层" prop="lc">
+                                <el-select v-model="ruleForm.lc"  placeholder="请选择楼层" no-data-text="没有楼层呀">
                                     <el-option
                                     v-for="item in xzlc"
                                     :key="item.id"
@@ -31,15 +31,15 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="房号" prop="fh">    
-                                <el-input v-model="ruleForm.fh" placeholder="请输入房号"></el-input>
+                                <el-input v-model="info.room_number" ref="fh" placeholder="请输入房号"></el-input>
                             </el-form-item>
                         </div>
                         <div class="fyform-contents">
                             <el-form-item label="面积"  prop="mj">
-                                <el-input v-model="ruleForm.mj" placeholder="请输入面积"></el-input>
+                                <el-input v-model="info.area" ref="mj" placeholder="请输入面积"></el-input>
                             </el-form-item>
                             <el-form-item label="装修">    
-                                <el-select v-model="ruleForm.zx" placeholder="装修选择">
+                                <el-select v-model="info.adorn_type" ref="zx" placeholder="装修选择">
                                     <el-option
                                     v-for="item in zx"
                                     :key="item.value"
@@ -58,7 +58,7 @@
                     <div class="fyform-content fyform-content01">
                           <div class="fyform-contents">
                             <el-form-item label="招商状态">
-                                <el-select v-model="ruleForm.zszt">
+                                <el-select v-model="info.let_type" ref="zszt">
                                     <el-option
                                     v-for="item in zszt"
                                     :key="item.value"
@@ -69,10 +69,10 @@
                             </el-form-item>
                             <div class="fyform-contents-right">
                                 <el-form-item label="预租单价">    
-                                    <el-input v-model="ruleForm.yzdj" placeholder="请输入预租单价"></el-input>
+                                    <el-input v-model="info.price" ref="yzdj" placeholder="请输入预租单价"></el-input>
                                 </el-form-item>
                                 <el-form-item label="房号">    
-                                    <el-select v-model="ruleForm.dj">
+                                    <el-select v-model="info.unit" ref="dj">
                                         <el-option label="元/平米·天" value="0"></el-option>
                                         <el-option label="元/平米·月" value="1"></el-option>
                                         <el-option label="元/天" value="2"></el-option>
@@ -157,6 +157,7 @@ export default {
             cities: [],
             xzly: [],
             xzlc:[],
+            info:[],
             zx:[
                 {
                     label: '不限',
@@ -186,12 +187,9 @@ export default {
                 }
             ],
             rules: {
-                fh: [
-                    { required: true, message: '请填写房号', trigger: 'change' }
+                  lc: [
+                    { required: true, message: '请选择楼层', trigger: 'change' }
                 ],
-                mj: [
-                    { required: true, message: '请输入面积', trigger: 'change'}
-                ]
             }
         }
     },
@@ -202,19 +200,27 @@ export default {
             id:this.rowId                                                 
             }).then(res => {
                 if(res.flag == 0){  
-                this.ruleForm.ly = res.data[0].bid;
-                this.ruleForm.fh = res.data[0].room_number;
+                // this.ruleForm.ly = res.data[0].bid;
+                // this.ruleForm.fh = res.data[0].room_number;
                 this.ruleForm.lc = res.data[0].lid;
-                this.ruleForm.mj = res.data[0].area;
-                this.ruleForm.zx = res.data[0].adorn_type;
-                this.ruleForm.yzdj = res.data[0].price;
-                this.ruleForm.dj = res.data[0].unit;
-                this.ruleForm.zszt = res.data[0].let_type;
+                // this.ruleForm.mj = res.data[0].area;
+                // this.ruleForm.zx = res.data[0].adorn_type;
+                // this.ruleForm.yzdj = res.data[0].price;
+                // this.ruleForm.dj = res.data[0].unit;
+                // this.ruleForm.zszt = res.data[0].let_type
+                    that.info = res.data[0]
                     let checkArr = []
                     for (const key in res.data[0].label) {
                         checkArr.push(res.data[0].label[key].id);
                     }
                  this.ruleForm.checkboxGroup1 = checkArr;
+                    buildlevelList({ 
+                    id:res.data[0].bid                                                
+                    }).then(res => {
+                        if(res.flag == 0){ 
+                            this.xzlc=res.data; 
+                        } 
+                    })  
                 } 
             }) 
         // 获取楼宇列表
@@ -233,34 +239,20 @@ export default {
             }) 
     },
     methods:{
-        getLc(){
-            this.ruleForm.lc=''
-           //获取指定楼层列表
-           buildlevelList({ 
-               id:this.ruleForm.ly                                                
-            }).then(res => {
-                if(res.flag == 0){ 
-                     this.xzlc=res.data; 
-                    if(this.xzlc.length==0){
-                    this.$message.error('该楼宇未创建楼层，无法创建房源，请先创建楼层');
-                    }
-                } 
-            })  
-        },
         submitForm01(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     //编辑房源
                       roomEdit({
                           id:this.rowId,
-                          bid:this.ruleForm.ly,
+                          bid:this.$refs.ly.value,
                           lid:this.ruleForm.lc,
-                          room_number:this.ruleForm.fh,
-                          area:this.ruleForm.mj,
-                          adorn_type:this.ruleForm.zx,
-                          let_type:this.ruleForm.zszt,
-                          price:this.ruleForm.yzdj,
-                          unit:this.ruleForm.dj,
+                          room_number:this.$refs.fh.value,
+                          area:this.$refs.mj.value,
+                          adorn_type:this.$refs.zx.value,
+                          let_type:this.$refs.zszt.value,
+                          price:this.$refs.yzdj.value,
+                          unit:this.$refs.dj.value,
                           tid:this.ruleForm.checkboxGroup1                                              
                         }).then(res => {
                             if(res.flag == 0){   

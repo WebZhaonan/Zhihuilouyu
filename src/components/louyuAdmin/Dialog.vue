@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-button class="ly-button" icon="el-icon-plus" @click="dialogFormVisible = true">楼宇</el-button>
-        <el-dialog title="新建楼宇" :visible.sync="dialogFormVisible" class="ly-dialog" width="700px" top="100px" center @close="gb">               
+        <el-dialog title="新建楼宇" :visible.sync="dialogFormVisible" :close-on-click-modal="false" class="ly-dialog" width="700px" top="100px" center @close="gb">               
             <el-menu class="el-menu-demo" mode="horizontal">
                 <el-menu-item v-for="(item,index) in lyformmsg" :key="index" :index="item.sub" :class="{itemtab:index === selectIndex}">{{item.msg}}</el-menu-item>
             </el-menu>

@@ -1,5 +1,9 @@
 <template>
-    <el-dialog title="编辑客户" :visible.sync="visible" class="zsOne-dialog" width="1000px" top="100px" center :before-close="modalClose" :append-to-body="true">               
+    <el-dialog title="编辑客户" :visible.sync="visible" class="zsOne-dialog" width="1000px" top="100px" 
+    center :before-close="modalClose" 
+    :append-to-body="true"
+    :close-on-click-modal="false"
+    >               
         <el-form :model="ruleForm" class="demo-ruleForm" :rules="rules" ref="ruleForm"> 
             <div class="tc-form-top">
                 <div class="tc-form-tops">
@@ -144,8 +148,8 @@
                                         <el-checkbox-group v-model="checkList">
                                             <div class="checkli" v-for="(item,index) in kzs" :key="index">
                                                 <el-checkbox :label="item.id">
-                                                    <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.name}}</span>
-                                                      <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.level_name}}</span>
+                                                    <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.level_name}}</span>
+                                                      <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.room_number}}号</span>
                                                         <span style="display:inline-block;width:46%;">{{item.area}}/m²</span>
                                                 </el-checkbox>
                                             </div>
@@ -264,7 +268,7 @@ import { clientstatusList } from '@/axios/api'  // 获取客户状态
 import { channels } from '@/axios/api' //获取来访渠道列表
 import { broker } from '@/axios/api' //获取经纪人列表
 import { getList } from '@/axios/api'  //楼宇列表
-import { roomFy} from '@/axios/api'  //获取房源
+import { housinglist } from '@/axios/api' //客户对话框房源列表  
 import { clientList } from '@/axios/api' //客户详情
 import { editClisent } from '@/axios/api' //编辑客户
 export default {
@@ -381,8 +385,8 @@ export default {
     methods:{  
            handleSelect(key) {
                //获取房源列表
-           roomFy({ 
-               id:key                                               
+           housinglist({ 
+               id:'['+ key +']'                                               
             }).then(res => {
                 if(res.flag == 0){ 
                 this.kzs=res.data; 

@@ -1,7 +1,7 @@
 <template>
     <div class="bj">
         <el-button type="text" @click="dialogFormVisible = true"><i class="fa fa-pencil" aria-hidden="true"></i>编辑</el-button>
-        <el-dialog title="编辑楼宇" :visible.sync="dialogFormVisible" class="bj-dialog" width="700px" top="100px" center :append-to-body="isbody"  @close="gb">               
+        <el-dialog title="编辑楼宇" :visible.sync="dialogFormVisible" :close-on-click-modal="false" class="bj-dialog" width="700px" top="100px" center :append-to-body="isbody"  @close="gb">               
             <el-menu class="el-menu-demo" :default-active="activeIndex" mode="horizontal">
                 <el-menu-item v-for="(item,i) in lyformmsg" :key="i" :index="item.sub" @click="dj(i)" :class="{itemtab:i === selectIndex}">{{item.msg}}</el-menu-item>
             </el-menu>

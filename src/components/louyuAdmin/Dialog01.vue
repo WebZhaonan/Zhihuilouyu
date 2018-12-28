@@ -267,6 +267,20 @@ export default {
                  this.ruleForm.khh = res.data[0].more_bank;
                  this.ruleForm.khxmc = res.data[0].more_bank_number;
                  this.ruleForm.tzdz = res.data[0].more_notice_address;
+                   city({                    
+                        adcode:res.data[0].province                           
+                    }).then(res => {
+                        if(res.flag == 0){  
+                            this.city = res.data
+                        } 
+                    }) 
+                      area({                    
+                 adcode:res.data[0].city                             
+                    }).then(res => {
+                        if(res.flag == 0){  
+                            this.area = res.data
+                        } 
+                    })  
                 } 
             }) 
       }
@@ -301,6 +315,8 @@ export default {
           this.show= !this.show;
         },
         provinceAd(){
+            this.ruleForm.chengshi="";
+            this.ruleForm.quyu="";
               city({                    
                  adcode:this.ruleForm.shengfen                           
             }).then(res => {
@@ -326,7 +342,6 @@ export default {
           this.$refs[formName].validate((valid) => {
           if (valid) {
              if(this.rowId){
-                //  alert(this.ruleForm.shengfen)
             editLy({                    
              id:this.rowId,
              name:this.ruleForm.lymc,

@@ -9,7 +9,7 @@
   <el-button class="search-button" icon="el-icon-plus" plain @click="open">租客</el-button>
   <zkDialog ref="openOrder" v-if="openOrderVisible" :visible.sync="openOrderVisible"></zkDialog>
   </div>
-    <div class="zkTag">
+    <!-- <div class="zkTag">
         <span>选择大楼：</span>
     <el-tag
     v-for="tag in tags"
@@ -19,7 +19,7 @@
     {{tag.name}}
   </el-tag>
      <span class="zkclose">清除选项</span>
-  </div>
+  </div> -->
 </div>    
 </template>
 <script>

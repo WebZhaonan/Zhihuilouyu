@@ -58,7 +58,9 @@
     <el-menu style="background-color:#252834">
       <!-- 楼宇列表 -->
       <div class="Llist">
-        <li v-for="(item, index) in items" :key="index"   v-on:click="navClickEvent(item)" class='list___2Hba-li' :class="item.label ? 'label' : ''">
+         <!-- v-on:click="navClickEvent(item)"
+          :class="item.label ? 'label' : ''" -->
+        <li v-for="(item, index) in items" :key="index"   class='list___2Hba-li'>
           <img :src="item.images" alt="">
               <div class="L-tex"> 
               <span>{{item.name}}</span><br>
@@ -231,13 +233,13 @@ export default {
         this.isSelect = name;
       },
       // 添加label类名
-       navClickEvent:function(item){
-         if(item.label){
-                    Vue.set(item,'label',false);  
-                }else{
-                    Vue.set(item,'label',true);
-                }
-    },
+    //    navClickEvent:function(item){
+    //      if(item.label){
+    //                 Vue.set(item,'label',false);  
+    //             }else{
+    //                 Vue.set(item,'label',true);
+    //             }
+    // },
         // 楼宇集合添加class 
          addClass:function(index1,seIid){
         this.current = index1  //集合加calss

@@ -1,7 +1,10 @@
 <template>
     <div class="zsOneDialog">
         <el-button class="button-dialog" icon="el-icon-plus" plain @click="dialogFormVisible = true">客户</el-button>
-        <el-dialog title="新建客户" :visible.sync="dialogFormVisible" class="zsOne-dialog" width="1000px" top="100px" center append-to-body>               
+        <el-dialog title="新建客户" :visible.sync="dialogFormVisible" class="zsOne-dialog" width="1000px" top="100px" center 
+        append-to-body
+        :close-on-click-modal="false"
+        >               
             <el-form :model="ruleForm" class="demo-ruleForm" :rules="rules" ref="ruleForm" hide-required-asterisk> 
                 <div class="tc-form-top">
                     <div class="tc-form-tops">
@@ -140,8 +143,8 @@
                                         <el-checkbox-group v-model="checkList">
                                             <div class="checkli" v-for="(item,index) in kzs" :key="index">
                                                 <el-checkbox :label="item.id">
-                                                    <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.name}}</span>
-                                                      <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.level_name}}</span>
+                                                    <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.level_name}}</span>
+                                                      <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.room_number}}号</span>
                                                         <span style="display:inline-block;width:46%;">{{item.area}}/m²</span>
                                                 </el-checkbox>
                                             </div>
@@ -254,7 +257,7 @@ import { clientstatusList } from '@/axios/api'  // 获取客户状态
 import { channels } from '@/axios/api' //获取来访渠道列表
 import { industrylet } from '@/axios/api' //行业
 import { getList } from '@/axios/api'  //楼宇列表
-import { roomFy} from '@/axios/api'  //获取房源
+import { housinglist } from '@/axios/api' //客户对话框房源列表  
 import { client } from '@/axios/api' //添加楼层
 import { broker } from '@/axios/api' //获取经纪人列表
 export default {
@@ -348,9 +351,9 @@ export default {
       },
     methods:{
          handleSelect(key) {
-               //获取房源列表
-           roomFy({ 
-               id:key                                               
+            //获取房源列表
+           housinglist({ 
+               id:'['+ key +']'                                               
             }).then(res => {
                 if(res.flag == 0){ 
                 this.kzs=res.data; 
@@ -395,7 +398,6 @@ export default {
                         rid:this.checkList
 
                     }).then(res => {
-                        console.log(JSON.stringify(res))
                         if(res.flag == 0){  
                             // that.lfqd=res.data; 
                              this.$message({
