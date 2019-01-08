@@ -69,7 +69,6 @@ export default {
             }) 
         },
         // 多选楼宇
-          // 多选
         sayNode1(arrId) {
         var str = arrId;
         var arr = str.split(",");// 在每个逗号(,)处进行分解。
