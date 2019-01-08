@@ -1,7 +1,7 @@
 <template>
     <div class="zs-table">
       <div class="table-header">
-          <div>可招商</div>
+          <div>客户管理</div>
           <i class="el-icon-more"></i>
       </div>
       <el-table

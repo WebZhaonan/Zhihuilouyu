@@ -10,19 +10,19 @@
                 </el-menu>
                 <div class="grid-content bg-purple" style="text-align:right">
                     <!--问卷调查 -->
-                    <el-dropdown>
+                    <!-- <el-dropdown>
                         <i class="el-icon-document" style="margin-right: 30px"></i>
                         <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>问卷调查</el-dropdown-item>
                         </el-dropdown-menu>
-                    </el-dropdown>
+                    </el-dropdown> -->
                     <!--下载中心-->
-                    <el-dropdown>
+                    <!-- <el-dropdown>
                         <i class="el-icon-download" style="margin-right: 30px"></i>
                         <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>下载中心</el-dropdown-item>
                         </el-dropdown-menu>
-                    </el-dropdown>
+                    </el-dropdown> -->
                     <!-- 个人中心 -->
                     <el-dropdown>
                         <i class="fa fa-user-o" style="margin-right: 30px"></i>
@@ -145,7 +145,7 @@ export default {
             activeIndex01:'',
             navList:[
                 {name:'/',navItem:'集合'},
-                {name:'/page1',navItem:'工作流'},
+                // {name:'/page1',navItem:'工作流'},
             ],
             activeIndex02:'/fymanage',
             List_nav:[

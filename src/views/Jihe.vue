@@ -16,6 +16,7 @@
 <script>
 export default {
     name:'Jh',
+    inject: ['reload'],
      //父组件通过props属性传递进来的数据
      computed:{
         items (){
@@ -44,9 +45,49 @@ export default {
        selectNav (name) {
         this.activeIndex = name;
       },
-        say(){
-           this.$refs.childrenNode.sayNode();
-          }
+    //   多选
+        say(arrId){
+            if(this.activeIndex =="/louyuAdmin"){
+                this.$refs.childrenNode.sayNode(arrId);
+            }else if(this.activeIndex =="/fangyuanAdmin"){
+                this.$refs.childrenNode.sayNode1(arrId);
+            }else if(this.activeIndex =="/Zs"){
+                this.$refs.childrenNode.sayNode2(arrId);
+            }else if(this.activeIndex =="/Zk"){
+                this.$refs.childrenNode.sayNode3(arrId);
+            }else if(this.activeIndex =="/Ht"){
+                this.$refs.childrenNode.sayNode4(arrId);
+            }
+            
+          },
+        //   取消
+        delectItems(info){
+        if(this.activeIndex =="/louyuAdmin"){
+            this.$refs.childrenNode.delectItems(info);
+        }else if(this.activeIndex =="/fangyuanAdmin"){
+            this.$refs.childrenNode.delectItems1(info);
+        }else if(this.activeIndex =="/Zs"){
+             this.$refs.childrenNode.delectItems2(info);
+        }else if(this.activeIndex =="/Zk"){
+                this.$refs.childrenNode.delectItems3(info);
+        }else if(this.activeIndex =="/Ht"){
+                this.$refs.childrenNode.delectItems4(info);
+        }
+        },
+        // 选中
+        chageItems(info){
+             if(this.activeIndex =="/louyuAdmin"){
+                 this.$refs.childrenNode.Lyitems(info);
+             }else if(this.activeIndex =="/fangyuanAdmin"){
+                 this.$refs.childrenNode.fyitems(info);
+             }else if(this.activeIndex =="/Zs"){
+                 this.$refs.childrenNode.zsitems(info);
+             }else if(this.activeIndex =="/Zk"){
+                 this.$refs.childrenNode.zkitems(info);
+             }else if(this.activeIndex =="/Ht"){
+                 this.$refs.childrenNode.htitems(info);
+             }
+        },
     }
 }
 </script>

@@ -1,21 +1,40 @@
 <template>
 <div>
   <div class="zsTwo">
-    <el-input
+    <!-- <el-input
       placeholder="搜索房号"
       prefix-icon="el-icon-search">
-    </el-input>
+    </el-input> -->
     <div class="xzdl">
     </div>
     <div class="wdqd">
-      <ul>
-        <li v-for="(item,i) in wdqd" :key="i">
-          <div class="wdqd-content">
-            <div>{{item.name}}</div>
-            <div>{{item.status}}</div>
-          </div>
+   <ul class="khgl">
+        <li>
+            <div class="khgl-content">
+                <div>上门</div>
+                <div>{{info.sm}}</div>
+            </div>
         </li>
-      </ul>
+        <li>
+            <div class="khgl-content">
+                <div>自由经纪人</div>
+                <div>{{info.zy}}</div>
+            </div>
+        </li>
+        <li>
+            <div class="khgl-content">
+                <div>公司经纪人</div>
+                <div>{{info.gs}}</div>
+            </div>
+        </li>
+        <li>
+            <div class="khgl-content">
+                <div>熟人推荐</div>
+                <div>{{info.sr}}</div>
+            </div>
+        </li>
+ 
+    </ul> 
     </div>  
   </div>
   <zsTwotable></zsTwotable>
@@ -24,7 +43,7 @@
 
 <script>
 import zsTwotable from '@/components/zhaoshangAdmin/zsTwotable'
-import { channels } from '@/axios/api'
+import { qdcensus } from '@/axios/api'
 export default {
   name: 'zsTwo',
   components:{
@@ -33,17 +52,17 @@ export default {
   data () {
     return {
       value6: '',
-      wdqd:[
+      info:[
       ],  
     }
   },
   mounted(){
     let that = this
      //获取来访渠道
-            channels({                                                 
+            qdcensus({                                                 
             }).then(res => {
                 if(res.flag == 0){  
-                     that.wdqd=res.data; 
+                     that.info=res.data; 
                 } 
             }) 
   },

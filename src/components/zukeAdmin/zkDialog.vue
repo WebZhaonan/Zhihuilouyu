@@ -327,19 +327,19 @@ export default {
             this.$store.state.dateilsid = 0;
         },
         save(formName) {  
+            let arr = [];
+            for (const key in this.cities) {
+                var citiesid = this.cities[key].id;
+                var citiesname = this.cities[key].name;
+                for (const key in this.ruleForm.checkboxGroup1) {
+                    if (citiesname==this.ruleForm.checkboxGroup1[key]) {
+                        arr.push(citiesid)
+                    }
+                }
+            }
             this.$refs[formName].validate((valid) => {
                 if (valid) {    
-                    if(this.$store.state.dateilsid !== 0){
-                        let arr = [];
-                        for (const key in this.cities) {
-                            var citiesid = this.cities[key].id;
-                            var citiesname = this.cities[key].name;
-                            for (const key in this.ruleForm.checkboxGroup1) {
-                                if (citiesname==this.ruleForm.checkboxGroup1[key]) {
-                                    arr.push(citiesid)
-                                }
-                            }
-                        }
+                    if(this.$store.state.dateilsid !== 0){                     
                         editcustomer({
                             id: this.$store.state.dateilsid,
                             name: this.ruleForm.zkmc, 
@@ -388,7 +388,7 @@ export default {
                                 });
                             }
                         })   
-                    }else{
+                    }else{                    
                         // 新建租客
                         tenants({         
                             name: this.ruleForm.zkmc, 
@@ -421,7 +421,7 @@ export default {
                             industry: this.ruleForm.sshy,
                             raddress: this.ruleForm.zcdz,
                             scope: this.ruleForm.jyfw,
-                            lable: this.ruleForm.checkboxGroup1
+                            lable: arr
                         }).then(res => {
                             if(res.flag == 0){  
                                 this.$message({

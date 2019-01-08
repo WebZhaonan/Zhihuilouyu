@@ -141,7 +141,8 @@ export default {
                     name:editLcs[i].name,
                     id:editLcs[i].id
                 })
-                buildEdit({
+            }
+                           buildEdit({
                  bid:bid,
                  name:editArr                                                
             }).then(res => {
@@ -154,8 +155,6 @@ export default {
                    this.$emit("fsval",this.selectIndex);
                 } 
             })
-            }
-            console.log(JSON.stringify(editArr))
             }else{
         // 添加路层点击方法
         let bid = JSON.parse(sessionStorage.getItem('bid'));

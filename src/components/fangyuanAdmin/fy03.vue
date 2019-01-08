@@ -122,7 +122,10 @@ export default {
             }) 
   },
   methods: {
-
+     // 搜索
+     searchCh(info){
+       this.tableData = info
+     },
   }
 }
 </script>

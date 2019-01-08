@@ -6,7 +6,7 @@
                     <div class="li-top">
                         <span>楼宇数量</span>                                      
                     </div>
-                    <div class="li-bottom">10</div>
+                    <div class="li-bottom">{{info.sumbuil}}</div>
                 </div>
             </div>
             <div class="li-right"></div>
@@ -22,7 +22,7 @@
                                 <i class="fa fa-question-circle-o" aria-hidden="true"></i>
                         </el-tooltip>                                     
                     </div>
-                    <div class="li-bottom">169,884.26</div>
+                    <div class="li-bottom">{{info.sumarea}}</div>
                 </div>
             </div>
             <div class="li-right"></div>
@@ -38,7 +38,7 @@
                                 <i class="fa fa-question-circle-o" aria-hidden="true"></i>
                         </el-tooltip>                                     
                     </div>
-                    <div class="li-bottom">6,080.00</div>
+                    <div class="li-bottom">{{info.sumk}}</div>
                 </div>
             </div>
             <div class="li-right"></div>
@@ -64,7 +64,7 @@
                     <div class="li-top">
                         <span>在租合同份数</span>                                      
                     </div>
-                    <div class="li-bottom">80</div>
+                    <div class="li-bottom">{{info.sumb}}</div>
                 </div>
             </div>
             <div class="li-right"></div>
@@ -80,12 +80,12 @@
                                 <i class="fa fa-question-circle-o" aria-hidden="true"></i>
                         </el-tooltip>                                     
                     </div>
-                    <div class="li-bottom">120,052.55</div>
+                    <div class="li-bottom">{{info.sumc}}</div>
                 </div>
             </div>
             <div class="li-right"></div>
         </li>
-        <li>
+        <!-- <li>
             <div class="li-left">
                 <div style="padding-right: 14px;">
                     <div class="li-top">
@@ -100,12 +100,28 @@
                 </div>
             </div>
             <div class="li-right"></div>
-        </li>              
+        </li>               -->
     </ul>
 </template>
 <script>
+import { Lycensus } from '@/axios/api'  //楼宇统计
 export default {
-    name: 'lyMsg'
+    name: 'lyMsg',
+    data(){
+        return{
+            info:[]
+        }
+    },
+    mounted(){
+        let that = this
+         //楼宇统计
+             Lycensus({                                                  
+            }).then(res => {
+                if(res.flag == 0){  
+                that.info = res.data
+                } 
+            }) 
+    }
 }
 </script>
 <style scoped>

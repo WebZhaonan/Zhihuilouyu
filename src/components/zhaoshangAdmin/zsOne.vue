@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="zsOne">
-      <div class="block">
+      <!-- <div class="block">
         <ul>
           <li>今日</li>
           <li>昨日</li>
@@ -22,10 +22,41 @@
           placeholder="搜索房号"
           prefix-icon="el-icon-search">
         </el-input>
-      </div>
+      </div> -->
       <div class="xzdl">
       </div>
-      <zsMsg></zsMsg>  
+      <ul class="khgl">
+        <li>
+            <div class="khgl-content">
+                <div>初次接触</div>
+                <div>{{info.cc}}</div>
+            </div>
+        </li>
+        <li>
+            <div class="khgl-content">
+                <div>潜在客户</div>
+                <div>{{info.qz}}</div>
+            </div>
+        </li>
+        <li>
+            <div class="khgl-content">
+                <div>意向客户</div>
+                <div>{{info.yx}}</div>
+            </div>
+        </li>
+        <li>
+            <div class="khgl-content">
+                <div>成交客户</div>
+                <div>{{info.cj}}</div>
+            </div>
+        </li>
+        <li>
+            <div class="khgl-content">
+                <div>流失客户</div>
+                <div>{{info.ls}}</div>
+            </div>
+        </li>
+    </ul> 
     </div>
     <zsOnetable></zsOnetable>
   </div>
@@ -33,25 +64,64 @@
 </template>
 
 <script>
-import zsMsg from '@/components/zhlyMsg/zsMsg'
 import zsOnetable from '@/components/zhaoshangAdmin/zsOnetable'
-
+import { Khcensus } from '@/axios/api' // 客户管理统计
 export default {
   name: 'zsOne',
   components:{
-    zsMsg,zsOnetable
+    zsOnetable
   },
   data () {
     return {
-      value6: ''
+      value6: '',
+      info:[]
     }
   },
+  mounted(){
+    let that = this
+      // 客户管理统计
+             Khcensus({                                                  
+            }).then(res => {
+                if(res.flag == 0){  
+                that.info= res.data
+                } 
+            }) 
+  },
   methods: {
-    
+      
   }
 }
 </script>
 <style>
+.khgl{
+  padding: 20px 30px;
+  background: #fff;
+}
+.khgl li{
+  padding-left: 20px;
+  display: inline-block;
+  min-width: 120px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.khgl .khgl-content{
+  font-size: 12px;
+  margin: 5px 0;
+  padding-right: 10px;
+  border-right: 1px solid rgb(224, 224, 224);
+}
+.khgl .khgl-content div:first-child{
+  width: 100%;
+  min-height: 22px;
+  color: #7085a1;
+}
+.khgl .khgl-content div:last-child{
+  width: 100%;
+  color: #353b4b;
+  min-height: 36px;
+  line-height: 36px;
+  font-size: 24px;
+} 
 .zsOne{
   width: 100%;
   background-color: #fff;

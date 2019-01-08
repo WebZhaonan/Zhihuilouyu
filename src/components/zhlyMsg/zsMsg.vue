@@ -39,6 +39,7 @@
     </ul>
 </template>
 <script>
+
 export default {
     name: 'zsMsg'
 }

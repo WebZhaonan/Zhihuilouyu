@@ -6,14 +6,19 @@
                 <el-button plain class="fy-button" icon="el-icon-plus" @click="dialogFormVisible = true">房源</el-button>
                 <fyDialog ref="openOrder" v-if="dialogFormVisible" :visible.sync="dialogFormVisible"></fyDialog>
             </el-menu>
-            <el-input
-                class="fy-input"
-                placeholder="搜索房号"
-                prefix-icon="el-icon-search">
-            </el-input>
+              <el-input 
+                    placeholder="搜索房号"
+                    v-model="input21"
+                    class="ly-input"
+                    @keyup.enter.native="search"
+                >
+                    <template slot="prepend" style="background-color:none;border:none">
+                        <i class="el-icon-search" @click="search"></i>
+                    </template>
+                </el-input>
             <fyMsg></fyMsg>
         </div>
-        <fy01 :is="currentTab" keep-alive></fy01> 
+        <fy01 :is="currentTab" keep-alive   ref="fy01"></fy01> 
     </div> 
       
 </template>
@@ -23,22 +28,74 @@ import fy01 from '@/components/fangyuanAdmin/fy01'
 import fy02 from '@/components/fangyuanAdmin/fy02'
 import fy03 from '@/components/fangyuanAdmin/fy03'
 import fyDialog from '@/components/fangyuanAdmin/fyDialog'
-
+import { Fysearch } from '@/axios/api'  //房源搜索
+import { Lycheck } from '@/axios/api' //左侧单选
+import { Lycheckgroup } from '@/axios/api' //左侧多选
 export default {
     name:'fangyuanAdmin',
+    inject: ['reload'],
     data(){
         return {
             isselect: 'fy01',
+            input21:'',
             fy_nav:[
                 {sub:'fy01',navItem:'可招商'},
                 {sub:'fy02',navItem:'已租房源'},
                 {sub:'fy03',navItem:'所有房源'}
             ],
             currentTab: 'fy01',
-            dialogFormVisible:false 
+            dialogFormVisible:false,
         }
     },
     methods: {
+        fyitems(info){
+              // 点击左侧，右侧渲染。单选
+             Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                     this.reload(); 
+                } 
+            }) 
+        },
+            // 取消楼宇单个
+        delectItems1(info){
+            Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.reload(); 
+                } 
+            }) 
+        },
+        // 多选楼宇
+          // 多选
+        sayNode1(arrId) {
+        var str = arrId;
+        var arr = str.split(",");// 在每个逗号(,)处进行分解。
+          Lycheckgroup({      
+            id:arr                                           
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.reload();
+                } 
+            }) 
+        },
+        search(){
+              Fysearch({   
+            name: this.input21                                              
+            }).then(res => {
+              
+                if(res.flag == 0){  
+                // this.loading = false
+                //  this.items = res.data
+                this.$refs.fy01.searchCh(res.data)
+                }else{
+                this.$message.error(res.msg)
+                this.reload()
+                } 
+            }) 
+        },
         fytabs(sub){
             this.currentTab=sub;
         }
@@ -49,6 +106,21 @@ export default {
 }
 </script>
 <style>
+.fy .ly-input{
+    width: 100%;
+     border-bottom: 1px solid #edf0f2
+}
+.fy .el-input-group__prepend{
+    background: #fff !important;
+    border: none;
+    cursor: pointer;
+}
+.fy .ly-input input {
+    border: 0;
+    height: 50px;
+    line-height: 50px;
+    font-size: 12px;
+}
 .fy-button{
     float: right;
     font-size: 14px;

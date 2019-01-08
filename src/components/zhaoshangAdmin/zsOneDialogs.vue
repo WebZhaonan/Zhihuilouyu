@@ -142,7 +142,7 @@
                                     </div>
                                 </div>
                             </template>
-                            <el-menu-item-group>
+                               <el-menu-item-group>
                                 <el-tabs v-model="activeName2" type="card">
                                     <el-tab-pane label="可招商" name="first" >
                                         <el-checkbox-group v-model="checkList">
@@ -156,10 +156,26 @@
                                         </el-checkbox-group>
                                     </el-tab-pane>
                                     <el-tab-pane label="已租" name="second" >
-                                        
+                                         <el-checkbox-group v-model="checkList1">
+                                         <div class="checkli" v-for="(item,index) in kzs1" :key="index">
+                                                <el-checkbox :label="item.id" disabled>
+                                                    <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.level_name}}</span>
+                                                      <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.room_number}}号</span>
+                                                        <span style="display:inline-block;width:46%;">{{item.area}}/m²</span>
+                                                </el-checkbox>
+                                            </div>
+                                        </el-checkbox-group>
                                     </el-tab-pane>
                                     <el-tab-pane label="所有房源" name="third" >
-                                        
+                                         <el-checkbox-group v-model="checkList2">
+                                         <div class="checkli" v-for="(item,index) in kzs2" :key="index">
+                                                <el-checkbox :label="item.id">
+                                                    <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.level_name}}</span>
+                                                      <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.room_number}}号</span>
+                                                        <span style="display:inline-block;width:46%;">{{item.area}}/m²</span>
+                                                </el-checkbox>
+                                            </div>
+                                        </el-checkbox-group>
                                     </el-tab-pane>
                                 </el-tabs>
                             </el-menu-item-group>                                     
@@ -323,8 +339,11 @@ export default {
             activeName2: 'first',
             fyList:[],
             checkList: [],
-            kzs:[
-            ]
+             kzs:[],
+            checkList1: [],
+            kzs1:[],
+            checkList2: [],
+            kzs2:[],
         }
     },
     mounted(){
@@ -371,6 +390,7 @@ export default {
                         checkArr.push(res.data[0].room[key].rid);
                     }
                  this.checkList = checkArr;
+                 this.checkList2 = checkArr;
                 } 
             })
               // 楼宇列表
@@ -384,12 +404,23 @@ export default {
     },
     methods:{  
            handleSelect(key) {
-               //获取房源列表
+            //获取房源列表
+                this.kzs = [];
+                this.kzs2 = []
            housinglist({ 
                id:'['+ key +']'                                               
             }).then(res => {
                 if(res.flag == 0){ 
-                this.kzs=res.data; 
+                    console.log(JSON.stringify(res))
+                    this.kzs2 = res.data
+                   for (const tabIndex in res.data) {
+                      if(res.data[tabIndex].let_type!=1){
+                        this.kzs.push(res.data[tabIndex])
+                      }else{
+                          this.kzs2.push(res.data[tabIndex])
+                      }
+                    }
+                // this.kzs=res.data; 
                 } 
             }) 
             },
@@ -430,7 +461,7 @@ export default {
                     console.log(JSON.stringify(res))
                       this.$message({
                             showClose: true,
-                            message: '新建成功',
+                            message: '修改成功',
                             type: 'success'
                             });
                         this.dialogFormVisible=false;

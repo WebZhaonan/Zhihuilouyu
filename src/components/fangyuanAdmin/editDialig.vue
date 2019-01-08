@@ -7,7 +7,7 @@
                         <el-select v-model="info.bid" ref="ly" disabled>
                             <el-option
                             v-for="item in xzly"
-                            :key="item.name"
+                            :key="item.id"
                             :label="item.name"
                             :value="item.id"                            
                             style="height:58px;line-height:58px;display:flex;">     
@@ -200,14 +200,7 @@ export default {
             id:this.rowId                                                 
             }).then(res => {
                 if(res.flag == 0){  
-                // this.ruleForm.ly = res.data[0].bid;
-                // this.ruleForm.fh = res.data[0].room_number;
                 this.ruleForm.lc = res.data[0].lid;
-                // this.ruleForm.mj = res.data[0].area;
-                // this.ruleForm.zx = res.data[0].adorn_type;
-                // this.ruleForm.yzdj = res.data[0].price;
-                // this.ruleForm.dj = res.data[0].unit;
-                // this.ruleForm.zszt = res.data[0].let_type
                     that.info = res.data[0]
                     let checkArr = []
                     for (const key in res.data[0].label) {

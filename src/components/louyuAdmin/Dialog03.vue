@@ -230,9 +230,17 @@
                     <i class="el-icon-close" @click="hide(item)"></i>
                     <div class="form-top">
                         <div class="form-public form-09">
-                            <el-form-item label="费用类型">
+                            <el-form-item label="费用类型" v-if="item.coid=='0'">
+                                <el-select>
+                                    <el-option :label="typeItem.name" :value="typeItem.id" v-for="(typeItem, index) in type" :key="index">
+
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                              <el-form-item label="费用类型" v-else-if="item.coid!='0'">
                                 <el-select v-model="item.coid">
-                                    <el-option :label="typeItem.name" :value="typeItem.id" v-for="(typeItem, index) in type" :key="index"></el-option>
+                                    <el-option :label="typeItem.name" :value="typeItem.id" v-for="(typeItem, index) in type" :key="index">
+                                    </el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="货物名称">
@@ -366,7 +374,6 @@ export default {
            buildsetDetail({   
             id:this.rowId                                             
             }).then(res => {
-                // console.log(JSON.stringify(res))
                 if(res.flag == 0){ 
                     this.form.mryjdw = res.data.deposit_unit;
                     this.form.mrzldwsl = res.data.number_unit;
@@ -476,7 +483,6 @@ export default {
                      BigArr = this.shuilvs;
                      BigArr[i].bid = bid
                 }
-                console.log(JSON.stringify(BigArr))
              this.$refs[formName].validate((valid) => {
             if (valid) {
                 // 编辑默认设置

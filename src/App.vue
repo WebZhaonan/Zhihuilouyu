@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-  <router-view v-if="isRouterAlive"></router-view>
+  <router-view v-if="isRouterAlive"  :key="key"></router-view>
   </div>
 </template>
 
@@ -8,6 +8,11 @@
 // 通过控制router-view 的显示与隐藏，来重渲染路由区域，重而达到页面刷新的效果
 export default {
   name: 'App',
+  computed: {
+				key() {
+					return this.$route.name !== undefined ? this.$route.name + new Date() : this.$route + new Date();
+				}
+			},
   provide (){
      return {
        reload:this.reload
@@ -62,8 +67,8 @@ ul li{
   padding: 0;
 }
 .title_list .el-collapse-item__header,.el-collapse-item__wrap{
-  background: #1a1c24;
-  border-bottom: none;
+  background: #1a1c24 !important;
+  border-bottom: none  !important;
   color: #fff;
   
 }

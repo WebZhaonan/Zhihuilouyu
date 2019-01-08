@@ -6,8 +6,8 @@
   <div class="demo-input-suffix searchBox">
   <el-input
     placeholder="搜索子账号名称"
-    v-model="input" class="searchIpt">
-    <i slot="prefix" class="el-input__icon el-icon-search"></i>
+    v-model="input" class="searchIpt"  @keyup.enter.native="search">
+    <i slot="prefix" class="el-input__icon el-icon-search" @click="search"></i>
   </el-input>
 </div>
 <div class="authorityContainer">
@@ -46,17 +46,17 @@
 <el-row  class="InHeaderBottom">
      <el-col :span="4">
          <div class="grid-content bg-purple-dark">
-             <span style="font-size:24px">赵楠</span>
+             <span style="font-size:24px">{{name}}</span>
          </div>
       </el-col>
       <el-col :span="18">
          <div class="grid-content bg-purple-dark">
-             <span>ssun@creams.io</span>
+             <span>{{email}}</span>
          </div>
       </el-col>
       <el-col :span="2">
          <div class="grid-content bg-purple-dark">
-                 <el-button>本人权限</el-button>
+                 <!-- <el-button>本人权限</el-button> -->
          </div>
       </el-col>
 </el-row>
@@ -108,6 +108,8 @@
 import { addadmin } from '@/axios/api' //添加管理员
 import { Getadministratorlist } from '@/axios/api' //获取管理员列表
 import { Modifyadministratorstatus } from '@/axios/api' //修改管理员状态
+import { Getuserinformation } from '@/axios/api' //获取用户信息
+
 export default {
     name:'Internal',
       data() {
@@ -129,7 +131,8 @@ export default {
           email: [{ required: true, message: '请输入邮箱', trigger: 'change' }],
           pw: [{ required: true, message: '请输入密码', trigger: 'change' }]
         },
-        statusval: null 
+        name: '',
+        email: ''
       }
     },
     methods: {
@@ -165,22 +168,38 @@ export default {
       zt(row,status){
         Modifyadministratorstatus({  
           id: row.id,
-          status: this.statusval
         }).then(res => {
+          console.log(JSON.stringify(res))
           if(res.flag == 0){
             this.$message({
-                  message: '保存成功',
-                  type: 'success'
-                }); 
-                this.statusval=!this.statusval;
+              message: res.data.msg,
+              type: 'success'
+            }); 
           }else{
             this.$message({
               message: res.data.msg,
               type: 'error'
             }); 
-            this.statusval=!this.statusval;
+            row.status=!status;
           }
         });
+      },
+      search(){
+        Getadministratorlist({  
+          type: '2',
+          value: this.input                                               
+        }).then(res => {
+            if(res.flag == 0){    
+                for (const key in res.data) {
+                  if (res.data[key].status=="0") {
+                    res.data[key].status=true;
+                  }else{
+                    res.data[key].status=false
+                  }
+                }
+                this.tableData=res.data;
+            } 
+        })
       }
     },
     mounted(){
@@ -197,6 +216,13 @@ export default {
           }
           this.tableData=res.data;
         }
+      });
+      Getuserinformation({                                     
+      }).then(res => {
+      if (res.flag == 0) {
+              this.name = res.data.name;
+              this.email = res.data.email;
+          } 
       });
     }
   }

@@ -1,7 +1,7 @@
 <template>
     <div class="zs-table">
         <div class="table-header">
-            <div>可招商</div>
+            <div>我的渠道</div>
             <i class="el-icon-more"></i>
         </div>
   <el-table
@@ -15,7 +15,7 @@
         width="262">
       </el-table-column>
       <el-table-column
-        prop="lxfs"
+        prop="tel"
         label="联系方式"
         sortable
         width="291">
@@ -25,21 +25,25 @@
         label="商圈"
         sortable
         width="262">
+        <template slot-scope="scope">
+              <span v-if="scope.row.buid=='0'">暂无</span>      
+              <span v-else-if="scope.row.buid!='0'">-</span>               
+            </template> 
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="b_name"
         label="渠道类型"
         sortable
         width="262">
       </el-table-column>
       <el-table-column
-        prop=""
-        label="带看量"
+        prop="company"
+        label="公司名称"
         width="262">
       </el-table-column>
       <el-table-column
-        prop="createtime"
-        label="最新带看时间"
+        prop="address"
+        label="通讯地址"
         sortable
         width="264">
       </el-table-column>
@@ -47,7 +51,7 @@
     </div>
 </template>
 <script>
-import { channel } from '@/axios/api' //客户来访渠道列表
+import { broker } from '@/axios/api' //客户来访渠道列表
 export default {
     name: 'zsTwotable',
     data(){
@@ -59,10 +63,9 @@ export default {
     created(){
             let that = this
             // 获取客户列表
-             channel({                    
-                id: this.$store.state.user.id,                              
+             broker({                    
+                // id: this.$store.state.user.id,                              
             }).then(res => {
-              console.log(JSON.stringify(res))
                 if(res.flag == 0){  
                      that.tableData=res.data; 
                 } 

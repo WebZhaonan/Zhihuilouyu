@@ -18,9 +18,11 @@ import zsOne from '@/components/zhaoshangAdmin/zsOne'
 import zsTwo from '@/components/zhaoshangAdmin/zsTwo'
 import zsOneDialog from '@/components/zhaoshangAdmin/zsOneDialog'
 import zsTwoDialog from '@/components/zhaoshangAdmin/zsTwoDialog'
-
+import { Lycheck } from '@/axios/api' //左侧单选
+import { Lycheckgroup } from '@/axios/api' //左侧多选
 export default {
     name:'Zs',
+    inject: ['reload'],
     components:{
         zsOne,zsTwo,zsOneDialog,zsTwoDialog
     },
@@ -40,6 +42,38 @@ export default {
             this.currentTab = sub; // tab 为当前触发标签页的组件名
             this.isdialog = dialog;
             this.nowIndex = i;
+        },
+         zsitems(info){
+              // 点击左侧，右侧渲染。单选
+             Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                     this.reload(); 
+                } 
+            }) 
+        },
+            // 取消楼宇单个
+        delectItems2(info){
+            Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.reload(); 
+                } 
+            }) 
+        },
+        // 多选楼宇
+        sayNode2(arrId) {
+        var str = arrId;
+        var arr = str.split(",");// 在每个逗号(,)处进行分解。
+          Lycheckgroup({      
+            id:arr                                           
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.reload();
+                } 
+            }) 
         }
     }
 }
@@ -58,7 +92,7 @@ export default {
 .zs .tabs .tab{
     float: left;
     padding: 0 20px;
-    border-bottom: 2px solid #fff;
+    /* border-bottom: 2px solid #fff; */
     cursor: pointer;
     font-size: 14px;
     line-height: 38px;

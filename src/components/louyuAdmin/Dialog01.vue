@@ -98,10 +98,10 @@
                 </el-form-item>
             </div>
             <div class="form-public form-05">
-                <el-form-item label="合同编号">
+                <el-form-item label="上传照片">
                     <el-upload
                         class="avatar-uploader"
-                        action="http://dev.xibei.co/builadmin/upload/upload"
+                        action="http://dev.360yibao.cn/builadmin/upload/upload"
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess"
                         :before-upload="beforeAvatarUpload">

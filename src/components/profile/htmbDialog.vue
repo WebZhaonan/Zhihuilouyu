@@ -5,19 +5,19 @@
             <div class="msg">
                 <div class="msgtitle">房源信息</div>
                 <div class="msgcontent">
-                    <el-button plain>$(楼盘名称)</el-button>
+                    <el-button plain v-for="item in gjcsx01" :key="item.id" @click="copyUrl(item.value)">{{item.value}}</el-button>
                 </div>
             </div>
             <div class="msg">
                 <div class="msgtitle">租客信息</div>
                 <div class="msgcontent">
-                    <el-button plain @click="copyUrl(name)">{{name}}</el-button>
+                    <el-button plain v-for="item in gjcsx02" :key="item.id" @click="copyUrl(item.value)">{{item.value}}</el-button>
                 </div>
             </div>
             <div class="msg">
                 <div class="msgtitle">合同信息</div>
                 <div class="msgcontent">
-                    <el-button plain>$(楼盘名称)</el-button>
+                    <el-button plain v-for="item in gjcsx03" :key="item.id" @click="copyUrl(item.value)">{{item.value}}</el-button>
                 </div>
             </div>
         </div>
@@ -26,14 +26,14 @@
             <el-upload
                 class="upload-demo"
                 ref="upload"
-                action="http://dev.xibei.co/builadmin/ucenter/upload"
-                accept=".doc,.docx"
-                :limit=1
+                action="http://dev.360yibao.cn/builadmin/ucenter/upload"
+                accept=".docx"
+                :limit=2
                 :auto-upload="false"
                 :on-success="sccg"
-                :on-exceed="aaa">
+                :on-change="aaa">
                 <el-button slot="trigger" size="small" type="primary">选取文件</el-button>  
-                <div slot="tip" class="el-upload__tip">文件只能上传doc,docx格式文件</div>
+                <div slot="tip" class="el-upload__tip" style="font-size:16px;">文件只能上传docx格式文件</div>
             </el-upload>   
         </div>
         <div slot="footer" class="dialog-footer">
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { Getcontractkeywords } from '@/axios/api' //获取合同关键词
 
 export default {
     name: 'zkDialog',
@@ -60,12 +61,20 @@ export default {
     data(){
         return{
             title: '新建合同模板',
-            fileList: [],
-            name: '$(楼盘名称)'
+            gjcsx01: [],
+            gjcsx02: [],
+            gjcsx03: []
         }
     },
     mounted(){
-
+        Getcontractkeywords({                                                
+        }).then(res => {
+            if(res.flag == 0){ 
+                this.gjcsx01 = res.data.gatherlist;
+                this.gjcsx02 = res.data.customerlist;
+                this.gjcsx03 = res.data.contractlist;
+            }
+        });
     },
     methods:{
         modalClose() {
@@ -76,7 +85,6 @@ export default {
             this.$refs.upload.submit();
         },
         copyUrl(name) {
-            console.log(typeof name)
             const input = document.createElement('input')
             document.body.appendChild(input)
             input.setAttribute('value',name)
@@ -90,11 +98,14 @@ export default {
             }
             document.body.removeChild(input)
         },
-        aaa(files, fileList){
-            this.$message({
-                message: '只能上传一个合同模板',
-                type: 'warning'
-            });
+        aaa(files, fileList){ 
+            if(fileList.length>=2){     
+                fileList.splice(0,1); 
+            } 
+            // this.$message({
+            //     message: '请先清除列表,在重新选取文件',
+            //     type: 'warning'
+            // });
         },
         sccg(res, file, fileList){
             if(res.flag==0){
@@ -103,6 +114,11 @@ export default {
                     type: 'success'
                 });
                 this.reload();
+            }else{
+                this.$message({
+                    message: res.data.msg,
+                    type: 'error'
+                });
             }
         }
     }
@@ -119,6 +135,10 @@ export default {
     font-weight: 500;
     color: #1d2b3b;
     border-bottom: 1px solid #e9e9e9;
+       display: flex;
+       flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .htmldialog .el-dialog__header .el-dialog__headerbtn{
     top: 14px;

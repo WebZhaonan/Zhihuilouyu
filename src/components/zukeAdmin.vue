@@ -13,9 +13,11 @@
 
 // 引入子组件
 import zkList from '../components/zk-list';
-
+import { Lycheck } from '@/axios/api' //左侧单选
+import { Lycheckgroup } from '@/axios/api' //左侧多选
 export default {
     name:'Zk',
+    inject: ['reload'],
       data() {
       return {
        activeIndex: '1',
@@ -26,6 +28,38 @@ export default {
             zkList
         },
     methods: {
+          zkitems(info){
+              // 点击左侧，右侧渲染。单选
+             Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                     this.reload(); 
+                } 
+            }) 
+        },
+            // 取消楼宇单个
+        delectItems3(info){
+            Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.reload(); 
+                } 
+            }) 
+        },
+        // 多选楼宇
+        sayNode3(arrId) {
+        var str = arrId;
+        var arr = str.split(",");// 在每个逗号(,)处进行分解。
+          Lycheckgroup({      
+            id:arr                                           
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.reload();
+                } 
+            }) 
+        },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
       },

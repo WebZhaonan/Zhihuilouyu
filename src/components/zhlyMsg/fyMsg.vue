@@ -6,7 +6,7 @@
                     <div class="li-top">
                         <span>可招商房源个数</span>       
                     </div>
-                    <div class="li-bottom">713</div>
+                    <div class="li-bottom">{{info.sumyz}}</div>
                 </div>
             </div>
             <div class="li-right"></div>
@@ -17,7 +17,7 @@
                     <div class="li-top">
                         <span>已租房源个数</span>      
                     </div>
-                    <div class="li-bottom">204</div>
+                    <div class="li-bottom">{{info.sumwz}}</div>
                 </div>
             </div>
             <div class="li-right"></div>
@@ -28,7 +28,7 @@
                     <div class="li-top">
                         <span>所有房源个数</span>      
                     </div>
-                    <div class="li-bottom">913</div>
+                    <div class="li-bottom">{{info.sumroom}}</div>
                 </div>
             </div>
             <div class="li-right"></div>
@@ -44,7 +44,7 @@
                                 <i class="fa fa-question-circle-o" aria-hidden="true"></i>
                         </el-tooltip>      
                     </div>
-                    <div class="li-bottom">119952.55</div>
+                    <div class="li-bottom">{{info.sumk}}</div>
                 </div>
             </div>
             <div class="li-right"></div>
@@ -60,7 +60,7 @@
                                 <i class="fa fa-question-circle-o" aria-hidden="true"></i>
                         </el-tooltip>       
                     </div>
-                    <div class="li-bottom">49904.9</div>
+                    <div class="li-bottom">{{info.sumb}}</div>
                 </div>
             </div>
             <div class="li-right"></div>
@@ -76,7 +76,7 @@
                                 <i class="fa fa-question-circle-o" aria-hidden="true"></i>
                         </el-tooltip>      
                     </div>
-                    <div class="li-bottom">169884.26</div>
+                    <div class="li-bottom">{{info.sumarea}}</div>
                 </div>
             </div>
             <div class="li-right"></div>
@@ -84,8 +84,24 @@
     </ul>
 </template>
 <script>
+import { Fycensus } from '@/axios/api'  //房源统计
 export default {
-    name: 'fyMsg'
+    name: 'fyMsg',
+     data(){
+        return{
+            info:[]
+        }
+    },
+    mounted(){
+        let that = this
+         //房源统计
+             Fycensus({                                                  
+            }).then(res => {
+                if(res.flag == 0){  
+                that.info = res.data
+                } 
+            }) 
+    }
 }
 </script>
 <style scoped>

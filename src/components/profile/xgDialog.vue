@@ -1,10 +1,19 @@
 <template>
-    <el-dialog :title="title" :visible.sync="visible" width="300px" :append-to-body="true" class="xgDialog" :before-close="modalClose">
+    <el-dialog :title="title" :visible.sync="visible" width="300px" :append-to-body="true" class="xgDialog" :before-close="modalClose" :close-on-click-modal="false">
         <el-form :model="form" ref="form" class="demo-ruleForm" :rules="rules" hide-required-asterisk>
-            <el-form-item :label="title" prop="name">
+            <el-form-item :label="title=='密码账号'?'旧密码':title" prop="name">
                 <el-input v-model="form.name" autocomplete="off" :placeholder="'请输入'+title"></el-input>
             </el-form-item>
+             <div v-if="mnxg">
+                <el-form-item label="新密码" prop="pass">
+                    <el-input type="password" v-model="form.pass" autocomplete="off" placeholder="请输入新密码"></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="checkPass">
+                    <el-input type="password" v-model="form.checkPass" autocomplete="off" placeholder="请再次输入密码"></el-input>
+                </el-form-item> 
+            </div>
         </el-form>
+       
         <div slot="footer" class="dialog-footer">
             <el-button @click="modalClose" plain>取 消</el-button>
             <el-button type="primary" @click="save('form')">确 定</el-button>
@@ -17,6 +26,8 @@ import { Addcontractlabel } from '@/axios/api' //添加合同标签
 import { Feetypeaddition } from '@/axios/api' //费用类型添加
 import { Addtenantlabel } from '@/axios/api' //添加租客标签
 import { Addtenantindustry } from '@/axios/api' //添加租客行业
+import { changepassword } from '@/axios/api' //修改密码
+
 
 export default {
     name: 'xgDialog',
@@ -34,11 +45,22 @@ export default {
     data(){
         return{
             form:{
-                name: ''
+                name: '',
+                pass: '',
+                checkPass: ''
             },
             rules: {        
-                name: [{ required: true, message: '请输入'+this.title, trigger: 'change' }]
-            }
+                name: [{ required: true, message: '请输入'+this.title, trigger: 'change' }],
+                pass: [{ required: true, message: '请输入新密码', trigger: 'change' }],
+                checkPass: [{ required: true, message: '请再次输入密码', trigger: 'change' }]
+            },
+            mnxg: false
+        }
+    },
+    mounted(){
+        console.log(this.title)
+        if(this.title=="密码账号"){
+            this.mnxg=true;
         }
     },
     methods:{
@@ -48,7 +70,27 @@ export default {
         save(formName) {  
             this.$refs[formName].validate((valid) => {
             if (valid) {
-                if(this.title=="房源标签"){
+                if(this.title=="密码账号"){
+                    changepassword({  
+                        ypw: this.form.name,
+                        pw: this.form.pass,
+                        pwd: this.form.checkPass                                      
+                    }).then(res => {
+                    if (res.flag == 0) {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'success'
+                            }); 
+                            this.$emit('update:visible', false);
+                            this.reload();
+                        } else {
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'error'
+                            });  
+                        }
+                    });
+                }else if(this.title=="房源标签"){
                     Housesourcelabeladded({  
                         name: this.form.name                                        
                     }).then(res => {

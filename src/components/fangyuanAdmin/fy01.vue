@@ -9,7 +9,8 @@
         style="width: 100%;border: 1px solid #e0e0e0;background-color: #fff;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;"
         height="650"
         :default-sort = "{prop: 'lc', order: 'descending'}"
-         @row-click='rowDetail'> 
+         @row-click='rowDetail'
+         > 
         <el-table-column
           prop="name"
           label="楼宇名称"
@@ -186,12 +187,21 @@ export default {
          roomFy({                                                 
             }).then(res => {
                 if(res.flag == 0){ 
-
-                     that.tableData=res.data; 
+                  // console.log(JSON.stringify(res.data))
+                    for (const tabIndex in res.data) {
+                      if(res.data[tabIndex].let_type!=1){
+                        that.tableData.push(res.data[tabIndex])
+                      }
+                    }
                 } 
             }) 
   },
   methods: {
+    // 搜索
+     searchCh(info){
+      //  info 传过来的参数
+       this.tableData = info
+     },
     // 打开详情
     rowDetail(row){
       this.rowDr = true;

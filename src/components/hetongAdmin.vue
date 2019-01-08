@@ -18,9 +18,11 @@
 import htList from '../components/ht-list';
 import htGd from '../components/htGd';
 import htDialog from '@/components/hetongAdmin/htDialog';
-
+import { Lycheck } from '@/axios/api' //左侧单选
+import { Lycheckgroup } from '@/axios/api' //左侧多选
 export default {
     name:'Ht',
+    inject: ['reload'],
       data() {
         return {
             activeIndex: '1',
@@ -32,6 +34,38 @@ export default {
         htList,htGd,htDialog
     },
     methods: {
+          htitems(info){
+              // 点击左侧，右侧渲染。单选
+             Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                     this.reload(); 
+                } 
+            }) 
+        },
+            // 取消楼宇单个
+        delectItems4(info){
+            Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.reload(); 
+                } 
+            }) 
+        },
+        // 多选楼宇
+        sayNode4(arrId) {
+        var str = arrId;
+        var arr = str.split(",");// 在每个逗号(,)处进行分解。
+          Lycheckgroup({      
+            id:arr                                           
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.reload();
+                } 
+            }) 
+        },
         open(){
             this.openOrderVisible= true;
         },

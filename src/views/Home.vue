@@ -24,19 +24,19 @@
   <el-col :span="8" style="float:right;width:auto">
       <div class="grid-content bg-purple" style="text-align:right">
           <!--问卷调查 -->
-      <el-dropdown>
+      <!-- <el-dropdown>
         <i class="el-icon-document icon" style="margin-right: 15px"></i>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>问卷调查</el-dropdown-item>
         </el-dropdown-menu>
-      </el-dropdown>
+      </el-dropdown> -->
       <!--下载中心-->
-      <el-dropdown>
+      <!-- <el-dropdown>
           <i class="el-icon-download icon" style="margin-right: 15px"></i>
            <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>下载中心</el-dropdown-item>
         </el-dropdown-menu>
-      </el-dropdown>
+      </el-dropdown> -->
        <!-- 个人中心 -->
        <el-dropdown>
        <i class="fa fa-user-o icon" style="margin-right: 15px"></i>
@@ -60,7 +60,13 @@
       <div class="Llist">
          <!-- v-on:click="navClickEvent(item)"
           :class="item.label ? 'label' : ''" -->
-        <li v-for="(item, index) in items" :key="index"   class='list___2Hba-li'>
+        <li 
+        v-for="(item, index) in items" 
+        :key="index"   
+        class='list___2Hba-li'
+         v-on:click="navClickEvent(item)"
+         :class="item.label ? 'label' : ''"
+        >
           <img :src="item.images" alt="">
               <div class="L-tex"> 
               <span>{{item.name}}</span><br>
@@ -71,7 +77,6 @@
      <!-- 结束-->
      <!-- 楼宇勾选-->
       <el-collapse>
-      
        <div class="title_list" v-for="(itemlist, index) in itemAgg" :key="index"  :class="{ active___1cDXI:index==current}" 
        style="margin-top:10px">
          <div class="title_info" @click="addClass(index,itemlist.bid)">
@@ -108,9 +113,8 @@
     </el-collapse>
      <div class="addBtn" accordion>
       <el-button type="primary" style="margin-top:20px" @click="newSet" v-if="showBtn">新建集合
-        
       </el-button>
-      <el-button type="primary" @click="synchroSet">同步集合</el-button>
+      <!-- <el-button type="primary" @click="synchroSet">同步集合</el-button> -->
     </div>
     <!-- 底部两按钮 -->
     </el-menu>
@@ -156,7 +160,7 @@ export default {
         showBtn:true,
         navList:[
             {name:'/jh',navItem:'集合'},
-            {name:'/page1',navItem:'工作流'},
+            // {name:'/page1',navItem:'工作流'},
         ],
         checkList: [],
         items:[],  
@@ -199,8 +203,14 @@ export default {
             // 获取楼宇列表
              getList({                                                 
             }).then(res => {
-                if(res.flag == 0){  
-                     that.items=res.data; 
+                if(res.flag == 0){ 
+                   that.items=res.data;  
+                  for (const key in res.data) {
+                    if(res.data[key].type==1){
+                       Vue.set(res.data[key],'label',true);
+                    }
+                  }
+                  
                 } 
             }) 
       that.isSelect = that.$route.path;
@@ -226,24 +236,25 @@ export default {
             }) 
       },
     handleSelect(key, keyPath) {
-      // console.log(key, keyPath);
-      // console.log( )
     },
       selectNav (name) {
         this.isSelect = name;
       },
       // 添加label类名
-    //    navClickEvent:function(item){
-    //      if(item.label){
-    //                 Vue.set(item,'label',false);  
-    //             }else{
-    //                 Vue.set(item,'label',true);
-    //             }
-    // },
+       navClickEvent:function(item){
+                if(item.label){
+                  this.$refs.children.delectItems(item);
+                    Vue.set(item,'label',false);  
+                }else{
+                  
+                  Vue.set(item,'label',true);
+                 this.$refs.children.chageItems(item);
+                }
+    },
         // 楼宇集合添加class 
          addClass:function(index1,seIid){
         this.current = index1  //集合加calss
-        this.$refs.children.say();
+        this.$refs.children.say(seIid);
         this.items.map(item=> Vue.set(item,'label',false));   //每次点击先清除class
              this.items.map((item, k,arr) => {   //循环集合列表。
                     let itemId = arr[k].id
@@ -252,7 +263,7 @@ export default {
                 if(arr[k].id){
                   if(itemId==arrId){  
                   //  console.log(JSON.stringify(arr[k]))
-                   this.$store.commit('ADD_ITEMS',arr[k]);
+                  //  this.$store.commit('ADD_ITEMS',arr[k]);
                    Vue.set(arr[k],'label',true); 
                   }
                   }
@@ -276,7 +287,6 @@ export default {
                 bid: setId
             }).then(res => {
                 if(res.flag == 0){  
-              // console.log(JSON.stringify(res))
               this.$message({
                       message: '添加成功',
                       type: 'success',
@@ -290,7 +300,13 @@ export default {
             },
     // 删除集合
        delectSet:function(delectId){
-             delectSet({                    
+          this.$confirm('此操作将删除此集合，确定删除吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+                delectSet({                    
                 id: delectId,                              
             }).then(res => {
                 if(res.flag == 0){  
@@ -302,6 +318,7 @@ export default {
                  this.reload();
                 } 
             }) 
+        })
        },
     // 新建集合
       newSet:function(){
@@ -313,24 +330,24 @@ export default {
          this.showBtn = true;
       },
       // 同步集合
-      synchroSet:function(){
-           this.$confirm('此操作将使所有账号与本账号的集合数据一致，确定同步吗？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          center: true
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '同步成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消成功'
-          });
-        });
-      },
+      // synchroSet:function(){
+      //      this.$confirm('此操作将使所有账号与本账号的集合数据一致，确定同步吗？', '提示', {
+      //     confirmButtonText: '确定',
+      //     cancelButtonText: '取消',
+      //     type: 'warning',
+      //     center: true
+      //   }).then(() => {
+      //     this.$message({
+      //       type: 'success',
+      //       message: '同步成功!'
+      //     });
+      //   }).catch(() => {
+      //     this.$message({
+      //       type: 'info',
+      //       message: '取消成功'
+      //     });
+      //   });
+      // },
     //折叠导航栏
 			collapse:function(){
 			this.collapsed=!this.collapsed;
