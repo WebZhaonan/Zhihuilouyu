@@ -5,7 +5,7 @@
         append-to-body
         :close-on-click-modal="false"
         >               
-            <el-form :model="ruleForm" class="demo-ruleForm" :rules="rules" ref="ruleForm" hide-required-asterisk> 
+            <el-form :model="ruleForm" class="demo-ruleForm" :rules="rules" ref="ruleForm"> 
                 <div class="tc-form-top">
                     <div class="tc-form-tops">
                         <div class="tc-form-txt">
@@ -112,19 +112,18 @@
                         </div>
                     </div>
                     <!-- 房源 -->
-                <div class="tc-form-tops">
-                                    <div class="tc-form-txt">
-                                        <span>房源信息</span>
-                                    </div>
+                                  <div class="tc-form-tops">
+                    <div class="tc-form-txt">
+                        <span>房源信息</span>
+                    </div>
                      <div class="tc-form-content" style="overflow:hidden;height: 610px;">
-                    <div class="scroll" style="overflow-y: scroll;height: 100%;width: 471px;;">
+                    <div class="scroll" style="overflow-y: scroll;height: 100%;width: 430px;;">
                     <el-menu class="el-menu-vertical-demo" background-color="#fff" text-color="rgba(0,0,0,.85)" 
                     active-background-color="#fff"
                     :default-active="activeIndex"
                      @open="handleSelect"
                      mode="vertical"
-                     unique-opened
-                    >
+                     unique-opened>
                     <template v-for="item  in fyList">
                         <el-submenu  :index='item.id' :key="item.id">
                             <template slot="title">
@@ -143,34 +142,30 @@
                                         <el-checkbox-group v-model="checkList">
                                             <div class="checkli" v-for="(item,index) in kzs" :key="index">
                                                 <el-checkbox :label="item.id">
-                                                    <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.level_name}}</span>
-                                                      <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.room_number}}号</span>
-                                                        <span style="display:inline-block;width:46%;">{{item.area}}/m²</span>
+                                                    <span style="display:inline-block;width:28%;text-align: center;">{{item.level_name}}</span>
+                                                    <span style="display:inline-block;width:22%;text-align: center;">{{item.room_number}}室</span>
+                                                    <span style="display:inline-block;width:46%;text-align: right;">{{item.area}}m²</span>
                                                 </el-checkbox>
                                             </div>
                                         </el-checkbox-group>
                                     </el-tab-pane>
                                     <el-tab-pane label="已租" name="second" >
-                                         <el-checkbox-group v-model="checkList1">
-                                         <div class="checkli" v-for="(item,index) in kzs1" :key="index">
-                                                <el-checkbox :label="item.id" disabled>
-                                                    <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.level_name}}</span>
-                                                      <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.room_number}}号</span>
-                                                        <span style="display:inline-block;width:46%;">{{item.area}}/m²</span>
-                                                </el-checkbox>
-                                            </div>
-                                        </el-checkbox-group>
+                                        <ul>
+                                            <li v-for="(item,index) in kzs1" :key="index" class="checkli checkli02">
+                                                <span>{{item.level_name}}</span>
+                                                <span>{{item.room_number}}室</span>
+                                                <span>{{item.area}}m²</span>
+                                            </li>
+                                        </ul>
                                     </el-tab-pane>
                                     <el-tab-pane label="所有房源" name="third" >
-                                         <el-checkbox-group v-model="checkList2">
-                                         <div class="checkli" v-for="(item,index) in kzs2" :key="index">
-                                                <el-checkbox :label="item.id">
-                                                    <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.level_name}}</span>
-                                                      <span style="display:inline-block;width:28%;padding-right:100px;padding-left:50px">{{item.room_number}}号</span>
-                                                        <span style="display:inline-block;width:46%;">{{item.area}}/m²</span>
-                                                </el-checkbox>
-                                            </div>
-                                        </el-checkbox-group>
+                                        <ul>
+                                            <li v-for="(item,index) in kzs2" :key="index" class="checkli checkli02">
+                                                <span>{{item.level_name}}</span>
+                                                <span>{{item.room_number}}室</span>
+                                                <span>{{item.area}}m²</span>
+                                            </li>
+                                        </ul>
                                     </el-tab-pane>
                                 </el-tabs>
                             </el-menu-item-group>                                     
@@ -606,6 +601,75 @@ export default {
     align-items: center;
     justify-content: flex-end;
     border-top: 1px solid #e9e9e9;
+}
+.scroll .el-menu-vertical-demo{
+    width: calc(100% - 4px);
+    border: 0;
+}
+.scroll .el-menu-vertical-demo .el-submenu{
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+.scroll .el-menu-vertical-demo .el-submenu .el-submenu__title{
+    padding-left: 10px !important;
+    border-radius: 4px;
+}
+.scroll .el-menu-vertical-demo .el-submenu .el-submenu__title:hover{
+    background-color: #fff !important;
+}
+.scroll .el-menu-vertical-demo .el-submenu .el-menu-item-group .el-menu-item-group__title{
+    padding: 0;
+}
+.scroll .el-menu-vertical-demo .el-submenu .el-tabs{
+    padding: 0 10px;
+}
+.scroll .el-menu-vertical-demo .el-submenu .el-tabs .el-tabs__content{
+    margin-bottom: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 300px;
+}
+.scroll .el-menu-vertical-demo .el-submenu .el-tabs .el-tabs__item{
+    height: 22px;
+    line-height: 22px;
+    font-size: 12px;
+    padding: 0 12px;
+}
+.scroll .el-menu-vertical-demo .el-submenu .el-tabs .el-tabs__header{
+    margin-bottom: 0; 
+}
+.scroll .el-menu-vertical-demo .el-submenu .el-tabs .checkli{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    padding: 0 5px;
+    border-bottom: 1px solid #e6e8eb;
+}
+.scroll .el-menu-vertical-demo .el-submenu .el-tabs .checkli:last-child{
+    border-bottom: 1px solid #fff;
+}
+.scroll .el-menu-vertical-demo .el-submenu .el-tabs .checkli .el-checkbox{
+    width: 100%;
+    font-size: 14px;
+    height: 34px;
+    line-height: 34px;
+}
+.scroll .el-menu-vertical-demo .el-submenu .el-tabs .checkli .el-checkbox span{
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+.scroll .el-menu-vertical-demo .el-submenu .el-tabs .checkli .el-checkbox .el-checkbox__label{
+    width: 98%;
+}
+.scroll .el-menu-vertical-demo .el-submenu .el-tabs .checkli02{
+    width: 100%;
+    font-size: 14px;
+    height: 34px;
+    line-height: 34px;
+    justify-content: space-between;
+    padding: 0 30px;
 }
 </style>
 

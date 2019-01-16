@@ -2,7 +2,7 @@
     <div style="display: inline-block;">
         <span style="cursor:pointer;padding-left:10px" @click="bjvisible=true">编辑</span>  
         <el-dialog :title="txt" :visible.sync="bjvisible" width="300px" :append-to-body="true" class="xgDialog">
-            <el-form :model="form" ref="form" class="demo-ruleForm" :rules="rules" hide-required-asterisk>
+            <el-form :model="form" ref="form" class="demo-ruleForm" :rules="rules">
                 <el-form-item :label="txt" prop="name">
                     <el-input v-model="form.name" autocomplete="off" :placeholder="txt"></el-input>
                 </el-form-item>

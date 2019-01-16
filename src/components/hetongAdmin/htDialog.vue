@@ -3,7 +3,7 @@
         <el-menu class="el-menu-demo" :default-active="activeIndex" mode="horizontal">
             <el-menu-item index="01" :class="{itemtab:isitemtab}">基本信息</el-menu-item>
         </el-menu>             
-        <el-form :model="ruleForm" class="demo-ruleForm" :rules="rules" ref="ruleForm" hide-required-asterisk> 
+        <el-form :model="ruleForm" class="demo-ruleForm" :rules="rules" ref="ruleForm"> 
             <div class="ht-dialog-left">
                 <div class="ht-dialog-everyblock">
                     <div class="tc-form-txt">

@@ -34,7 +34,7 @@
       </div></el-col>
 </el-row>
     </div>
-    <htTab :tablelists="tablelist"></htTab>  
+    <htTab :tablelists="tablelist" ref="tablelist"></htTab>  
    </div>
     </div>
 </template>
@@ -60,6 +60,18 @@ export default {
     }
   },
   methods:{
+    // 单选
+    htdx(info){
+        this.$refs.tablelist.httab(info);
+    },
+    // 取消
+    htqx(info){
+      this.$refs.tablelist.httab1(info);
+    },
+    //多选
+    htdouble(arrId){
+      this.$refs.tablelist.httab2(arrId);
+    },
     search(){
         contractlist({  
         value: this.input                                               

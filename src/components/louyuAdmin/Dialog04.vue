@@ -1,6 +1,6 @@
 <template>
 <div>
-    <el-form :model="form" ref="ruleForm"  hide-required-asterisk>               
+    <el-form :model="form" ref="ruleForm">               
         <div class="dia04-top">
             <div class="dia04-top-div" @click="addsrmb"><i class="el-icon-plus"></i>收入目标</div>
         </div>
@@ -24,30 +24,28 @@
                      <p> 
                         当前总收入目标: <span>0</span><br>
                         <span>
-                            (允许误差 < 0.06)
-                            </span>
+                            (允许误差  0.06)
+                        </span>
                     </p>
                 </div>
-                      <div class="form-bottom Dbottom">
-            <ul class="bottom-ul Dli">
-                <li>月份</li>
-                <li>收入目标</li>
-                <li>月份</li>
-                <li>收入目标</li>
-            </ul>
-            <div style="height: auto;overflow: auto;margin-top: 4px;">
-                
-                <div class="form-public form-07" v-for="(item,i) in lcs" :key="i">  
-                    <el-form-item>
-                        <el-input  disabled :value="i"></el-input> 
-                    </el-form-item>
-                    <el-form-item>
-                        <el-input :value="item"></el-input> 
-                    </el-form-item>
-               
-                </div>
-            </div>        
-        </div>
+                <div class="form-bottom Dbottom">
+                <ul class="bottom-ul Dli">
+                    <li>月份</li>
+                    <li>收入目标</li>
+                    <li>月份</li>
+                    <li>收入目标</li>
+                </ul>
+                <div style="height: auto;overflow: auto;margin-top: 4px;">
+                    <div class="form-public form-07" v-for="(item,i) in lcs" :key="i">  
+                        <el-form-item>
+                            <el-input  disabled :value="i"></el-input> 
+                        </el-form-item>
+                        <el-form-item>
+                            <el-input :value="item"></el-input> 
+                        </el-form-item>
+                    </div>
+                </div>        
+            </div>
             </div>
         </div>
     </el-form>

@@ -400,7 +400,8 @@ import { Obtaintenantbusinessinformation } from '@/axios/api' //获取租客工�
 
 import zkDialog from '@/components/zukeAdmin/zkDialog'
 import htDialog from '@/components/hetongAdmin/htDialog'
-
+import { Lycheck } from '@/axios/api' //左侧单选
+import { Lycheckgroup } from '@/axios/api' //左侧多选
 export default {
     name: 'zkTable',
     components:{
@@ -462,12 +463,15 @@ export default {
     },
     mounted(){
         // 租客列表
-        zkList({                                                 
+        this.zkList=function(){
+             zkList({                                                 
         }).then(res => {
             if(res.flag == 0){         
                 this.tableData3=res.data;    
             } 
         });
+        }
+       this.zkList()
     },
     watch:{
         tablelists(val,oldval){
@@ -475,6 +479,38 @@ export default {
         }
     },
     methods:{
+        // 单选
+        zktable(info){
+         Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.zkList()
+                } 
+            }) 
+        },
+        // 取消
+        zktable1(info){
+            Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                   this.zkList()
+                } 
+            }) 
+        },
+        // 多选
+        zktable2(arrId){
+                 var str = arrId;
+        var arr = str.split(",");// 在每个逗号(,)处进行分解。
+          Lycheckgroup({      
+            id:arr                                           
+            }).then(res => {
+                if(res.flag == 0){  
+                   this.zkList()
+                } 
+            }) 
+        },
         qd(index){
             this.tableData.splice(index,1);
             this.sclxr=false;

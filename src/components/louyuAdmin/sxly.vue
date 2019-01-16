@@ -200,9 +200,10 @@ export default {
     font-size: 12px;
     color: #6b809f;
     line-height: 18px;
+}
+.bj-dialog .el-dialog__body .menu-ul .menu-li .el-form .fhhtbh label{
     display: flex;
     justify-content: space-between;
-    text-align: left !important;
 }
 .bj-dialog .el-dialog__body .menu-ul .menu-li .el-form .el-form-item__content{
     line-height: 30px;

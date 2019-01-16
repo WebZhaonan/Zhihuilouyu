@@ -97,6 +97,8 @@ export default {
             }).then(res => {
                 if(res.flag == 0){ 
                     this.kzsall = res.data;
+                    this.kzs=[];
+                    this.kzspart=[];
                     for (const key in this.kzsall) {
                         if (this.kzsall[key].let_type==0) {
                             this.kzs.push(this.kzsall[key])    

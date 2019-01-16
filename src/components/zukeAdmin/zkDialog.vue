@@ -1,6 +1,6 @@
 <template> 
     <el-dialog :title="title" :visible.sync="visible" class="zk-dialog" width="1000px" top="100px" center :before-close="modalClose" :append-to-body="true" :close-on-click-modal="false"	>               
-        <el-form :model="ruleForm" class="demo-ruleForm" :rules="rules" ref="ruleForm" hide-required-asterisk> 
+        <el-form :model="ruleForm" class="demo-ruleForm" :rules="rules" ref="ruleForm"> 
             <div class="tc-form-top">
                 <div class="tc-form-tops">
                     <div class="tc-form-txt">

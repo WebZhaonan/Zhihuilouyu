@@ -195,7 +195,7 @@ export default {
                    that.itemAgg=res.data;
                   res.data.forEach((arr, index) => {
                       that.checkList[index] = arr.build;
-
+                        
                       })
                   
                 } 
@@ -232,6 +232,7 @@ export default {
                       duration: 1000
                 });
                }   
+              this.$refs.children.say(setId);
               this.reload(); 
             }) 
       },

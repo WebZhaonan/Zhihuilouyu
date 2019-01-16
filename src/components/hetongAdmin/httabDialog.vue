@@ -5,7 +5,7 @@
             <el-menu class="el-menu-demo" :default-active="activeIndex" mode="horizontal">
                 <el-menu-item index="01" :class="{itemtab:isitemtab}">基本信息</el-menu-item>
             </el-menu>             
-            <el-form :model="ruleForm" class="demo-ruleForm" :rules="rules" ref="ruleForm" hide-required-asterisk> 
+            <el-form :model="ruleForm" class="demo-ruleForm" :rules="rules" ref="ruleForm"> 
                 <div class="ht-dialog-left">
                     <div class="ht-dialog-everyblock">
                         <div class="tc-form-txt">
@@ -74,7 +74,7 @@
                             <div class="tc-form-contents">
                                 <el-form-item style="width:100%;" label="合同标签">
                                     <el-checkbox-group v-model="checkboxGroup1">
-                                        <el-checkbox-button v-for="(item,index) in zhyq" :key="index" :label="item.id" :value="item.id">{{item.name}}</el-checkbox-button>
+                                        <el-checkbox-button v-for="(item,index) in zhyq" :key="index" :label="item.name" :value="item.id">{{item.name}}</el-checkbox-button>
                                     </el-checkbox-group>
                                 </el-form-item>
                             </div>
@@ -82,7 +82,7 @@
                     </div>
                     <div class="ht-dialog-everyblock">
                         <div class="tc-form-txt">
-                            <span>合同信息</span>
+                            <span>合同详细信息</span>
                         </div>
                         <div class="tc-form-content">  
                             <div class="tc-form-contents">
@@ -122,12 +122,30 @@
                     </div>
                     <div class="ht-dialog-everyblock">
                         <div class="tc-form-txt">
-                            <span>其他关键信息</span>
+                            <span>合同模板信息</span>
                         </div>
                         <div class="tc-form-content" style="height:238px;">  
-                            <div style="display: flex;justify-content: center;margin-bottom:20px;">
-                                <el-button plain class="xinjian"><i class="el-icon-plus"></i>新建自定义关键词</el-button>
-                            </div>                                          
+                            <div class="tc-form-contents">
+                                <el-form-item label="合同模板" prop="value">
+                                    <el-select v-model="ruleForm.value" placeholder="请选择" size="mini">
+                                        <el-option
+                                        v-for="item in options"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">
+                                        </el-option>
+                                    </el-select> 
+                                </el-form-item>
+                                <el-form-item label=" ">
+                                    <el-button
+                                    size="mini"
+                                    type="primary"
+                                    plain
+                                    @click="download">
+                                    下载
+                                    </el-button>  
+                                </el-form-item>
+                            </div>
                         </div>
                     </div>             
                 </div>
@@ -169,6 +187,7 @@ import { accessindustry } from '@/axios/api' //获取行业
 import { obtaincontractlabel } from '@/axios/api' //获取合同标签
 import { contractdetails } from '@/axios/api' //获取合同详情
 import { editcontract } from '@/axios/api' //编辑合同 
+import { Getwordlist } from '@/axios/api' //获取word列表
 
 import fymsg from '@/components/fangyuanAdmin/fymsg'
 
@@ -206,7 +225,8 @@ export default {
                 fr: '',
                 qdr: '',
                 zklxr: '',
-                xzfy: []
+                xzfy: [],
+                value: ''
             },
             checkboxGroup1: [], 
             state4: '',
@@ -225,6 +245,7 @@ export default {
                 fr: [{ required: true, message: '请填写法人', trigger: 'change' }],
                 qdr: [{ required: true, message: '请填写签订人', trigger: 'change' }],
                 zklxr: [{ required: true, message: '请输入租客联系人', trigger: 'change' }],
+                value: [{ required: true, message: '请选择合同模板', trigger: 'change' }]
             },
             activeIndex: "01",
             isitemtab: true,
@@ -236,187 +257,239 @@ export default {
             id02: null,
             zhyq: [],
             fyulxx: [],
-            fyulxxid: []
-        }
-    },
-    methods:{ 
-        querySearchAsync01(queryString, cb) {
-            var restaurants01 = this.restaurants01;
-            var results = queryString ? restaurants01.filter(this.createStateFilter(queryString)) : restaurants01;
-
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-            cb(results);
-            }, 100 * Math.random());
-        },
-        querySearchAsync02(queryString, cb) {
-            var restaurants02 = this.restaurants02;
-            var results = queryString ? restaurants02.filter(this.createStateFilter(queryString)) : restaurants02;
-
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-            cb(results);
-            }, 100 * Math.random());
-        },
-        createStateFilter(queryString) {
-            return (state) => {
-            return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-            };
-        },
-        handleSelect01(item) {
-            this.id01=item.id;
-        },
-        handleSelect02(item) {
-            this.id02=item.id;
-        },
-        save(formName) {
-            for (const key in this.restaurants01) {           
-                if(this.restaurants01[key].value == this.ruleForm.zk){
-                    var zk = this.restaurants01[key].id;
-                }
-            } 
-            for (const key in this.restaurants02) {           
-                if(this.restaurants02[key].value == this.ruleForm.hy){
-                    var hy = this.restaurants02[key].id;
-                }
-            } 
-            let arrid = [];
-            for (const key in this.ruleForm.xzfy) {
-                var rid = this.ruleForm.xzfy[key].id;
-                arrid.push(rid)
+            fyulxxid: [],
+            options: [],
+            zx: '',
+            labelarr: [],
+            sWid: ''
             }
-            if(this.isul==true){
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        editcontract({  
-                            id: this.httabid,
-                            znum:this.ruleForm.htbh01,     
-                            ztype:this.ruleForm.htbh02, 
-                            strtime:this.ruleForm.htqdsj, 
-                            jtime:this.ruleForm.htjzsj,                                      
-                            endtime:this.ruleForm.htjssj, 
-                            pmoney:this.ruleForm.djblxsd, 
-                            jingdu:this.ruleForm.jsjd, 
-                            clable:this.checkboxGroup1, 
-                            cid:zk,
-                            industryid:hy,
-                            legalperson:this.ruleForm.fr,
-                            signedperson:this.ruleForm.qdr,
-                            contacts:this.ruleForm.zklxr,
-                            roominfo: arrid
-                        }).then(res => {
-                            if(res.flag == 0){  
-                                this.$message({
-                                    message: '保存成功',
-                                    type: 'success'
-                                });
-                                this.aaaDialog=false;                        
-                            } else{
-                                this.$message({
-                                    message: res.data.msg,
-                                    type: 'error'
-                                });
+        },
+        methods:{ 
+            download(){     
+                if(this.ruleForm.value==""){
+                    this.$message({
+                        showClose: true,
+                        message: '下载合同不能为空',
+                        type: 'warning'
+                    });
+                }else if(this.ruleForm.value != this.sWid){
+                    this.$message({
+                        showClose: true,
+                        message: '请先保存合同模板在下载',
+                        type: 'warning'
+                    });
+                }
+                else{
+                    window.location.href = this.xz; 
+                }                                  
+            },
+            querySearchAsync01(queryString, cb) {
+                var restaurants01 = this.restaurants01;
+                var results = queryString ? restaurants01.filter(this.createStateFilter(queryString)) : restaurants01;
+
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => {
+                cb(results);
+                }, 100 * Math.random());
+            },
+            querySearchAsync02(queryString, cb) {
+                var restaurants02 = this.restaurants02;
+                var results = queryString ? restaurants02.filter(this.createStateFilter(queryString)) : restaurants02;
+
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => {
+                cb(results);
+                }, 100 * Math.random());
+            },
+            createStateFilter(queryString) {
+                return (state) => {
+                return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+            handleSelect01(item) {
+                this.id01=item.id;
+            },
+            handleSelect02(item) {
+                this.id02=item.id;
+            },
+            save(formName) {
+                for (const key in this.restaurants01) {           
+                    if(this.restaurants01[key].value == this.ruleForm.zk){
+                        var zk = this.restaurants01[key].id;
+                    }
+                } 
+                for (const key in this.restaurants02) {           
+                    if(this.restaurants02[key].value == this.ruleForm.hy){
+                        var hy = this.restaurants02[key].id;
+                    }
+                } 
+                let arrid = [];
+                for (const key in this.ruleForm.xzfy) {
+                    var rid = this.ruleForm.xzfy[key].id;
+                    arrid.push(rid)
+                }
+                let checkboxid = [];
+                for (const key in this.checkboxGroup1) {
+                    var checkboxname = this.checkboxGroup1[key];
+                    for (const key in this.zhyq) {
+                        if(checkboxname==this.zhyq[key].name){
+                            checkboxid.push(this.zhyq[key].id);
+                        }
+                    }
+                }
+                if(this.isul==true){
+                    this.$refs[formName].validate((valid) => {
+                        if (valid) {
+                            editcontract({  
+                                id: this.httabid,
+                                znum:this.ruleForm.htbh01,     
+                                ztype:this.ruleForm.htbh02, 
+                                strtime:this.ruleForm.htqdsj, 
+                                jtime:this.ruleForm.htjzsj,                                      
+                                endtime:this.ruleForm.htjssj, 
+                                pmoney:this.ruleForm.djblxsd, 
+                                jingdu:this.ruleForm.jsjd, 
+                                clable: checkboxid,
+                                cid:zk,
+                                industryid:hy,
+                                legalperson:this.ruleForm.fr,
+                                signedperson:this.ruleForm.qdr,
+                                contacts:this.ruleForm.zklxr,
+                                roominfo: arrid,
+                                wid: this.ruleForm.value
+                            }).then(res => {
+                                if(res.flag == 0){  
+                                    this.$message({
+                                        message: '保存成功',
+                                        type: 'success'
+                                    });
+                                    this.reload();                      
+                                } else{
+                                    this.$message({
+                                        message: res.data.msg,
+                                        type: 'error'
+                                    });
+                                }
+                            });    
+                            
+                        } else {    
+                            return false;
+                        }
+                    });
+                }else{
+                    this.$message({
+                        message: '请确认完成',
+                        type: 'warning'
+                    });
+                }                    
+            },
+            cancel(){
+                this.reload();
+            },
+            openbjht(){
+                this.aaaDialog=true;
+                this.id=parseInt(this.httabid);
+                contractdetails({   
+                    id: this.httabid                                             
+                }).then(res => {
+                    if(res.flag == 0){   
+                        this.ruleForm.htbh=res.data.number;
+                        this.ruleForm.gjr=res.data.uid;
+                        this.ruleForm.htbh01=res.data.znum;
+                        this.ruleForm.htbh02=res.data.ztype;
+                        this.ruleForm.htqdsj=res.data.strtime;
+                        this.ruleForm.htjzsj=res.data.jtime;
+                        this.ruleForm.htjssj=res.data.endtime;
+                        this.ruleForm.djblxsd=res.data.pmoney;
+                        this.ruleForm.jsjd=res.data.jingdu;
+                        for (const key in res.data.clable) {
+                            var labelid = res.data.clable[key].id;
+                            var labelname = res.data.clable[key].name
+                            for (const key in this.zhyq) {
+                                if(labelid==this.zhyq[key].id){
+                                    this.labelarr.push(labelname);
+                                }
                             }
-                        });    
-                        
-                    } else {    
-                        return false;
+                        }
+                        this.checkboxGroup1=this.labelarr;
+                        for (const key in this.restaurants01) {
+                            if(this.restaurants01[key].id ==res.data.cid){
+                            this.ruleForm.zk=this.restaurants01[key].value;
+                            }
+                        }  
+                        for (const key in this.restaurants02) {
+                            if(this.restaurants02[key].id ==res.data.industryid){
+                            this.ruleForm.hy=this.restaurants02[key].value;
+                            }
+                        }  
+                        this.ruleForm.fr=res.data.legalperson;
+                        this.ruleForm.qdr=res.data.signedperson;
+                        this.ruleForm.zklxr=res.data.contacts;  
+                        this.ruleForm.xzfy=res.data.rid;
+                        if(res.data.wid != "0"){
+                            this.ruleForm.value=res.data.wid;
+                            this.sWid=res.data.wid;
+                        }
+                        this.xz=res.data.url;                 
                     }
                 });
-            }else{
-                this.$message({
-                    message: '请确认完成',
-                    type: 'warning'
-                });
-            }                    
+            },
+            fymsgevent02(){
+                if(this.isul==true){
+                    this.fymsg01="房源列表";
+                    this.fymsg02="完成";
+                    this.isul=false;
+                    this.isfymsg=true;
+                }else{
+                    this.fymsg01="已选中房源";
+                    this.fymsg02="+房源";
+                    this.isul=true;
+                    this.isfymsg=false;
+                }
+            },
+            fyxx(checkList,kzs){
+                this.ruleForm.xzfy= [];   
+                let arrid = [];  
+                for(const key in checkList){
+                    for(const keys in kzs){
+                        if(checkList[key]==kzs[keys].id){
+                            var kkk=kzs[keys];
+                            var kkkid=kzs[keys].id;
+                            this.ruleForm.xzfy.push(kkk);
+                            arrid.push(kkkid);
+                        }
+                    }
+                }
+                this.fyulxxid=arrid;
+            }
         },
-        cancel(){
-             this.reload();
-        },
-        openbjht(){
-            this.aaaDialog=true;
-            this.id=parseInt(this.httabid);
-            contractdetails({   
-                id: this.httabid                                             
+        mounted() {
+            obtaintenant({                                                
+            }).then(res => {
+                if(res.flag == 0){     
+                    this.restaurants01 = res.data;
+                }
+            });             
+            accessindustry({                                                
             }).then(res => {
                 if(res.flag == 0){   
-                    this.ruleForm.htbh=res.data.number;
-                    this.ruleForm.gjr=res.data.uid;
-                    this.ruleForm.htbh01=res.data.znum;
-                    this.ruleForm.htbh02=res.data.ztype;
-                    this.ruleForm.htqdsj=res.data.strtime;
-                    this.ruleForm.htjzsj=res.data.jtime;
-                    this.ruleForm.htjssj=res.data.endtime;
-                    this.ruleForm.djblxsd=res.data.pmoney;
-                    this.ruleForm.jsjd=res.data.jingdu;
-                    this.zhyq=res.data.clable;
-                    for (const key in this.restaurants01) {
-                        if(this.restaurants01[key].id ==res.data.cid){
-                           this.ruleForm.zk=this.restaurants01[key].value;
-                        }
-                    }  
-                    for (const key in this.restaurants02) {
-                        if(this.restaurants02[key].id ==res.data.industryid){
-                           this.ruleForm.hy=this.restaurants02[key].value;
-                        }
-                    }  
-                    this.ruleForm.fr=res.data.legalperson;
-                    this.ruleForm.qdr=res.data.signedperson;
-                    this.ruleForm.zklxr=res.data.contacts;  
-                    this.ruleForm.xzfy=res.data.rid;
+                    this.restaurants02 = res.data;
                 }
             });
-        },
-        fymsgevent02(){
-            if(this.isul==true){
-                this.fymsg01="房源列表";
-                this.fymsg02="完成";
-                this.isul=false;
-                this.isfymsg=true;
-            }else{
-                this.fymsg01="已选中房源";
-                this.fymsg02="+房源";
-                this.isul=true;
-                this.isfymsg=false;
-            }
-        },
-        fyxx(checkList,kzs){
-            this.ruleForm.xzfy= [];   
-            let arrid = [];  
-            for(const key in checkList){
-                for(const keys in kzs){
-                    if(checkList[key]==kzs[keys].id){
-                        var kkk=kzs[keys];
-                        var kkkid=kzs[keys].id;
-                        this.ruleForm.xzfy.push(kkk);
-                        arrid.push(kkkid);
-                    }
+            obtaincontractlabel({                                                
+            }).then(res => {
+                if(res.flag == 0){          
+                    this.zhyq =res.data;
                 }
-            }
-            this.fyulxxid=arrid;
+            }); 
+            Getwordlist({                                                
+            }).then(res => {
+                if(res.flag == 0){          
+                    this.options=res.data;
+                }
+            }); 
         }
-    },
-    mounted() {
-        obtaintenant({                                                
-        }).then(res => {
-            if(res.flag == 0){     
-                this.restaurants01 = res.data;
-            }
-        });             
-        accessindustry({                                                
-        }).then(res => {
-            if(res.flag == 0){   
-                this.restaurants02 = res.data;
-            }
-        });
-        obtaincontractlabel({                                                
-        }).then(res => {
-            if(res.flag == 0){          
-                this.zhyq =res.data;
-            }
-        }); 
     }
-}
 </script>
 
 <style>
@@ -542,18 +615,6 @@ export default {
     box-sizing: border-box; 
     display: flex;
     flex-direction: column;
-}
-.ht-dialog .el-dialog__body .demo-ruleForm .tc-form-content .xinjian{
-    color: #409eff;
-    border-color: #409eff;
-    padding: 6px 18px;
-    font-size: 12px;
-}
-.ht-dialog .el-dialog__body .demo-ruleForm .tc-form-content .xinjian:hover{
-    color: rgba(0,0,0,.25);
-    background-color: #f7f7f7;
-    border-color: #d9d9d9;
-    cursor: not-allowed;
 }
 .ht-dialog .el-dialog__body .demo-ruleForm .tc-form-content .tc-form-contents .form-item-flex .el-form-item__content{
     display: flex;

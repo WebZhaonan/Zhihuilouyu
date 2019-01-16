@@ -3,9 +3,8 @@
         <el-dialog title="新增房源" :visible.sync="visible" class="fy-dialog" width="700px" top="100px" center 
         :before-close="modalClose" 
         :append-to-body="true"
-        :close-on-click-modal="false"
-        >               
-            <div class="empty"></div> 
+        :close-on-click-modal="false">               
+        <div class="empty"></div> 
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
                 <div class="fyform">
                     <el-form-item label="选择楼宇">
@@ -24,7 +23,7 @@
                     <div class="fyform02-txt">房源信息</div>
                     <div class="fyform-content">
                         <div class="fyform-contents">
-                            <el-form-item label="选择楼层">
+                            <el-form-item label="选择楼层" prop="lc">
                                 <el-select v-model="ruleForm.lc" placeholder="请选择楼层" no-data-text="没有楼层呀">
                                     <el-option
                                     v-for="item in xzlc"
@@ -42,7 +41,7 @@
                             <el-form-item label="面积"  prop="mj">
                                 <el-input v-model="ruleForm.mj" placeholder="请输入面积"></el-input>
                             </el-form-item>
-                            <el-form-item label="装修">    
+                            <el-form-item label="装修" prop="zx">    
                                 <el-select v-model="ruleForm.zx" placeholder="装修选择">
                                     <el-option
                                     v-for="item in zx"
@@ -61,7 +60,7 @@
                     </div>
                     <div class="fyform-content fyform-content01">
                           <div class="fyform-contents">
-                            <el-form-item label="招商状态">
+                            <el-form-item label="招商状态" prop="zszt">
                                 <el-select v-model="ruleForm.zszt">
                                     <el-option
                                     v-for="item in zszt"
@@ -72,7 +71,7 @@
                                 </el-select>
                             </el-form-item>
                             <div class="fyform-contents-right">
-                                <el-form-item label="预租单价">    
+                                <el-form-item label="预租单价" prop="yzdj">    
                                     <el-input v-model="ruleForm.yzdj" placeholder="请输入预租单价"></el-input>
                                 </el-form-item>
                                 <el-form-item label="房号">    
@@ -191,12 +190,12 @@ export default {
                 }
             ],
             rules: {
-                fh: [
-                    { required: true, message: '请填写房号', trigger: 'change' }
-                ],
-                mj: [
-                    { required: true, message: '请输入面积', trigger: 'change'}
-                ]
+                lc: [{ required: true, message: '请选择楼层', trigger: 'change' }],
+                zx: [{ required: true, message: '请选择装修类型', trigger: 'change' }],
+                zszt: [{ required: true, message: '请填写招商状态', trigger: 'change' }],
+                yzdj: [{ required: true, message: '请输入预租单价', trigger: 'change' }],
+                fh: [{ required: true, message: '请填写房号', trigger: 'change' }],
+                mj: [{ required: true, message: '请输入面积', trigger: 'change'}]
             }
         }
     },

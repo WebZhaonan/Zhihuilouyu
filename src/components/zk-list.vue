@@ -21,7 +21,7 @@
       <span class="zkclose">清除选项</span>
     </div> -->
     <zkMsg></zkMsg>
-    <zkTable :tablelists="tablelist"></zkTable> 
+    <zkTable :tablelists="tablelist" ref="zktable"></zkTable> 
   </div>
 </template>
 <script>
@@ -57,6 +57,18 @@ export default {
               this.tablelist=res.data;
           } 
       })
+    },
+    // 单选
+    zkdx(info){
+        this.$refs.zktable.zktable(info);
+    },
+    // 取消
+    zkqx(info){
+      this.$refs.zktable.zktable1(info);
+    },
+    // 多选
+    zkdouble(arrId){
+      this.$refs.zktable.zktable2(arrId);
     }
   }
 };

@@ -275,6 +275,8 @@ Vue.component('Drawer', Drawer);
 import { clientList } from '@/axios/api'  // 客户列表
 import { delectClient } from '@/axios/api' //删除客户
 import zsOneDialogs from '@/components/zhaoshangAdmin/zsOneDialogs'
+import { Lycheck } from '@/axios/api' //左侧单选
+import { Lycheckgroup } from '@/axios/api' //左侧多选
 export default {
     name: 'zsOnetable',
     inject: ['reload'],
@@ -293,6 +295,7 @@ export default {
     },
     created(){
          let that = this;
+         that.clientList = function(){
              clientList({   
               //  id:userInfo.id                                             
             }).then(res => {
@@ -300,8 +303,41 @@ export default {
                    that.tableData=res.data;
                 } 
             })
+         }
+          that.clientList();  
     },
      methods: {
+       zsTable(info){
+                 // 点击左侧，右侧渲染。单选
+             Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                   this.clientList();
+                } 
+            }) 
+       },
+       zscencal(info){
+        //  取消
+                     Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.clientList(); 
+                } 
+            }) 
+       },
+       zsDouble(arrId){
+              var str = arrId;
+        var arr = str.split(",");// 在每个逗号(,)处进行分解。
+          Lycheckgroup({      
+            id:arr                                           
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.clientList();
+                } 
+            }) 
+       },
     // 打开详情
     rowDetail(row){
       this.rowDr = true;

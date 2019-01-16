@@ -4,6 +4,7 @@ import Router from 'vue-router' //引入路由
 import { Message } from 'element-ui'
 import logins from '@/Logins/logins'//登录注册
 import forget from '@/Logins/forget'
+import statement from '@/Logins/statement' //智能楼宇协议
 import Home from '@/views/Home'  //首页
 import NotFoud from '@/views/404' //404
 import Jh from '@/views/Jihe'  // 集合
@@ -41,6 +42,11 @@ const routes  =  [
     path:'/forget', //忘记密码
     name:'forget',
     component:forget
+  },
+  {
+    path:'/statement', //智能楼宇协议
+    name:'statement',
+    component:statement
   },
   {
     path: '/', //首页
@@ -96,13 +102,13 @@ const routes  =  [
     path: '/lydetails',
     name: 'lydetails',
     component: lydetails,
-    redirect:'/fymanage',
+    redirect:'/pmmap',
     children:[
-      // {
-      //   path: '/pmmap', 
-      //   name: 'pmmap',
-      //   component: pmmap
-      // },
+      {
+        path: '/pmmap', 
+        name: 'pmmap',
+        component: pmmap
+      },
       {
         path: '/fymanage', 
         name: 'fymanage',
@@ -178,23 +184,23 @@ const router = new Router({
 //   this.$store.commit(ADD_COUNT, sessionStorage.getItem('user'))
 // }
 router.beforeEach((to, from, next) => {
-   var userInfo = JSON.parse(sessionStorage.getItem('user'))
-   if(userInfo){
-    next()
-   }else{
-    if(to.path=='/logins' || to.path=='/forget'){
-      next()
-    }else if(to.path=='/register'){
-      next('/logins')
-    }
-    else{
-      Message({
-        showClose: true,
-        message: '请先登陆',
-        type: 'error'
-      });
-      next('/logins')
-    }
+  var userInfo = JSON.parse(sessionStorage.getItem('user'))
+  if(userInfo){
+   next()
+  }else{
+   if(to.path=='/logins' || to.path=='/forget' || to.path=='/statement'){
+     next()
+   }else if(to.path=='/register'){
+     next('/logins')
    }
+   else{
+     Message({
+       showClose: true,
+       message: '请先登陆',
+       type: 'error'
+     });
+     next('/logins')
+   }
+  }
 })
 export default router;

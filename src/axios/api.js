@@ -49,12 +49,13 @@ export const delectClient = params => get ('/builadmin/client/editstatus',params
 export const editClisent = params => post('/builadmin/client/edit',params) //编辑客户
 export const Lysearch = params => get ('/builadmin/buil/search',params) //楼宇搜索
 export const Fysearch = params => get ('/builadmin/room/search',params) //房源搜索
-export const Lycensus = params => get ('/builadmin/buil/census',params) //楼宇统计
+export const Lycensus = params => post ('/builadmin/buil/census',params) //楼宇统计
 export const Fycensus = params => get ('/builadmin/room/census',params) //房源统计
 export const Khcensus =params => get ('/builadmin/client/census',params) //客户管理
 export const qdcensus = params => get ('/builadmin/channels/census',params) //渠道统计
 export const Lycheck = params => post ('/builadmin/index/buil?a=one',params) //楼宇单选
 export const Lycheckgroup = params => post ('/builadmin/index/buil?a=list',params) //集合多选
+export const Poum = params => get ('/builadmin/buil/graphic',params) //剖面图
 //租客模块
 export const tenants = params => post ('/builadmin/customer/index?a=add',params) //新建租客
 export const industry = params => post ('/builadmin/customer/industry?a=getlist',params) //请求行业分类

@@ -1,6 +1,6 @@
 <template>
     <el-dialog :title="title" :visible.sync="visible" width="300px" :append-to-body="true" class="xgDialog" :before-close="modalClose" :close-on-click-modal="false">
-        <el-form :model="form" ref="form" class="demo-ruleForm" :rules="rules" hide-required-asterisk>
+        <el-form :model="form" ref="form" class="demo-ruleForm" :rules="rules">
             <el-form-item :label="title=='密码账号'?'旧密码':title" prop="name">
                 <el-input v-model="form.name" autocomplete="off" :placeholder="'请输入'+title"></el-input>
             </el-form-item>

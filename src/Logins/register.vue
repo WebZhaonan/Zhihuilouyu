@@ -17,7 +17,10 @@
             <i class="fa fa-unlock-alt" aria-hidden="true"></i>
             <el-input type="password" v-model="ruleForm2.checkPass" autocomplete="off" placeholder="请再次输入密码"></el-input>
         </el-form-item>
-        <el-checkbox v-model="checked" style="width: 100%;color: #fff;display: flex;align-items: center;">我已认真阅读并接受</el-checkbox>
+        <div style="display: flex;justify-content: flex-start">
+            <el-checkbox v-model="checked" style="color: #fff;">我已认真阅读并接受</el-checkbox>
+            <router-link tag="a" target="_blank" style="color: #409EFF;font-size: 14px;" to="/statement">《智能楼宇协议》</router-link>
+        </div>
         <el-form-item style="width:100%;padding-top: 20px;">
             <el-button type="primary" style="width:100%;" @click="Reg">注册</el-button>
             <!-- <div style="font-size:14px;color: #666;text-align: center;">忘记密码？<router-link to="/logins"><span>立即修改</span></router-link></div> -->
@@ -131,31 +134,38 @@ export default {
         var pwd = this.ruleForm2.checkPass;
         if(pwd!=pw){
              this.$message({
-                      message: '两次密码不一致，请重新输入',
-                      type: 'error'
-        });
-        return; 
+                message: '两次密码不一致，请重新输入',
+                type: 'error'
+            });
+            return
         }
-        Regist({
-         tel:tel,
-         code:code,
-         pw:pw,
-         pwd:pwd
-        }).then(res =>{
-         if(res.flag == 0){
+        if(this.checked==true){
+            Regist({
+            tel:tel,
+            code:code,
+            pw:pw,
+            pwd:pwd
+            }).then(res =>{
+            if(res.flag == 0){
+                    this.$message({
+                        message: '注册成功，请点击登录',
+                        type: 'success',
+                        duration: 1000
+                        }); 
+                setTimeout(() => { this.$router.go(0);}, 1000)
+            }else{
                 this.$message({
-                      message: '注册成功，请点击登录',
-                      type: 'success',
-                      duration: 1000
-                    }); 
-            setTimeout(() => { this.$router.go(0);}, 1000)
-         }else{
-             this.$message({
-                      message: res.data.msg,
-                      type: 'error'
-             }); 
-         }
-        })
+                        message: res.data.msg,
+                        type: 'error'
+                }); 
+            }
+            })
+        }else{
+            this.$message({
+                message: '请阅读并同意智慧楼宇协议',
+                type: 'warning'
+            })
+        }
      }
     },
     beforeDestroy(){

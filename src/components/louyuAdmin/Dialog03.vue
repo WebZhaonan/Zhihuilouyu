@@ -1,23 +1,23 @@
 <template>
     <div>
-        <el-form :model="form" hide-required-asterisk ref="numberValidateForm" :rules="rules"> 
+        <el-form :model="form" ref="numberValidateForm" :rules="rules"> 
             <div class="dia03-txt">合同信息</div>              
             <div class="form-top">           
                 <div class="form-public form-08">
-                    <el-form-item label="默认押金单位" class="form-08-item">
+                    <el-form-item label="默认押金单位" class="form-08-item" prop="mryjdw">
                         <el-select v-model="form.mryjdw">
                         <el-option label="月" value="2"></el-option>
                         <el-option label="元" value="1"></el-option>
                         </el-select>
                     </el-form-item>
                     <div class="form-08-div">
-                        <el-form-item label="默认租赁单位数量">
+                        <el-form-item label="默认租赁单位数量" prop="mrzldwsl">
                             <el-select v-model="form.mrzldwsl">
                             <el-option label="m²" value="1"></el-option>
                             <el-option label="工位" value="2"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="默认基础单价单位">
+                        <el-form-item label="默认基础单价单位" prop="mrjcdjdw">
                             <el-select v-model="form.mrjcdjdw">
                             <el-option label="元/m²·天" value="1"></el-option>
                             <el-option label="元/m²·月" value="2"></el-option>
@@ -28,7 +28,7 @@
                     </div>             
                 </div>
                 <div class="form-public form-09">
-                    <el-form-item label="默认计算精度">
+                    <el-form-item label="默认计算精度" prop="mrjsjd">
                         <el-select v-model="form.mrjsjd">
                             <el-option label="精确计算结果保留两位小数" value="1"></el-option>
                             <el-option label="每步计算保留两位小数" value="2"></el-option>
@@ -36,14 +36,13 @@
                     </el-form-item>
                     <el-form-item 
                     label="默认支付类型(几月一付)" 
-                    prop="lyjzmj"
-                    > 
+                    prop="lyjzmj"> 
                         <el-input v-model="form.lyjzmj"  placeholder="请填写默认支付类型"></el-input>
                         <span class="form-03-span">月</span>
                     </el-form-item>      
                 </div>
                 <div class="form-public form-10">
-                    <el-form-item class="form-10-item">       
+                    <el-form-item class="form-10-item" prop="jf">       
                         <div class="form-10-item-div">
                             默认计费类型
                             <el-tooltip placement="top">
@@ -57,7 +56,7 @@
                         </el-select>
                     </el-form-item>
                     <div class="form-10-div">
-                        <el-form-item label="默认提前付款时间">
+                        <el-form-item label="默认提前付款时间" prop="fktime">
                             <el-input v-model="form.fktime" placeholder="请输入提前付款时间"></el-input>
                         </el-form-item>
                         <el-form-item label="日期">
@@ -72,21 +71,19 @@
                 <div class="form-public form-09">
                     <el-form-item 
                     label="默认天数"
-                    prop="mrnts"
-                    >
+                    prop="mrnts">
                         <el-input v-model="form.mrnts"></el-input>
                         <span class="form-03-span">天</span>
                     </el-form-item>
                     <el-form-item 
                     label="单价保留小数点"
-                    prop="xsd"
-                    >
+                    prop="xsd">
                         <el-input v-model="form.xsd"></el-input>
                         <span class="form-03-span">位</span>
                     </el-form-item>      
                 </div>
                 <div class="form-public form-11">
-                    <el-form-item>       
+                    <el-form-item prop="zqhffs">       
                         <div class="form-11-div">
                             租期划分方式
                             <el-tooltip placement="top">
@@ -101,7 +98,7 @@
                             <el-option label="按自然月划分(首月非整自然月算一个月)" value="4"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item>       
+                    <el-form-item prop="hsgz">       
                         <div class="form-11-div">
                             天单价换算规则
                             <el-tooltip placement="top">
@@ -119,7 +116,7 @@
             <div class="dia03-txt">物业信息</div>              
             <div class="form-top">
                 <div class="form-public form-09">
-                    <el-form-item label="物业类型">
+                    <el-form-item label="物业类型" prop="wylx">
                         <el-select v-model="form.wylx">
                             <el-option label="写字楼" value="1"></el-option>
                             <el-option label="住宅" value="2"></el-option>
@@ -128,8 +125,7 @@
                     </el-form-item>
                     <el-form-item 
                     label="物业默认支付类型"
-                     prop="wyzflx"
-                    >
+                    prop="wyzflx">
                         <el-input v-model="form.wyzflx" placeholder="请输入物业默认支付类型"></el-input>
                         <span class="form-03-span">月</span>
                     </el-form-item>      
@@ -137,15 +133,14 @@
                 <div class="form-public form-12">
                     <el-form-item 
                     label="默认物业费"
-                     prop="mrwyf"
-                    >
+                    prop="mrwyf">
                         <el-input class="form-12-input" v-model="form.mrwyf" placeholder="请输入默认物业费"></el-input>
                         <el-select v-model="form.wyytf">
                             <el-option label="元/㎡·月" value="2"></el-option>
                             <el-option label="元/㎡·天" value="1"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="物业费提前付款时间">
+                    <el-form-item label="物业费提前付款时间" prop="wyrq">
                         <el-input class="form-12-input" v-model="form.wyfkrq" placeholder="请输入物业费提前付款时间"></el-input>
                         <el-select v-model="form.wyrq">
                             <el-option label="工作日" value="1"></el-option>
@@ -155,13 +150,13 @@
                     </el-form-item>      
                 </div>
                 <div class="form-public form-09">
-                    <el-form-item label="物业费默认押金单位">
+                    <el-form-item label="物业费默认押金单位" prop="wyyjdw">
                         <el-select v-model="form.wyyjdw">
                             <el-option label="元" value="1"></el-option>
                             <el-option label="月" value="2"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="默认计算精度">
+                    <el-form-item label="默认计算精度" prop="wy_mrjsjd">
                         <el-select v-model="form.wy_mrjsjd">
                             <el-option label="精确计算结果保留两位小数" value="1"></el-option>
                             <el-option label="每步计算保留两位小数" value="2"></el-option>
@@ -171,12 +166,11 @@
                 <div class="form-public form-09">
                     <el-form-item 
                     label="单价保留小数点"
-                     prop="djblxsd"
-                    >
+                    prop="djblxsd">
                         <el-input v-model="form.djblxsd"></el-input>
                         <span class="form-03-span">位</span>
                     </el-form-item>
-                    <el-form-item label="默认物业费计费类型">
+                    <el-form-item label="默认物业费计费类型" prop="mrwyfjflx">
                         <el-select v-model="form.mrwyfjflx">
                             <el-option label="按实际按天数计费" value="1"></el-option>
                             <el-option label="按月计费" value="2"></el-option>
@@ -186,15 +180,14 @@
                 <div class="form-public form-09">
                     <el-form-item 
                     label="默认年天数"
-                     prop="wymrnts"
-                    >
+                    prop="wymrnts">
                         <el-input v-model="form.wymrnts"></el-input>
                         <span class="form-03-span">天</span>
                     </el-form-item>  
                     <el-form-item></el-form-item> 
                 </div>
                 <div class="form-public form-11">
-                    <el-form-item>       
+                    <el-form-item prop="wyzqhffs">       
                         <div class="form-11-div">
                             租期划分方式
                             <el-tooltip placement="top">
@@ -209,7 +202,7 @@
                             <el-option label="按自然月划分(首月非整自然月算一个月)" value="4"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item>       
+                    <el-form-item prop="wyhsgz">       
                         <div class="form-11-div">
                             天单价换算规则
                             <el-tooltip placement="top">
@@ -230,20 +223,19 @@
                     <i class="el-icon-close" @click="hide(item)"></i>
                     <div class="form-top">
                         <div class="form-public form-09">
-                            <el-form-item label="费用类型" v-if="item.coid=='0'">
+                            <el-form-item label="费用类型" v-if="item.coid=='0'" prop="">
                                 <el-select>
                                     <el-option :label="typeItem.name" :value="typeItem.id" v-for="(typeItem, index) in type" :key="index">
-
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-                              <el-form-item label="费用类型" v-else-if="item.coid!='0'">
+                            <el-form-item label="费用类型" v-else-if="item.coid!='0'" prop="coid">
                                 <el-select v-model="item.coid">
                                     <el-option :label="typeItem.name" :value="typeItem.id" v-for="(typeItem, index) in type" :key="index">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="货物名称">
+                            <el-form-item label="货物名称" prop="value">
                              <el-autocomplete
                             v-model="item.value"
                             :fetch-suggestions="querySearchAsync"
@@ -254,21 +246,21 @@
                             </el-form-item>      
                         </div>
                         <div class="form-public form-09">
-                            <el-form-item label="商品编码">
+                            <el-form-item label="商品编码" prop="goods_code">
                                 <el-input v-model="item.goods_code" placeholder="请输入商品编码"></el-input>
                             </el-form-item>
-                            <el-form-item label="税率">
+                            <el-form-item label="税率" prop="set">
                                 <el-input v-model="item.set" placeholder="请输入税率"></el-input>
                             </el-form-item>      
                         </div>
                         <div class="form-public form-09">
-                            <el-form-item label="优惠政策标识">
+                            <el-form-item label="优惠政策标识" prop="discount_type">
                                 <el-select v-model="item.discount_type">
                                     <el-option label="是" value="1"></el-option>
                                     <el-option label="否" value="0"></el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="优惠政策名称">
+                            <el-form-item label="优惠政策名称" prop="discount">
                                 <el-input v-model="item.discount" placeholder="请输入优惠政策名称"></el-input>
                             </el-form-item>      
                         </div>
@@ -279,13 +271,12 @@
              <div class="dia03-txt">收据编号</div>    
              <div class="form-top">
                  <div class="form-public form-09">
-                            <el-form-item label="收据编号规则" prop="bhruls">
-                                <el-select v-model="form.bhruls"> 
-                                    <el-option :label="ruleItem.name" :value="ruleItem.id" v-for="(ruleItem, index) in rule" :key="index"></el-option>
-                                </el-select>
-                            </el-form-item>
-     
-                        </div>
+                    <el-form-item label="收据编号规则" prop="bhruls">
+                        <el-select v-model="form.bhruls"> 
+                            <el-option :label="ruleItem.name" :value="ruleItem.id" v-for="(ruleItem, index) in rule" :key="index"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </div>
             </div> 
             <div class="dia03-txt">默认入账方式</div>
             <div class="form-top form-radio">
@@ -352,9 +343,25 @@ export default {
                 bhruls:'',
             },
              rules: {
-          lyjzmj: [{ required: true, message: '请输入默认支付类型(数字)', trigger: 'change' }],
-          mrwyf: [{ required: true, message: '请输入默认物业费(数字)', trigger: 'change' }],
-          bhruls: [{ required: true, message: '请选择编号规则', trigger: 'change' }],
+                mryjdw: [{ required: true, message: '请选择默认押金单位', trigger: 'blur' }],
+                mrzldwsl: [{ required: true, message: '请输入默认租赁单位数量', trigger: 'blur' }],
+                mrjcdjdw: [{ required: true, message: '请输入基础单价单位', trigger: 'blur' }],
+                mrjsjd: [{ required: true, message: '请输入计算精度', trigger: 'blur' }],
+                fktime: [{ required: true, message: '请输入提前付款时间', trigger: 'blur' }],
+                mrnts: [{ required: true, message: '请输入天数', trigger: 'blur' }],
+                xsd: [{ required: true, message: '请输入单价保留小数点', trigger: 'blur' }],
+                wylx: [{ required: true, message: '请输入物业类型', trigger: 'blur' }],
+                wyzflx: [{ required: true, message: '请输入物业默认支付类型', trigger: 'blur' }],
+                mrwyf: [{ required: true, message: '请输入默认物业费', trigger: 'blur' }],
+                wyrq: [{ required: true, message: '请输入物业费提前付款时间', trigger: 'blur' }],
+                wyyjdw: [{ required: true, message: '请输入单价保留小数点', trigger: 'blur' }],
+                wy_mrjsjd: [{ required: true, message: '请输入单价保留小数点', trigger: 'blur' }],
+                djblxsd: [{ required: true, message: '请输入单价保留小数点', trigger: 'blur' }],
+                mrwyfjflx: [{ required: true, message: '请选择物业费计费类型', trigger: 'blur' }],
+                wymrnts: [{ required: true, message: '请输入年天数', trigger: 'blur' }],
+                lyjzmj: [{ required: true, message: '请输入默认支付类型(数字)', trigger: 'blur' }],
+                mrwyf: [{ required: true, message: '请输入默认物业费(数字)', trigger: 'blur' }],
+                bhruls: [{ required: true, message: '请选择编号规则', trigger: 'blur' }],
             },
             shuilvs:[
             ],
@@ -375,6 +382,7 @@ export default {
             id:this.rowId                                             
             }).then(res => {
                 if(res.flag == 0){ 
+                    console.log(JSON.stringify(res.data))
                     this.form.mryjdw = res.data.deposit_unit;
                     this.form.mrzldwsl = res.data.number_unit;
                     this.form.mrjcdjdw = res.data.price_unit;
@@ -411,7 +419,7 @@ export default {
                 }
             })
       }
- // 通用费用类型
+            // 通用费用类型
             let that = this
              costtype({                                                
             }).then(res => {
@@ -419,14 +427,14 @@ export default {
                     that.type = res.data
                 } 
             })
-//  货物名称
+            //  货物名称
          goodsname({                                                
             }).then(res => {
                 if(res.flag == 0){ 
                  this.restaurants =res.data
                 }
             }) 
-// 收据编号
+        // 收据编号
           receiptrule({                                                
             }).then(res => {
                 if(res.flag == 0){ 
@@ -470,7 +478,6 @@ export default {
            var index = this.shuilvs.indexOf(item);
            if(index !== -1){
                 this.shuilvs.splice(index,1);
-                console.log(JSON.stringify(this.shuilvs))
            }        
        },
     //    保存提交
@@ -483,7 +490,7 @@ export default {
                      BigArr = this.shuilvs;
                      BigArr[i].bid = bid
                 }
-             this.$refs[formName].validate((valid) => {
+            this.$refs[formName].validate((valid) => {
             if (valid) {
                 // 编辑默认设置
                  buildsetEdit({

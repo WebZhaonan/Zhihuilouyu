@@ -17,7 +17,7 @@
       <span class="InHeaderSpan">内部管理</span>
       <el-button type="info" icon="el-icon-plus" class="InHeaderBtn" @click="intdialog=true">新建人员</el-button>
       <el-dialog title="新建人员" :visible.sync="intdialog" width="600px">
-        <el-form :model="form" ref="form" :rules="rules" class="demo-ruleForm" hide-required-asterisk>
+        <el-form :model="form" ref="form" :rules="rules" class="demo-ruleForm">
           <div class="el-div">
             <el-form-item label="姓名" prop="name">
               <el-input v-model="form.name" autocomplete="off"></el-input>

@@ -58,7 +58,7 @@
         </li>
     </ul> 
     </div>
-    <zsOnetable></zsOnetable>
+    <zsOnetable ref="tableOne"></zsOnetable>
   </div>
   
 </template>
@@ -88,7 +88,15 @@ export default {
             }) 
   },
   methods: {
-      
+    zsMid(info){
+      this.$refs.tableOne.zsTable(info);
+    },
+    zsQx(info){
+      this.$refs.tableOne.zscencal(info);
+    },
+    zsDx(arrId){
+       this.$refs.tableOne.zsDouble(arrId);
+    }
   }
 }
 </script>

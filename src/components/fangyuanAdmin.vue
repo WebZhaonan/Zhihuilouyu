@@ -29,8 +29,6 @@ import fy02 from '@/components/fangyuanAdmin/fy02'
 import fy03 from '@/components/fangyuanAdmin/fy03'
 import fyDialog from '@/components/fangyuanAdmin/fyDialog'
 import { Fysearch } from '@/axios/api'  //房源搜索
-import { Lycheck } from '@/axios/api' //左侧单选
-import { Lycheckgroup } from '@/axios/api' //左侧多选
 export default {
     name:'fangyuanAdmin',
     inject: ['reload'],
@@ -49,36 +47,15 @@ export default {
     },
     methods: {
         fyitems(info){
-              // 点击左侧，右侧渲染。单选
-             Lycheck({      
-            id:info.id                                            
-            }).then(res => {
-                if(res.flag == 0){  
-                     this.reload(); 
-                } 
-            }) 
+        this.$refs.fy01.fyTable(info);
         },
             // 取消楼宇单个
-        delectItems1(info){
-            Lycheck({      
-            id:info.id                                            
-            }).then(res => {
-                if(res.flag == 0){  
-                    this.reload(); 
-                } 
-            }) 
+        delectItems1(info){ 
+           this.$refs.fy01.cencal(info); 
         },
         // 多选楼宇
         sayNode1(arrId) {
-        var str = arrId;
-        var arr = str.split(",");// 在每个逗号(,)处进行分解。
-          Lycheckgroup({      
-            id:arr                                           
-            }).then(res => {
-                if(res.flag == 0){  
-                    this.reload();
-                } 
-            }) 
+        this.$refs.fy01.dabcheck(arrId); 
         },
         search(){
               Fysearch({   

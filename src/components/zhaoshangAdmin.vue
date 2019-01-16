@@ -10,7 +10,7 @@
         <!-- 子组件，显示不同的 tab
         is 特性动态绑定子组件
         keep-alive 将切换出去的组件保留在内存中 -->
-        <zsOne :is="currentTab" keep-alive></zsOne>
+        <zsOne :is="currentTab" keep-alive ref="zstable"></zsOne>
     </div>
 </template>
 <script>
@@ -18,8 +18,7 @@ import zsOne from '@/components/zhaoshangAdmin/zsOne'
 import zsTwo from '@/components/zhaoshangAdmin/zsTwo'
 import zsOneDialog from '@/components/zhaoshangAdmin/zsOneDialog'
 import zsTwoDialog from '@/components/zhaoshangAdmin/zsTwoDialog'
-import { Lycheck } from '@/axios/api' //左侧单选
-import { Lycheckgroup } from '@/axios/api' //左侧多选
+
 export default {
     name:'Zs',
     inject: ['reload'],
@@ -43,37 +42,16 @@ export default {
             this.isdialog = dialog;
             this.nowIndex = i;
         },
-         zsitems(info){
-              // 点击左侧，右侧渲染。单选
-             Lycheck({      
-            id:info.id                                            
-            }).then(res => {
-                if(res.flag == 0){  
-                     this.reload(); 
-                } 
-            }) 
+         zsitems(info){     
+            this.$refs.zstable.zsMid(info);
         },
             // 取消楼宇单个
         delectItems2(info){
-            Lycheck({      
-            id:info.id                                            
-            }).then(res => {
-                if(res.flag == 0){  
-                    this.reload(); 
-                } 
-            }) 
+            this.$refs.zstable.zsQx(info);
         },
         // 多选楼宇
         sayNode2(arrId) {
-        var str = arrId;
-        var arr = str.split(",");// 在每个逗号(,)处进行分解。
-          Lycheckgroup({      
-            id:arr                                           
-            }).then(res => {
-                if(res.flag == 0){  
-                    this.reload();
-                } 
-            }) 
+            this.$refs.zstable.zsDx(arrId);
         }
     }
 }

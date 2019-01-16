@@ -46,24 +46,24 @@
                 </el-form-item>
             </div>
             <div class="form-public form-03">
-                <el-form-item label="楼宇建筑面积">
+                <el-form-item label="楼宇建筑面积" prop="lyjzmj">
                     <el-input v-model="ruleForm.lyjzmj" placeholder="请填写楼宇建筑面积"></el-input>
                     <span class="form-03-span">m²</span>
                 </el-form-item>
-                <el-form-item label="用途">
+                <el-form-item label="用途" prop="yt">
                     <el-input v-model="ruleForm.yt" placeholder="请填写用途"></el-input>
                 </el-form-item>
             </div>
             <div class="form-public form-03">
-                <el-form-item label="占地面积">
+                <el-form-item label="占地面积" prop="zdmj">
                     <el-input v-model="ruleForm.zdmj" placeholder="请填写占地面积"></el-input>
                     <span class="form-03-span">m²</span>
                 </el-form-item>
-                <el-form-item label="建成时间">
+                <el-form-item label="建成时间" prop="value">
                     <el-date-picker
                     v-model="ruleForm.value"
                     type="date"
-                    placeholder="选择日期">
+                    placeholder="请选择选择日期">
                     </el-date-picker>
                 </el-form-item>
             </div>
@@ -72,7 +72,7 @@
                     <el-input v-model="ruleForm.glmj" placeholder="请输入管理面积" disabled></el-input>
                     <span class="form-03-span">m²</span>
                 </el-form-item>
-                <el-form-item label="账单提前提醒天数">
+                <el-form-item label="账单提前提醒天数" prop="zdtq">
                     <el-input v-model="ruleForm.zdtq" placeholder="请输入账单提前提醒天数"></el-input>
                     <span class="form-03-span">天</span>
                 </el-form-item>
@@ -87,8 +87,8 @@
                     <el-option label="年月" value="nianyue"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item>
-                    <el-checkbox v-model="htbh">
+                <el-form-item class="fhhtbh">
+                    <el-checkbox v-model="htbh01">
                         返还作废合同的合同编号
                         <el-tooltip content="当勾选此项后，再新建合同的编号则优先填充因作废合同空缺的编号" placement="top">
                             <i class="el-icon-question"></i>
@@ -101,7 +101,7 @@
                 <el-form-item label="上传照片">
                     <el-upload
                         class="avatar-uploader"
-                        action="http://dev.360yibao.cn/builadmin/upload/upload"
+                        action="http://build.xibei.co/builadmin/upload/upload"
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess"
                         :before-upload="beforeAvatarUpload">
@@ -116,31 +116,31 @@
             <transition name="el-fade-in-linear">
                 <div v-show="show" class="transition-box">
                     <div class="form-public form-03">
-                        <el-form-item label="项目名称">
+                        <el-form-item label="项目名称" prop="xmmc">
                             <el-input v-model="ruleForm.xmmc" placeholder="请输入项目名称"></el-input>
                         </el-form-item>
-                        <el-form-item label="注册地址">
+                        <el-form-item label="注册地址" prop="zcdz">
                             <el-input v-model="ruleForm.zcdz" placeholder="请输入注册地址"></el-input>
                         </el-form-item>
                     </div>
                     <div class="form-public form-03">
-                        <el-form-item label="收款人">
+                        <el-form-item label="收款人" prop="skr">
                             <el-input v-model="ruleForm.skr" placeholder="请输入收款人"></el-input>
                         </el-form-item>
-                        <el-form-item label="收款公司">
+                        <el-form-item label="收款公司" prop="skgs">
                             <el-input v-model="ruleForm.skgs" placeholder="请输入收款公司"></el-input>
                         </el-form-item>
                     </div>
                     <div class="form-public form-03">
-                        <el-form-item label="开户行">
+                        <el-form-item label="开户行" prop="khh">
                             <el-input v-model="ruleForm.khh" placeholder="请输入开户行"></el-input>
                         </el-form-item>
-                        <el-form-item label="开户行账号">
+                        <el-form-item label="开户行账号" prop="khxmc">
                             <el-input v-model="ruleForm.khxmc" placeholder="请输入开户行账号"></el-input>
                         </el-form-item>
                     </div>
                     <div class="form-public form-03">
-                        <el-form-item label="通知地址">
+                        <el-form-item label="通知地址" prop="tzdz">
                             <el-input v-model="ruleForm.tzdz" placeholder="请输入通知地址"></el-input>
                         </el-form-item>
                     </div>                   
@@ -210,8 +210,21 @@ export default {
           jtwz: [{ required: true, message: '请输入具体位置', trigger: 'change' }],
           zslxdh: [{ required: true, message: '请输入联系电话', trigger: 'change' }],
           syrq: [{ required: true, message: '请输入所有权人', trigger: 'change' }],
+          lyjzmj: [{ required: true, message: '请填写楼宇建筑面积', trigger: 'change' }],
+          yt: [{ required: true, message: '请填写用途', trigger: 'change' }],
+          value: [{ required: true, message: '请选择选择日期', trigger: 'change' }],
+          zdtq: [{ required: true, message: '请输入账单提前提醒天数', trigger: 'change' }],
+          zdmj: [{ required: true, message: '请填写占地面积', trigger: 'change' }],
+          syrxmmcq: [{ required: true, message: '请输入项目名称', trigger: 'change' }],
+          xmmc: [{ required: true, message: '请输入项目名称', trigger: 'change' }],
+          zcdz: [{ required: true, message: '请输入注册地址', trigger: 'change' }],
+          skr: [{ required: true, message: '请输入收款人', trigger: 'change' }],
+          skgs: [{ required: true, message: '请输入收款人', trigger: 'change' }],
+          khh: [{ required: true, message: '请输入开户行', trigger: 'change' }],
+          khxmc: [{ required: true, message: '请输入开户行账号', trigger: 'change' }],
+          tzdz: [{ required: true, message: '请输入通知地址', trigger: 'change' }]
         },
-            htbh: false,
+            htbh01: false,
             imageUrl: '',
             show: false,
             value: '',
@@ -334,11 +347,7 @@ export default {
                 } 
             })  
         },
-      
-        commitUp(formName){
-            //  this.$options.methods.provinceAd()
-            //  this.$options.methods.cityAd()
-            
+        commitUp(formName){      
           this.$refs[formName].validate((valid) => {
           if (valid) {
              if(this.rowId){

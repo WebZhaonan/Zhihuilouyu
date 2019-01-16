@@ -15,7 +15,7 @@
                 <Lydialog></Lydialog>
             </div>
             <div class="ly-content">
-                <lyMsg></lyMsg>
+                <lyMsg ref="childrenNode"></lyMsg>
                 <!-- <sjpzdialog></sjpzdialog>            -->
             </div>          
         </div>
@@ -58,7 +58,7 @@
                 prop="count_busin"
                 label="可招商数量"
                 sortable
-                width="168">
+                width="188">
                 </el-table-column>
                 <el-table-column
                 prop="count_rent"
@@ -70,19 +70,13 @@
                 prop="count_pact"
                 label="再租合同份数"
                 sortable
-                width="168">
+                width="188">
                 </el-table-column>  
-                <el-table-column
-                prop="count_rate"
-                label="预计完成率"
-                sortable
-                width="168">
-                </el-table-column>
                 <el-table-column
                 prop="c_name"
                 label="城市"
                 sortable
-                width="168">
+                width="278">
                 <template slot-scope="scope">
                     {{scope.row.c_name}}
                     <sxly :inputName="scope.row.id"></sxly>                                  
@@ -92,157 +86,18 @@
                 prop="p_name"
                 label="省份"
                 sortable
-                width="170">
+                width="208">
                 </el-table-column>          
             </el-table>
         </div>       
-                        <!--楼宇详情 -->
-      <Drawer :closable="true" width="1000" class="lyDrawer" v-model="rowDr">
-        <div slot="header" class="drawer-header">楼宇详情</div>
-        <div class="content">
-            <div class="info">
-              <div class="info-top">
-                <div class="info-msg">
-                   <span>
-                        <!-- <img :src="info.images" style="width:160px;"> -->
-                   </span>
-                  <span style="margin-top:-100px;display:inline-block">{{info.name}}</span>
-                </div>
-                <ul class="info-cz">
-                  <li @click="zsOnetablebj = true;">
-                    <!-- <zsOneDialogs v-if="zsOnetablebj" :visible.sync="zsOnetablebj" :rowId ='info.id'></zsOneDialogs>  -->
-                    <bjDialog :inputName='info.id'></bjDialog>
-                  </li>
-                  <!-- <li @click="deleteDialog = true">
-                    <i class="el-icon-delete"></i><span>删除</span>
-                    <el-dialog
-                      :visible.sync="deleteDialog"
-                      width="400px"
-                      :modal="false"
-                      center
-                      :append-to-body="true"
-                      class="lyDrawer-dialog">
-                      <div class="lyDrawer-dialog-div">
-                          <i class="el-icon-warning"></i>
-                          <p>确定要删除该客户吗？</p>
-                      </div>
-                      <span slot="footer" class="dialog-footer">
-                          <el-button type="primary" @click="affirm(info.id)">确 定</el-button>
-                          <el-button type="info" style="margin-left:20px;" @click="cancel">取 消</el-button>
-                      </span>
-                    </el-dialog>
-                  </li> -->
-                </ul>
-              </div>
-              <div class="info-bottom">
-                <div class="info-bottom-left">
-                  <div class="ztmsg">
-                    <div>楼宇类型</div>
-                    <div>
-                      <span>{{info.type_name}}</span>
-                    </div>
-                  </div>     
-                </div>
-                <div class="info-bottom-right">
-                  <div class="slmsg slborder">
-                    <div>预计完成率</div>
-                    <div>{{info.count_rate}}</div>
-                  </div>
-                  <div class="slmsg">
-                    <div>占地面积</div>
-                    <div>{{info.floor_area}}</div>
-                  </div> 
-                </div>
-              </div>
-            </div>
-            <div class="blockmsg">          
-              <div class="msg" style="width:100%">
-                <div class="msg-header">楼宇信息</div>
-                <div class="msg-body msg-width">
-                  <div class="msg-bodys">
-                    <div class="msg-content">
-                      <div class="msg-content-top">所有权人</div>
-                      <div class="msg-content-bottom">{{info.username}}</div>
-                    </div>
-                  </div>
-                  <div class="msg-bodys">
-                    <div class="msg-content">
-                      <div class="msg-content-top">联系电话</div>
-                      <div class="msg-content-bottom">{{info.phone}}</div>
-                    </div>
-                  </div>
-                  <div class="msg-bodys">
-                    <div class="msg-content">
-                      <div class="msg-content-top">具体地址</div>
-                      <div class="msg-content-bottom">{{info.address}}</div>
-                    </div>
-                  </div>
-                  <div class="msg-bodys">
-                    <div class="msg-content">
-                      <div class="msg-content-top">建筑时间</div>
-                      <div class="msg-content-bottom">
-                         {{ info.createtime}}
-                      </div>
-                    </div>
-                  </div>
-                  <div class="msg-bodys">
-                    <div class="msg-content">
-                      <div class="msg-content-top">省份</div>
-                      <div class="msg-content-bottom">{{info.p_name}}</div>
-                    </div>
-                  </div>
-                   <div class="msg-bodys">
-                    <div class="msg-content">
-                      <div class="msg-content-top">城市</div>
-                      <div class="msg-content-bottom">{{info.c_name}}</div>
-                    </div>
-                  </div>
-                   <div class="msg-bodys">
-                    <div class="msg-content">
-                      <div class="msg-content-top">区域</div>
-                      <div class="msg-content-bottom">{{info.a_name}}</div>
-                    </div>
-                  </div>
-                  <div class="msg-bodys">
-                    <div class="msg-content">
-                      <div class="msg-content-top">建筑面积</div>
-                      <div class="msg-content-bottom">{{info.build_area}}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- <div class="msg">
-                <div class="msg-header">房源信息</div>
-                <div class="msg-body">
-                  <div class="fyxx-top">
-                      <div class="fyxximg"></div>
-                      <div class="fyxxtxt">
-                        <div>文创集团</div>
-                        <div>杭州市/滨江区</div>
-                      </div>
-                  </div>
-                  <div class="fyxx-top fyxx-bottom">
-                      <div class="fyxxheader">
-                        <span>楼层/房号</span>
-                        <span>面积</span>
-                      </div>
-                      <div class="fyxxbody">
-                        <span style="color: #4494f0;">7层 701-1室</span>
-                        <span>150.00m2</span>
-                      </div>
-                  </div>
-                </div>
-              </div> -->
-            
-          </div>
-        </div>
-      </Drawer> 
+        <!--楼宇详情 -->
+      
     </div>
 </template>
 <script>
-import Vue from 'vue'
-import { Drawer } from 'iview';
-Vue.component('Drawer', Drawer);
+// import Vue from 'vue'
+// import { Drawer } from 'iview';
+// Vue.component('Drawer', Drawer);
 import Lydialog from '@/components/louyuAdmin/Dialog'
 import sjpzdialog from '@/components/louyuAdmin/Dialogsjpz'
 import lyMsg from '@/components/zhlyMsg/lyMsg'
@@ -266,8 +121,6 @@ export default {
             tagName:'楼宇列表',
             loading: false,
             getList:'',
-            rowDr:false,
-            info:[]
         }
     },
         computed: {
@@ -311,8 +164,8 @@ export default {
             id:info.id                                            
             }).then(res => {
                 if(res.flag == 0){  
-                    this.getList()
-                    //  this.reload(); 
+                     this.getList() 
+                     this.$refs.childrenNode.lycensus();
                 } 
             }) 
         },
@@ -324,7 +177,8 @@ export default {
             id:arr                                           
             }).then(res => {
                 if(res.flag == 0){  
-                    this.getList()
+                    this.getList();
+                    this.$refs.childrenNode.lycensus();
                 } 
             }) 
         },
@@ -334,7 +188,8 @@ export default {
             id:info.id                                            
             }).then(res => {
                 if(res.flag == 0){  
-                    this.reload(); 
+                    this.getList()
+                    this.$refs.childrenNode.lycensus();
                 } 
             }) 
         },
@@ -351,21 +206,26 @@ export default {
                 }else{
                 this.loading = false
                 this.$message.error(res.msg)
-                this.reload()
+                this.getList()
                 } 
             }) 
         },
         skip(row){
-            this.rowDr = true;
+            this.$router.push({
+             path: "/lydetails",
+             query: {
+                id: row.id
+              }
+            });
                // 获取楼宇详情
-           getList({                    
-                id: row.id,                              
-            }).then(res => {
-                if(res.flag == 0){  
-                    console.log(JSON.stringify(res))
-                    this.info = res.data[0];
-                } 
-            }) 
+          //  getList({                    
+          //       id: row.id,                              
+          //   }).then(res => {
+          //       if(res.flag == 0){  
+          //           console.log(JSON.stringify(res))
+          //           this.info = res.data[0];
+          //       } 
+          //   }) 
 
         },
     }
@@ -565,7 +425,7 @@ export default {
 }
 .lyDrawer .content .info .info-bottom .info-bottom-left{
   float: left;
-  width: 66%;
+  width: 62%;
   margin: 20px;
 }
 .lyDrawer .content .info .info-bottom .info-bottom-left .ztmsg{

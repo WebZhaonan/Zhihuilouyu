@@ -2,7 +2,7 @@
     <div class="zsTwoDialog">
         <el-button class="button-dialog" icon="el-icon-plus" plain @click="dialogFormVisible = true">渠道联系人</el-button>
         <el-dialog title="新建渠道联系人" :visible.sync="dialogFormVisible" :close-on-click-modal="false" class="zsTwo-dialog" width="700px" top="100px" center append-to-body>               
-            <el-form :model="ruleForm" class="demo-ruleForm" :rules="rules" ref="ruleForm" hide-required-asterisk> 
+            <el-form :model="ruleForm" class="demo-ruleForm" :rules="rules" ref="ruleForm"> 
                 <div class="tc-form-content">
                     <div class="tc-form-contents">
                         <el-form-item label="姓名" prop="xm">

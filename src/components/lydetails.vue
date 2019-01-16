@@ -24,14 +24,14 @@
                         </el-dropdown-menu>
                     </el-dropdown> -->
                     <!-- 个人中心 -->
-                    <el-dropdown>
+                    <!-- <el-dropdown>
                         <i class="fa fa-user-o" style="margin-right: 30px"></i>
                         <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>查看</el-dropdown-item>
                         <el-dropdown-item>新增</el-dropdown-item>
                         <el-dropdown-item>删除</el-dropdown-item>
                         </el-dropdown-menu>
-                    </el-dropdown>
+                    </el-dropdown> -->
                 </div>
             </div>
             <div class="header-content">
@@ -105,7 +105,7 @@
                         </p>
                     </el-col>
                     <el-col :span="16" style="min-width: 750px;text-align: left;">
-                        <pmMsg :is="isMsg"></pmMsg>
+                        <pmMsg :is="isMsg" :arrId='this.$route.query.id'></pmMsg>
                     </el-col>
                 </el-row>
             </div>    
@@ -116,7 +116,8 @@
                     </el-menu-item>
                 </el-menu>
                 <lydetailsDialog  :inputName='this.$route.query.id' v-if="islyDialog"></lydetailsDialog>
-                <router-view/>
+                 <router-view :pmId ='this.$route.query.id'>
+                </router-view>
             </div>
         </el-main>      
         <BackTop   id="to-top-btn" :height="20"></BackTop> 
@@ -129,16 +130,18 @@ import { Drawer } from 'iview';
 import { BackTop } from 'iview';
 Vue.component('Drawer', Drawer);
 Vue.component('BackTop', BackTop);
-import fyMsg from '@/components/zhlyMsg/fyMsg'
-import zsMsg from '@/components/zhlyMsg/zsMsg'
-import zkMsg from '@/components/zhlyMsg/zkMsg'
+import pmMsg from '@/components/zhlyMsg/pmMsg'
+// import fyMsg from '@/components/zhlyMsg/fyMsg'
+// import zsMsg from '@/components/zhlyMsg/zsMsg'
+// import zkMsg from '@/components/zhlyMsg/zkMsg'
 import bjDialog from '@/components/louyuAdmin/bjDialog'
 import lydetailsDialog from '@/components/lydetailsDialog/lydetailsDialog'   //楼宇详情页弹窗
 import { getList} from '@/axios/api'  //楼宇列表详情
 export default {
     name: 'lydetails',
     components:{
-       fyMsg,zsMsg,zkMsg,bjDialog,lydetailsDialog
+    //    fyMsg,zsMsg,zkMsg,
+       pmMsg,lydetailsDialog,bjDialog
     },
     data(){
         return{
@@ -147,16 +150,16 @@ export default {
                 {name:'/',navItem:'集合'},
                 // {name:'/page1',navItem:'工作流'},
             ],
-            activeIndex02:'/fymanage',
+            activeIndex02:'/pmmap',
             List_nav:[
-                // {name:'/pmmap',navItem:'剖面图',sub:'pmMsg'},
-                {name:'/fymanage',navItem:'房源管理',sub:'fyMsg'},
-                {name:'/zsmanage',navItem:'招商管理',sub:'zsMsg'},
-                {name:'/zkmanage',navItem:'租客管理',sub:'zkMsg'},
-                {name:'/htmanage',navItem:'合同管理',sub:''},
+                {name:'/pmmap',navItem:'剖面图',sub:'pmMsg'},
+                // {name:'/fymanage',navItem:'房源管理',sub:'fyMsg'},
+                // {name:'/zsmanage',navItem:'招商管理',sub:'zsMsg'},
+                // {name:'/zkmanage',navItem:'租客管理',sub:'zkMsg'},
+                // {name:'/htmanage',navItem:'合同管理',sub:''},
             ],
             value1: false,
-            isMsg: 'fyMsg',
+            isMsg: 'pmMsg',
             isif: true,
             islyDialog: true,
             info:[],
@@ -181,9 +184,9 @@ export default {
         }
     },
     mounted () {
-     
+        
         this.activeIndex02 = this.$route.path
-        if(this.$route.path!=='/fymanage'){
+        if(this.$route.path!=='/pmmap'){
             this.isif=false;
             this.islyDialog=false;
         }else{

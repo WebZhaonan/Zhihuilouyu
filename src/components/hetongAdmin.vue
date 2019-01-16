@@ -7,7 +7,7 @@
 <!-- 子组件，显示不同的 tab
  is 特性动态绑定子组件
  keep-alive 将切换出去的组件保留在内存中 -->
-<htList :is="currentTab" keep-alive></htList>
+<htList :is="currentTab" keep-alive ref="htList"></htList>
 <el-button icon="el-icon-plus" class="btnHt" plain @click="open()">合同</el-button>
 <htDialog v-if="openOrderVisible" :visible.sync="openOrderVisible"></htDialog>
 </div>
@@ -18,8 +18,6 @@
 import htList from '../components/ht-list';
 import htGd from '../components/htGd';
 import htDialog from '@/components/hetongAdmin/htDialog';
-import { Lycheck } from '@/axios/api' //左侧单选
-import { Lycheckgroup } from '@/axios/api' //左侧多选
 export default {
     name:'Ht',
     inject: ['reload'],
@@ -35,36 +33,15 @@ export default {
     },
     methods: {
           htitems(info){
-              // 点击左侧，右侧渲染。单选
-             Lycheck({      
-            id:info.id                                            
-            }).then(res => {
-                if(res.flag == 0){  
-                     this.reload(); 
-                } 
-            }) 
+            this.$refs.htList.htdx(info);
         },
             // 取消楼宇单个
         delectItems4(info){
-            Lycheck({      
-            id:info.id                                            
-            }).then(res => {
-                if(res.flag == 0){  
-                    this.reload(); 
-                } 
-            }) 
+        this.$refs.htList.htqx(info);
         },
         // 多选楼宇
         sayNode4(arrId) {
-        var str = arrId;
-        var arr = str.split(",");// 在每个逗号(,)处进行分解。
-          Lycheckgroup({      
-            id:arr                                           
-            }).then(res => {
-                if(res.flag == 0){  
-                    this.reload();
-                } 
-            }) 
+            this.$refs.htList.htdouble(arrId);
         },
         open(){
             this.openOrderVisible= true;

@@ -10,7 +10,7 @@
                     </el-tooltip>
                     <span style="float: right;padding-left: 7px;">m²</span>
                 </div>
-                <div class="ul-botton">70.00</div>
+                <div class="ul-botton">{{info.sumarea}}</div>
             </div>
             <div class="ul-right"></div>
         </li>
@@ -23,7 +23,7 @@
                         <i class="fa fa-question-circle-o" aria-hidden="true" style="margin-left: 6px;color: #4494f0;font-size:16px;"></i>
                     </el-tooltip>    
                 </div>
-                <div class="ul-botton">40.00</div>
+                <div class="ul-botton">{{info.sumk}}</div>
             </div>
             <div class="ul-right"></div>
         </li>
@@ -36,7 +36,9 @@
                         <i class="fa fa-question-circle-o" aria-hidden="true" style="margin-left: 6px;color: #4494f0;font-size:16px;"></i>
                     </el-tooltip>
                 </div>
-                <div class="ul-botton">30.00</div>
+                <div class="ul-botton">
+                    -
+                </div>
             </div>
             <div class="ul-right"></div>
         </li>
@@ -49,35 +51,44 @@
                         <i class="fa fa-question-circle-o" aria-hidden="true" style="margin-left: 6px;color: #4494f0;font-size:16px;"></i>
                     </el-tooltip>
                 </div>
-                <div class="ul-botton">16.50</div>
+                <div class="ul-botton">{{info.sumc}}</div>
             </div>
             <div class="ul-right"></div>
         </li>
         <li>
             <div class="ul-left">
-                <div class="ul-top">入驻企业</div>
-                <div class="ul-botton">2</div>
-            </div>
-            <div class="ul-right"></div>
-        </li>
-        <li>
-            <div class="ul-left">
-                <div class="ul-top">预计完成率</div>
-                <div class="ul-botton">
-                    <span style="color: rgb(247, 115, 115);">0.13%</span>        
-                </div>
+                <div class="ul-top">再租合同份数</div>
+                <div class="ul-botton">{{info.sumb}}</div>
             </div>
             <div class="ul-right"></div>
         </li>
     </ul>
 </template>
 <script>
+import { Lycensus } from '@/axios/api' //单个楼宇统计
 export default {
     name: 'pmMsg',
+      props: {
+      arrId: String,
+      required: true
+    },
     data(){
         return{
-            
+            info:[]
         }
+    },
+    mounted(){
+        let that = this;
+        var str = this.arrId;
+        var ceId = str.split(",");// 在每个逗号(,)处进行分解。
+        // 获取单个楼宇统计详情
+           Lycensus({                    
+                bid: ceId,                              
+            }).then(res => {
+                if(res.flag == 0){  
+                that.info = res.data
+                } 
+            }) 
     }
 }
 </script>

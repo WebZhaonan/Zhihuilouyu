@@ -16,7 +16,7 @@
                 <div style="padding-right: 14px;">
                     <div class="li-top">
                         <span>管理数量</span> 
-                        <span>m²</span>
+                        <span></span>
                         <el-tooltip placement="top">
                             <div slot="content">系统当前录入的所有面积总和，若楼宇中同时存在面积和工位则无法统计。</div>
                                 <i class="fa fa-question-circle-o" aria-hidden="true"></i>
@@ -32,7 +32,7 @@
                 <div style="padding-right: 14px;">
                     <div class="li-top">
                         <span>在租数量</span> 
-                        <span>29.13%</span>
+                        <span>m²</span>
                         <el-tooltip placement="top">
                             <div slot="content">当前在租面积总和，若楼宇中同时存在面积和工位则无法统计。</div>
                                 <i class="fa fa-question-circle-o" aria-hidden="true"></i>
@@ -53,7 +53,7 @@
                                 <i class="fa fa-question-circle-o" aria-hidden="true"></i>
                         </el-tooltip>                                     
                     </div>
-                    <div class="li-bottom">-</div>
+                    <div class="li-bottom"></div>
                 </div>
             </div>
             <div class="li-right"></div>
@@ -74,7 +74,7 @@
                 <div style="padding-right: 14px;">
                     <div class="li-top">
                         <span>可招商数量</span> 
-                        <span>70.67%</span>
+                        <span></span>
                         <el-tooltip placement="top">
                             <div slot="content">当前可招商的面积总和，若楼宇中同时存在面积和工位则无法统计。</div>
                                 <i class="fa fa-question-circle-o" aria-hidden="true"></i>
@@ -109,18 +109,27 @@ export default {
     name: 'lyMsg',
     data(){
         return{
-            info:[]
+            info:[],
+            tongji:''
         }
     },
     mounted(){
         let that = this
          //楼宇统计
+         that.tongji = function(){
              Lycensus({                                                  
             }).then(res => {
                 if(res.flag == 0){  
                 that.info = res.data
                 } 
             }) 
+            }
+            that.tongji()
+    },
+    methods:{
+        lycensus(){
+            this.tongji();
+        }
     }
 }
 </script>

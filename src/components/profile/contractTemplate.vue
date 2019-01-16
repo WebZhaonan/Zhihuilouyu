@@ -21,15 +21,16 @@
                 <el-table-column
                   prop="name"
                   label="模板名称"
-                  width="1300px">
+                  width="1200px">
                 </el-table-column>
                 <el-table-column
                   prop="operation"
                   label="操作">
                   <template slot-scope="scope">
-                  <el-button size="mini" icon="el-icon-download" @click="handleEdit(scope.row)">下载</el-button>
-                  <el-button size="mini" icon="fa fa-eye" @click="handleOpen(scope.row)">预览</el-button>
-                  <el-button size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
+                    <amendhtmc :xgid="scope.row.id" :name="scope.row.name"></amendhtmc>
+                    <el-button size="mini" icon="el-icon-download" @click="handleEdit(scope.row)">下载</el-button>
+                    <el-button size="mini" icon="fa fa-eye" @click="handleOpen(scope.row)">预览</el-button>
+                    <el-button size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
                 </template>
                 </el-table-column>
               </el-table>
@@ -44,11 +45,14 @@ import { Deletewordlist } from '@/axios/api' //删除word列表
 
 
 import htmbDialog from '@/components/profile/htmbDialog'
+import amendhtmc from '@/components/profile/amendhtmc'
+
+
 export default {
     name:'contractTemplate',
     inject: ['reload'],
     components:{
-      htmbDialog
+      htmbDialog,amendhtmc
     },
      data() {
         return {
@@ -60,26 +64,40 @@ export default {
         }
       },
       methods: {
+        handleAmend(row){
+
+        },
         handleEdit(row) {
           window.location.href = row.down;
         },
         handleDelete(row) {
-          Deletewordlist({    
-            id: row.id                                         
-          }).then(res => {
-              if(res.flag == 0){  
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+            }).then(() => {
+                Deletewordlist({    
+                    id: row.id                                         
+                }).then(res => {
+                    if(res.flag == 0){  
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'success'
+                        });
+                        this.reload();
+                    }else{
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        });
+                    }
+                }); 
+            }).catch(() => {
                 this.$message({
-                    message: res.data.msg,
-                    type: 'success'
-                });
-                this.reload();
-              }else{
-                this.$message({
-                    message: res.data.msg,
-                    type: 'error'
-                });
-              }
-          }); 
+                    type: 'info',
+                    message: '已取消删除'
+                });          
+            });     
         },
         handleOpen(row){
           window.open(row.look);

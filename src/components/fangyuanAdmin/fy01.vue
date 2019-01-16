@@ -67,11 +67,6 @@
               <span v-else-if="scope.row.unit=='2'">元/天 </span>
               <span v-else-if="scope.row.unit=='3'">元/月 </span>
               <div class="fydetails-div">
-                <!-- <el-button plain class="fydetails-button" @click.stop="open01()"><i class="el-icon-plus"></i>合同</el-button>
-                <htDialog ref="openOrder" v-if="openOrderVisible" :visible.sync="openOrderVisible"></htDialog>
-                <el-button plain class="fydetails-button" @click.stop="open02()"><i class="el-icon-plus"></i>编辑房源</el-button>
-                <fyDialog ref="openOrder" v-if="openOrderVisible01" :visible.sync="openOrderVisible01"></fyDialog> -->
-                <!-- <htDialog></htDialog> -->
               <fydetailsDialog :inputName="scope.row.id"></fydetailsDialog>
               </div>                           
             </template>  
@@ -96,67 +91,67 @@
       </el-table>
       <!--  -->
       <!-- 详情 -->
-                                 <Drawer :closable="true" v-model="rowDr" width="1000" class="ct">
-                                <div slot="header" class="drawer-header">房源详情</div>
-                                <div class="xx">
-                                    <div class="xx01">
-                                        <div class="xx01-top">房源信息</div>
-                                        <ul class="xx01-buttom">
-                                            <li>
-                                                <div>楼宇名称</div>
-                                                <div>{{info.name}}</div>
-                                            </li>
-                                            <li>
-                                                <div>楼层</div>
-                                                <div>{{info.level_name}}</div>
-                                            </li>
-                                            <li>
-                                                <div>面积</div>
-                                                <div>{{info.area}}</div>
-                                            </li>
-                                            <li>
-                                                <div>房号</div>
-                                                <div>{{info.room_number}}</div>
-                                            </li>
-                                            <li>
-                                                <div>预期单价</div>
-                                                <div>{{info.price}}</div>
-                                            </li>
-                                            <li>
-                                                <div>装修</div>
-                                                <div>
-                                                  <span v-if="info.adorn_type=='0'">未选</span>
-                                                  <span v-else-if="info.adorn_type=='1'">不限</span>
-                                                  <span v-else-if="info.adorn_type=='2'">毛坯 </span>
-                                                  <span v-else-if="info.adorn_type=='3'">简装</span>
-                                                  <span v-else-if="info.adorn_type=='4'">精装</span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div>单位</div>
-                                                <div>
-                                                    <span v-if="info.unit=='0'">元/平米</span>
-                                                    <span v-else-if="info.unit=='1'">元/平米</span>
-                                                    <span v-else-if="info.unit=='2'">元/天 </span>
-                                                    <span v-else-if="info.unit=='3'">元/月 </span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div>房源标签</div>
-                                                <div>
-                                                <el-tag
-                                                type="primary" plan
-                                                disable-transitions
-                                                v-for="item in info.label" :label="item.id" :key="item.id"
-                                                style="margin-right:10px"
-                                                >
-                                                {{item.name}}</el-tag>
-                                                </div>
-                                            </li>
-                                        </ul> 
-                                    </div>
-                                </div>
-                            </Drawer>
+        <Drawer :closable="true" v-model="rowDr" width="1000" class="ct">
+            <div slot="header" class="drawer-header">房源详情</div>
+            <div class="xx">
+                <div class="xx01">
+                    <div class="xx01-top">房源信息</div>
+                    <ul class="xx01-buttom">
+                        <li>
+                            <div>楼宇名称</div>
+                            <div>{{info.name}}</div>
+                        </li>
+                        <li>
+                            <div>楼层</div>
+                            <div>{{info.level_name}}</div>
+                        </li>
+                        <li>
+                            <div>面积</div>
+                            <div>{{info.area}}</div>
+                        </li>
+                        <li>
+                            <div>房号</div>
+                            <div>{{info.room_number}}</div>
+                        </li>
+                        <li>
+                            <div>预期单价</div>
+                            <div>{{info.price}}</div>
+                        </li>
+                        <li>
+                            <div>装修</div>
+                            <div>
+                                <span v-if="info.adorn_type=='0'">未选</span>
+                                <span v-else-if="info.adorn_type=='1'">不限</span>
+                                <span v-else-if="info.adorn_type=='2'">毛坯 </span>
+                                <span v-else-if="info.adorn_type=='3'">简装</span>
+                                <span v-else-if="info.adorn_type=='4'">精装</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>单位</div>
+                            <div>
+                                <span v-if="info.unit=='0'">元/平米</span>
+                                <span v-else-if="info.unit=='1'">元/平米</span>
+                                <span v-else-if="info.unit=='2'">元/天 </span>
+                                <span v-else-if="info.unit=='3'">元/月 </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>房源标签</div>
+                            <div>
+                            <el-tag
+                            type="primary" plan
+                            disable-transitions
+                            v-for="item in info.label" :label="item.id" :key="item.id"
+                            style="margin-right:10px"
+                            >
+                            {{item.name}}</el-tag>
+                            </div>
+                        </li>
+                    </ul> 
+                </div>
+            </div>
+        </Drawer>
     </div>
 </template>
 
@@ -168,6 +163,8 @@ import fydetailsDialog from '@/components/fangyuanAdmin/fydetailsDialog'
 import fangyuanAdminVue from '../fangyuanAdmin.vue';
 import { roomFy } from '@/axios/api' //获取房源列表
 import { roomDetail } from '@/axios/api' //获取房源详情
+import { Lycheck } from '@/axios/api' //左侧单选
+import { Lycheckgroup } from '@/axios/api' //左侧多选
 export default {
   name: 'fy01',
   components:{
@@ -184,6 +181,7 @@ export default {
   mounted(){
     let that = this;
       // 获取房源列表
+      that.roomFy = function(){
          roomFy({                                                 
             }).then(res => {
                 if(res.flag == 0){ 
@@ -195,6 +193,8 @@ export default {
                     }
                 } 
             }) 
+      }
+       that.roomFy()
   },
   methods: {
     // 搜索
@@ -202,6 +202,39 @@ export default {
       //  info 传过来的参数
        this.tableData = info
      },
+    //  单选
+     fyTable(info){
+          // 点击左侧，右侧渲染。单选
+             Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                     this.roomFy(); 
+                } 
+            }) 
+     },
+      // 取消
+    cencal(info){
+             Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                   this.roomFy(); 
+                } 
+            })
+    },
+    // 多选
+    dabcheck(arrId){
+             var str = arrId;
+        var arr = str.split(",");// 在每个逗号(,)处进行分解。
+          Lycheckgroup({      
+            id:arr                                           
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.roomFy(); 
+                } 
+            }) 
+    },
     // 打开详情
     rowDetail(row){
       this.rowDr = true;
@@ -210,7 +243,6 @@ export default {
             id:row.id                                                 
             }).then(res => {
                 if(res.flag == 0){ 
-
                      this.info=res.data[0]; 
                 } 
             }) 
