@@ -101,3 +101,4 @@ export const Deletewordlist = params => post ('/builadmin/ucenter/word?a=del',pa
 export const Getcontractkeywords = params => get ('/builadmin/ucenter/infolabel?a=getlist',params) //获取合同关键词
 export const changepassword = params => post ('/builadmin/index/editpw',params) //修改密码
 export const Getuserinformation = params => get ('/builadmin/ucenter/user?a=getone',params) //获取用户信息
+export const Modifyworldtemplatename = params => post ('/builadmin/ucenter/word?a=editname',params) //修改world模板名称

@@ -51,7 +51,7 @@ export default {
     position: relative;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, .4);
+    background: rgba(0, 0, 0, .2);
   }
   .log-reg .tab{
     width: 464px;
@@ -62,7 +62,7 @@ export default {
     top: 0;
     bottom: 0;
     margin: auto;
-    background: rgba(0, 0, 0, .8);
+    background: rgba(0, 0, 0, .6);
   }
   .log-reg .tab .tab-txt{
     width: 100%;
@@ -71,7 +71,7 @@ export default {
     color: #333;
     box-sizing: border-box;
     border-bottom: 1px solid;
-    border-color: rgba(0, 0, 0, .8);
+    border-color: rgba(0, 0, 0, .6);
   }
   .log-reg .tab .tab-txt li{
     float: left;
@@ -87,7 +87,7 @@ export default {
   }
   .log-reg .tab .tab-txt li:first-child{
     border-right: 1px solid;
-    border-color: rgba(0, 0, 0, .8);
+    border-color: rgba(0, 0, 0, .6);
   }
   .log-reg .tab .logo{
     width: 120px;
