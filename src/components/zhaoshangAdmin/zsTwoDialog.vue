@@ -134,6 +134,9 @@ export default {
                         this.dialogFormVisible=false;
                         this.reload(); 
                 } 
+                else{
+                     this.$message.error(res.msg);
+                }
             }) 
                 } else {    
                     return false;

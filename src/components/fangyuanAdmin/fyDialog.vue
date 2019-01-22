@@ -38,7 +38,7 @@
                             </el-form-item>
                         </div>
                         <div class="fyform-contents">
-                            <el-form-item label="面积"  prop="mj">
+                            <el-form-item label="建筑面积"  prop="mj">
                                 <el-input v-model="ruleForm.mj" placeholder="请输入面积"></el-input>
                             </el-form-item>
                             <el-form-item label="装修" prop="zx">    
@@ -52,6 +52,31 @@
                                 </el-select>
                             </el-form-item>
                         </div> 
+                         <div class="fyform-contents">
+                            <el-form-item label="登记人"  prop="djr">
+                                <el-input v-model="ruleForm.djr" placeholder="请输入登记人"></el-input>
+                            </el-form-item>
+                            <el-form-item label="身份证号"  prop="sfz">
+                                <el-input v-model="ruleForm.sfz" placeholder="请输入身份证号"></el-input>
+                            </el-form-item>
+                         </div>
+                          <div class="fyform-contents">
+                            <!-- <el-form-item label="建筑面积"  prop="jzmj">
+                                <el-input v-model="ruleForm.jzmj" placeholder="请输入建筑面积"></el-input>
+                            </el-form-item> -->
+                              <el-form-item label="所有人住址"  prop="syrzz">
+                                <el-input v-model="ruleForm.syrzz" placeholder="请输入所有人住址"></el-input>
+                            </el-form-item>
+                            <el-form-item label="使用面积"  prop="symj">
+                                <el-input v-model="ruleForm.symj" placeholder="请输入使用面积"></el-input>
+                            </el-form-item>
+                         </div>
+                           <div class="fyform-contents">
+                          
+                            <el-form-item label="所有人电话"  prop="syrdh">
+                                <el-input v-model="ruleForm.syrdh" placeholder="请输入所有人电话"></el-input>
+                            </el-form-item>
+                         </div>
                         <!-- <div class="fyform-contents fyform-contents01">
                             <el-form-item label="工位" prop="gw">
                                 <el-input v-model="ruleForm.gw" placeholder="工位"></el-input>
@@ -156,6 +181,12 @@ export default {
                 zszt: '0',
                 yzdj: '',
                 dj: '0',
+                djr:'',
+                sfz:'',
+                // jzmj:'',
+                symj:'',
+                syrzz:'',
+                syrdh:'',
                 checkboxGroup1: []
             },
             cities: [],
@@ -184,10 +215,10 @@ export default {
                     label: '可招商',
                     value: '0'
                 },
-                {
-                    label: '不可招商',
-                    value: '1'
-                }
+                // {
+                //     label: '不可招商',
+                //     value: '1'
+                // }
             ],
             rules: {
                 lc: [{ required: true, message: '请选择楼层', trigger: 'change' }],
@@ -195,7 +226,13 @@ export default {
                 zszt: [{ required: true, message: '请填写招商状态', trigger: 'change' }],
                 yzdj: [{ required: true, message: '请输入预租单价', trigger: 'change' }],
                 fh: [{ required: true, message: '请填写房号', trigger: 'change' }],
-                mj: [{ required: true, message: '请输入面积', trigger: 'change'}]
+                mj: [{ required: true, message: '请输入面积', trigger: 'change'}],
+                djr:[{ required: true, message: '请输入登记人', trigger: 'change'}],
+                sfz:[{ required: true, message: '请输入身份证号', trigger: 'change'}],
+                // jzmj:[{ required: true, message: '请输入建筑面积', trigger: 'change'}],
+                symj:[{ required: true, message: '请输入使用面积', trigger: 'change'}],
+                syrzz:[{ required: true, message: '请输入所有人住址', trigger: 'change'}],
+                syrdh:[{ required: true, message: '请输入所有人电话', trigger: 'change'}],
             }
         }
     },
@@ -244,12 +281,20 @@ export default {
                           let_type:this.ruleForm.zszt,
                           price:this.ruleForm.yzdj,
                           unit:this.ruleForm.dj,
+                          booker:this.ruleForm.djr,
+                          id_number:this.ruleForm.sfz,
+                        //   covered_area:this.ruleForm.jzmj,
+                          utilization_area:this.ruleForm.symj,
+                          address:this.ruleForm.syrzz,
+                          tel:this.ruleForm.syrdh,
                           tid:this.ruleForm.checkboxGroup1                                              
                         }).then(res => {
                             if(res.flag == 0){   
                                 this.dialogVisible01=true;
                                 this.reload();
-                            } 
+                            }else{
+                                this.$message.error(res.msg);
+                            }
                         }) 
                     
                 } else {

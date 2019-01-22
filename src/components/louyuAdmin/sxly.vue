@@ -200,6 +200,7 @@ export default {
     font-size: 12px;
     color: #6b809f;
     line-height: 18px;
+    text-align: left
 }
 .bj-dialog .el-dialog__body .menu-ul .menu-li .el-form .fhhtbh label{
     display: flex;

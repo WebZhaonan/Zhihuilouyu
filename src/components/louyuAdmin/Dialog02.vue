@@ -6,7 +6,7 @@
                 <el-form-item label="添加楼层数量">
                     <el-select v-model="form.luoceng">
                     <el-option label="单层" value="danceng"></el-option>
-                    <!-- <el-option label="多层" value="duoceng"></el-option> -->
+                    <el-option label="多层" value="duoceng"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item
@@ -51,6 +51,7 @@
 import { buildlevel } from '@/axios/api' //添加楼层
 import { buildlevelList } from '@/axios/api' //获取楼层列表
 import { buildEdit } from '@/axios/api' //编辑楼层
+import { delLc } from '@/axios/api' //删除楼层
 export default {
     name: 'Dialog02',
       props: {
@@ -127,8 +128,7 @@ export default {
                 if(index !==-1){
                      this.form.lcs.splice(index,1);
                 }
-                }).catch(() => {         
-            });
+                })
         },
         fs(){
             if(this.rowId){
@@ -142,7 +142,7 @@ export default {
                     id:editLcs[i].id
                 })
             }
-                           buildEdit({
+            buildEdit({
                  bid:bid,
                  name:editArr                                                
             }).then(res => {

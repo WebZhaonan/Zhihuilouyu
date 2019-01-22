@@ -28,7 +28,7 @@
        <el-dropdown @command="handleCommand">
          <i class="el-icon-more" style="cursor:pointer"></i>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>列表导出</el-dropdown-item>
+          <!-- <el-dropdown-item>列表导出</el-dropdown-item> -->
         </el-dropdown-menu>
       </el-dropdown>
       </div></el-col>
@@ -82,7 +82,7 @@ export default {
         })
     },
     handleCommand(){
-        window.location.href = 'http://dev.360yibao.cn/builadmin/contract/index?a=down';
+        window.location.href = 'http://build.xibei.co/builadmin/contract/index?a=down';
     }
   }
 };

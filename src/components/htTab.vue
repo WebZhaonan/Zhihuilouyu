@@ -18,7 +18,7 @@
     </el-table-column>
     <el-table-column prop="uname" label="跟进人" >
     </el-table-column>
-    <el-table-column prop="url" label="合同下载" >
+    <!-- <el-table-column prop="url" label="合同下载" >
         <template slot-scope="scope">
             <el-button
             size="mini"
@@ -26,7 +26,7 @@
             plain
             @click="download(scope.row)">下载</el-button>
         </template>
-    </el-table-column>
+    </el-table-column> -->
   </el-table>
 </template>
 <script>
@@ -67,9 +67,9 @@ export default {
         this.contractlist();
     },
        methods: {
-          download(row){
-            window.location.href=row.url;
-        },
+        //   download(row){
+        //     window.location.href=row.url;
+        // },
         //    单选
            httab(info){
            // 点击左侧，右侧渲染。单选

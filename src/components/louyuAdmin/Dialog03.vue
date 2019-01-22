@@ -382,7 +382,6 @@ export default {
             id:this.rowId                                             
             }).then(res => {
                 if(res.flag == 0){ 
-                    console.log(JSON.stringify(res.data))
                     this.form.mryjdw = res.data.deposit_unit;
                     this.form.mrzldwsl = res.data.number_unit;
                     this.form.mrjcdjdw = res.data.price_unit;

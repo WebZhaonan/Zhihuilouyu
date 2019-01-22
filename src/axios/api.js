@@ -33,7 +33,7 @@ export const buildlevelList = params => get ('/builadmin/buildlevel/list',params
 export const buildEdit = params => post ('/builadmin/buildlevel/edit',params) //编辑楼层列表 
 export const buildsetDetail = params => get('/builadmin/buildset/list',params) //获取默认设置详情
 export const buildsetEdit = params => post ('/builadmin/buildset/edit',params) //编辑默认设置
-export const roomFy = params => get ('/builadmin/room/list?type=1',params) //房源列表
+export const roomFy = params => get ('/builadmin/room/list',params) //房源列表
 export const roomAdd = params => post ('/builadmin/room/index', params) //增加房源
 export const roomTip = params => get ('/builadmin/roomlabel/list',params) //获取房源标签
 export const roomDetail = params => get ('/builadmin/room/detail',params) //房源详情
@@ -56,6 +56,7 @@ export const qdcensus = params => get ('/builadmin/channels/census',params) //�
 export const Lycheck = params => post ('/builadmin/index/buil?a=one',params) //楼宇单选
 export const Lycheckgroup = params => post ('/builadmin/index/buil?a=list',params) //集合多选
 export const Poum = params => get ('/builadmin/buil/graphic',params) //剖面图
+export const delLc = params => post ('/builadmin/buildlevel/del',params) //删除楼层
 //租客模块
 export const tenants = params => post ('/builadmin/customer/index?a=add',params) //新建租客
 export const industry = params => post ('/builadmin/customer/industry?a=getlist',params) //请求行业分类

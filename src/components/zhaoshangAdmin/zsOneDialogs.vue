@@ -43,7 +43,6 @@
                                             ref="yjqysj"
                                             >
                                             </el-date-picker>
-                                        </el-form-item>
                             </el-form-item>
                             <el-form-item label="需求数量/㎡" prop="xqsl01,xqsl02" class="two-el-form-item">    
                                 <el-input v-model="info.need_min" ref="xqsl01" placeholder="Min"></el-input>
@@ -461,7 +460,9 @@ export default {
                             });
                         this.dialogFormVisible=false;
                         this.reload();
-                } 
+                } else{
+                    this.$message.error(res.msg);
+                }
             }) 
         },
         cancel(formName){

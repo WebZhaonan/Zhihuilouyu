@@ -93,6 +93,15 @@
               {{item.name}}</el-tag>
           </template>
         </el-table-column>
+          <el-table-column prop="url" label="下载合同" >
+        <template slot-scope="scope">
+            <el-button
+            size="mini"
+            type="primary"
+            plain
+            @click.stop="download(scope.row)">下载</el-button>
+        </template>
+    </el-table-column>
       </el-table>
       <!--  -->
       <!-- 详情 -->
@@ -168,6 +177,8 @@ import fydetailsDialog from '@/components/fangyuanAdmin/fydetailsDialog'
 import fangyuanAdminVue from '../fangyuanAdmin.vue';
 import { roomFy } from '@/axios/api' //获取房源列表
 import { roomDetail } from '@/axios/api' //获取房源详情
+import { Lycheck } from '@/axios/api' //左侧单选
+import { Lycheckgroup } from '@/axios/api' //左侧多选
 export default {
   name: 'fy01',
   components:{
@@ -184,9 +195,11 @@ export default {
   mounted(){
     let that = this;
       // 获取房源列表
-         roomFy({                                                 
+       that.roomFy = function(){
+             roomFy({                                                 
             }).then(res => {
                 if(res.flag == 0){ 
+                  that.tableData = [];
                     for (const tabIndex in res.data) {
                       if(res.data[tabIndex].let_type==1){
                         that.tableData.push(res.data[tabIndex])
@@ -194,13 +207,53 @@ export default {
                     }
                 } 
             }) 
+       }
+       that.roomFy()
   },
   methods: {
+    // 下载
+       download(row){
+        //  console.log(JSON.stringify(row.ht_link))
+            window.location.href=row.ht_link;
+        },
     // 搜索
      searchCh(info){
       //  info 传过来的参数
        this.tableData = info
      },
+     //  单选
+     fyTable(info){
+          // 点击左侧，右侧渲染。单选
+             Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                     this.roomFy(); 
+                } 
+            }) 
+     },
+      // 取消
+    cencal(info){
+             Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                   this.roomFy(); 
+                } 
+            })
+    },
+    // 多选
+    dabcheck(arrId){
+             var str = arrId;
+        var arr = str.split(",");// 在每个逗号(,)处进行分解。
+          Lycheckgroup({      
+            id:arr                                           
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.roomFy(); 
+                } 
+            }) 
+    },
     // 打开详情
     rowDetail(row){
       this.rowDr = true;

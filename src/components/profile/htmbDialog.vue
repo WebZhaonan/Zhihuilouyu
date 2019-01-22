@@ -22,11 +22,11 @@
             </div>
         </div>
         <div class="content">
-            <div class="title">Step1:上传合同模板</div>
+            <div class="title">Step2:上传合同模板</div>
             <el-upload
                 class="upload-demo"
                 ref="upload"
-                action="http://dev.360yibao.cn/builadmin/ucenter/upload"
+                action="http://build.xibei.co/builadmin/ucenter/upload"
                 accept=".docx"
                 :limit=2
                 :auto-upload="false"

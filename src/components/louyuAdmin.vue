@@ -34,8 +34,7 @@
                 @row-click="skip">
                 <el-table-column 
                 prop="name"
-                label="楼宇名称"
-                width="336">
+                label="楼宇名称">
                 <template slot-scope="scope">
                     <div class="lymc">
                         <div class="lymc-left">                           
@@ -51,32 +50,27 @@
                 <el-table-column
                 prop="count_price"
                 label="在租均价"
-                sortable
-                width="201">
+                sortable>
                 </el-table-column>
                 <el-table-column
                 prop="count_busin"
                 label="可招商数量"
-                sortable
-                width="188">
+                sortable>
                 </el-table-column>
                 <el-table-column
                 prop="count_rent"
                 label="在租数量"
-                sortable
-                width="224">
+                sortable>
                 </el-table-column>
                 <el-table-column
                 prop="count_pact"
                 label="再租合同份数"
-                sortable
-                width="188">
+                sortable>
                 </el-table-column>  
                 <el-table-column
                 prop="c_name"
                 label="城市"
-                sortable
-                width="278">
+                sortable>
                 <template slot-scope="scope">
                     {{scope.row.c_name}}
                     <sxly :inputName="scope.row.id"></sxly>                                  
@@ -85,8 +79,7 @@
                 <el-table-column
                 prop="p_name"
                 label="省份"
-                sortable
-                width="208">
+                sortable>
                 </el-table-column>          
             </el-table>
         </div>       

@@ -185,6 +185,7 @@ export default {
          roomFy({                                                 
             }).then(res => {
                 if(res.flag == 0){ 
+                  that.tableData = [];
                   // console.log(JSON.stringify(res.data))
                     for (const tabIndex in res.data) {
                       if(res.data[tabIndex].let_type!=1){
@@ -343,5 +344,6 @@ export default {
     font-size: 14px;
 }
 </style>
+
 
 

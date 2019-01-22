@@ -17,7 +17,7 @@
           prop="level_name"
           label="楼层"
           sortable
-          width="150">
+          >
         </el-table-column>
         <el-table-column
           prop="room_number"
@@ -28,7 +28,7 @@
         <el-table-column
           prop="adorn_type"
           label="装修"
-          width="150">
+          >
             <template  slot-scope="scope">
             <span v-if="scope.row.adorn_type=='0'">
               暂无
@@ -51,12 +51,13 @@
           prop="area"
           label="面积"
           sortable
-          width="150">
+         >
         </el-table-column>
         <el-table-column
           prop="tag"
           label="房源标签"
-          width="300">
+          width="350"
+         >
           <template slot-scope="scope">
             <el-tag
               type="primary" plan
@@ -67,12 +68,12 @@
               {{item.name}}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="zk"
           label="租客"
           width="150">
-        </el-table-column>
-        <el-table-column
+        </el-table-column> -->
+        <!-- <el-table-column
           prop="jzr"
           label="计租日"
           width="200">
@@ -96,13 +97,15 @@
           prop="ssdj"
           label="实时单位"
           width="150">
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </div>
 </template>
 
 <script>
 import { roomFy } from '@/axios/api' //获取房源列表
+import { Lycheck } from '@/axios/api' //左侧单选
+import { Lycheckgroup } from '@/axios/api' //左侧多选
 export default {
   name: 'fy03',
   data () {
@@ -114,18 +117,54 @@ export default {
   mounted(){
      let that = this;
       // 获取房源列表
+      that.roomFy = function(){
          roomFy({                                                 
             }).then(res => {
                 if(res.flag == 0){ 
                      that.tableData=res.data; 
                 } 
             }) 
+      }
+      that.roomFy();
   },
   methods: {
      // 搜索
      searchCh(info){
        this.tableData = info
      },
+          //  单选
+     fyTable(info){
+          // 点击左侧，右侧渲染。单选
+             Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                     this.roomFy(); 
+                } 
+            }) 
+     },
+      // 取消
+    cencal(info){
+             Lycheck({      
+            id:info.id                                            
+            }).then(res => {
+                if(res.flag == 0){  
+                   this.roomFy(); 
+                } 
+            })
+    },
+    // 多选
+    dabcheck(arrId){
+             var str = arrId;
+        var arr = str.split(",");// 在每个逗号(,)处进行分解。
+          Lycheckgroup({      
+            id:arr                                           
+            }).then(res => {
+                if(res.flag == 0){  
+                    this.roomFy(); 
+                } 
+            }) 
+    },
   }
 }
 </script>

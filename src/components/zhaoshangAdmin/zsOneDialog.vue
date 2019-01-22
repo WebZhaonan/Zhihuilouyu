@@ -177,9 +177,9 @@
                     </div>
                 </div>
                 <div class="tc-form-bottom">
-                    <div class="bottom-txt" @click="isbh,show2 = !show2">{{xsgd}}</div>
+                    <div class="bottom-txt">更多信息</div>
                     <transition name="el-zoom-in-top">
-                        <div v-show="show2" class="transition-box">
+                        <div  class="transition-box">
                             <div class="tc-form-top">
                                 <div class="tc-form-tops">
                                     <div class="tc-form-txt">
@@ -313,7 +313,7 @@ export default {
                 { label:'元/月',value:'3' }
             ],
             badgeval: '',
-            show2: false,
+            // show2: false,
             activeIndex:'0',
             activeName2: 'first',
             fyList:[],
@@ -385,14 +385,14 @@ export default {
                 } 
             }) 
             },
-        isbh(){
-            if(this.xsgd=="显示更多"){
-                this.xsgd="收起";
-            }else{
-                this.xsgd="显示更多";
-            }
+        // isbh(){
+        //     if(this.xsgd=="显示更多"){
+        //         this.xsgd="收起";
+        //     }else{
+        //         this.xsgd="显示更多";
+        //     }
             
-        },
+        // },
         save(formName){
 
             this.$refs[formName].validate((valid) => {

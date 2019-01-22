@@ -5,7 +5,7 @@
                 <div class="tc-form-tops">
                     <div class="tc-form-txt">
                         <span>客户信息</span>
-                        <span style="cursor: pointer;font-size: 12px;color: #6b809f;margin-top: 6px;" >同步工商数据</span>
+                        <!-- <span style="cursor: pointer;font-size: 12px;color: #6b809f;margin-top: 6px;" >同步工商数据</span> -->
                     </div>
                     <div class="tc-form-content">
                         <div class="tc-form-contents">

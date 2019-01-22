@@ -218,7 +218,7 @@ export default {
 .lydetails .el-main .header-top .lydetails-logo{
     width: 90px;
     height: 50px;
-    background: url('../assets/logo.png') no-repeat;
+    background: url('../assets/detailslogo.png') no-repeat;
     background-size: 100% 100%; 
     float: left; 
     cursor: pointer;

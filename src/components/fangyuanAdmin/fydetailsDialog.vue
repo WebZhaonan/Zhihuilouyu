@@ -1,6 +1,6 @@
 <template>
     <div class="bjly">
-        <el-button plain class="bily-button" @click.stop="dialogFormVisible = true" ><i class="el-icon-plus"></i>编辑楼宇</el-button>
+        <el-button plain class="bily-button" @click.stop="dialogFormVisible = true" ><i class="el-icon-plus"></i>编辑房源</el-button>
         <el-dialog title="编辑房源" :visible.sync="dialogFormVisible" class="fy-dialog" width="700px" top="100px" center 
         :append-to-body="isbody" 
         :close-on-click-modal="false"

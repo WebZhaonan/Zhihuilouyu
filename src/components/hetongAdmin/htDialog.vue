@@ -80,7 +80,7 @@
                 </div>
                 <div class="ht-dialog-everyblock">
                     <div class="tc-form-txt">
-                        <span>合同信息</span>
+                        <span>合同人员信息</span>
                     </div>
                     <div class="tc-form-content">  
                         <div class="tc-form-contents">
@@ -122,10 +122,19 @@
                     <div class="tc-form-txt">
                         <span>其他关键信息</span>
                     </div>
-                    <div class="tc-form-content" style="height:238px;">  
-                        <div style="display: flex;justify-content: center;margin-bottom:20px;">
-                            <el-button plain class="xinjian"><i class="el-icon-plus"></i>新建自定义关键词</el-button>
-                        </div>                                          
+                    <div class="tc-form-content" style="height: 166px;">  
+                        <div class="tc-form-contents">
+                            <el-form-item label="合同模板" prop="value">
+                                <el-select v-model="ruleForm.value" placeholder="请选择" size="mini">
+                                    <el-option
+                                    v-for="item in options"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                                    </el-option>
+                                </el-select> 
+                            </el-form-item>
+                        </div>                                      
                     </div>
                 </div>             
             </div>
@@ -134,7 +143,7 @@
                     <div class="tc-form-txt">
                         <span>房源信息</span>
                     </div>
-                    <div class="tc-form-content" style="height:1008px;overflow:hidden;">  
+                    <div class="tc-form-content" style="height:936px;overflow:hidden;">  
                         <p style="display: flex;justify-content: space-between;margin-bottom: 8px;font-size: 14px;">
                             <span>{{fymsg01}}</span>
                             <span style="color: #108ee9;cursor: pointer;" @click="fymsgevent02">{{fymsg02}}</span>
@@ -147,8 +156,71 @@
                             </li>
                         </ul>  
                         <keep-alive>
-                            <fymsg v-if="isfymsg" @fyxx="fyxx" :bjid="bjid"></fymsg>
+                            <fymsg v-if="isfymsg" @fyxx="fyxx" :fyulxxid="fyulxxid"></fymsg>
                         </keep-alive>
+                    </div>
+                </div>
+            </div>
+            <div class="ht-dialog-bottom" style="width: 100%;">
+                <div class="ht-dialog-everyblock">
+                    <div class="tc-form-txt">
+                        <span>合同费用信息</span>
+                    </div>
+                    <div class="tc-form-content">  
+                        <div class="tc-form-contents">
+                            <el-form-item label="煤气费" prop="mqf">
+                                <el-input v-model="ruleForm.mqf" placeholder="请填写煤气费"></el-input>
+                            </el-form-item>
+                            <el-form-item label="水电费" prop="sdf">   
+                                <el-input v-model="ruleForm.sdf" placeholder="请填写水电费"></el-input>
+                            </el-form-item>
+                            <el-form-item label="电话费" prop="dhf">   
+                                <el-input v-model="ruleForm.dhf" placeholder="请填写电话费"></el-input>
+                            </el-form-item>
+                            <el-form-item label="治安费" prop="zaf">   
+                                <el-input v-model="ruleForm.zaf" placeholder="请填写治安费"></el-input>
+                            </el-form-item>
+                        </div>   
+                        <div class="tc-form-contents">
+                            <el-form-item label="有线电视费" prop="yxdsf">
+                                <el-input v-model="ruleForm.yxdsf" placeholder="请填写有线电视费"></el-input>
+                            </el-form-item>
+                            <el-form-item label="网络使用费" prop="wlsyf">   
+                                <el-input v-model="ruleForm.wlsyf" placeholder="请填写网络使用费"></el-input>
+                            </el-form-item>
+                            <el-form-item label="环境卫生费" prop="hjwsf">   
+                                <el-input v-model="ruleForm.hjwsf" placeholder="请填写环境卫生费"></el-input>
+                            </el-form-item>
+                            <el-form-item label="租金支付地点" prop="zjzfdd">   
+                                <el-input v-model="ruleForm.zjzfdd" placeholder="请填写租金支付地点"></el-input>
+                            </el-form-item>
+                        </div> 
+                        <div class="tc-form-contents">
+                            <el-form-item label="租金支付方式" prop="zjzffs" placeholder="请选择租金支付方式">
+                                <el-select v-model="ruleForm.zjzffs">
+                                    <el-option label="现金" value="1"></el-option>
+                                    <el-option label="支票" value="2"></el-option>
+                                    <el-option label="汇票" value="3"></el-option>
+                                    <el-option label="转账" value="4"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="房款逾期天数" prop="fkyqts">   
+                                <el-input v-model="ruleForm.fkyqts" placeholder="请填写房款逾期天数"></el-input>
+                            </el-form-item>
+                            <el-form-item label="房款逾期赔偿金" prop="fkyqpcj">   
+                                <el-input v-model="ruleForm.fkyqpcj" placeholder="请填写房款逾期赔偿金"></el-input>
+                                <span style="position: absolute;right: 10px;top: 2px;">m²/天</span>    
+                            </el-form-item>
+                            <el-form-item label="合同逾期天数" prop="htyqts">   
+                                <el-input v-model="ruleForm.htyqts" placeholder="请填写合同逾期天数"></el-input>
+                            </el-form-item>
+                        </div>
+                        <div class="tc-form-contents" style="justify-content: flex-start;">
+                            <el-form-item label="合同逾期赔偿" prop="htyqpc" style="margin-right: 10px;">
+                                <el-input v-model="ruleForm.htyqpc" placeholder="请填写合同逾期赔偿费用"></el-input>
+                                <span style="position: absolute;right: 10px;top: 2px;">元</span>
+                            </el-form-item>
+                        </div>                   
                     </div>
                 </div>
             </div>
@@ -165,6 +237,7 @@ import { addcontract } from '@/axios/api' //添加合同
 import { obtaintenant } from '@/axios/api' //获取租客
 import { accessindustry } from '@/axios/api' //获取行业
 import { obtaincontractlabel } from '@/axios/api' //获取合同标签
+import { Getwordlist } from '@/axios/api' //获取word列表
 
 
 import fymsg from '@/components/fangyuanAdmin/fymsg'
@@ -200,7 +273,21 @@ export default {
                 hy: '',
                 fr: '',
                 qdr: '',
-                zklxr: ''
+                zklxr: '',
+                value: '',
+                mqf: '',
+                sdf: '',
+                dhf: '',
+                zaf: '',
+                yxdsf: '',
+                wlsyf: '',
+                hjwsf: '',
+                zjzfdd: '',
+                zjzffs: '',
+                fkyqts: '',
+                fkyqpcj: '',
+                htyqts: '',
+                htyqpc: ''
             },
             checkboxGroup1: [], 
             state4: '',
@@ -219,6 +306,20 @@ export default {
                 fr: [{ required: true, message: '请填写法人', trigger: 'change' }],
                 qdr: [{ required: true, message: '请填写签订人', trigger: 'change' }],
                 zklxr: [{ required: true, message: '请输入租客联系人', trigger: 'change' }],
+                value: [{ required: true, message: '请选择合同模板', trigger: 'change' }],
+                mqf: [{ required: true, message: '请填写煤气费', trigger: 'change' }],
+                sdf: [{ required: true, message: '请填写水电费', trigger: 'change' }],
+                dhf: [{ required: true, message: '请填写电话费', trigger: 'change' }],
+                zaf: [{ required: true, message: '请填写治安费', trigger: 'change' }],
+                yxdsf: [{ required: true, message: '请填写有线电视费', trigger: 'change' }],
+                wlsyf: [{ required: true, message: '请填写网络使用费', trigger: 'change' }],
+                hjwsf: [{ required: true, message: '请填写环境卫生费', trigger: 'change' }],
+                zjzfdd: [{ required: true, message: '请填写租金支付地点', trigger: 'change' }],
+                zjzffs: [{ required: true, message: '请选择租金支付方式', trigger: 'change' }],
+                fkyqts: [{ required: true, message: '请填写房款逾期天数', trigger: 'change' }],
+                fkyqpcj: [{ required: true, message: '请填写房款逾期赔偿金', trigger: 'change' }],
+                htyqts: [{ required: true, message: '请填写合同逾期天数', trigger: 'change' }],
+                htyqpc: [{ required: true, message: '请填写合同逾期赔偿费用', trigger: 'change' }]
             },
             activeIndex: "01",
             isitemtab: true,
@@ -231,10 +332,10 @@ export default {
             zhyq: [],
             fyulxx: [],
             fyulxxid: [],
-            bjid: 0
+            options: []
         }
     },
-    methods:{
+    methods:{ 
         querySearchAsync01(queryString, cb) {
             var restaurants01 = this.restaurants01;
             var results = queryString ? restaurants01.filter(this.createStateFilter(queryString)) : restaurants01;
@@ -286,14 +387,29 @@ export default {
                             legalperson: this.ruleForm.fr,
                             signedperson: this.ruleForm.qdr,
                             contacts: this.ruleForm.zklxr,
-                            roominfo: this.fyulxxid
+                            roominfo: this.fyulxxid,
+                            wid: this.ruleForm.value,
+                            meiqi: this.ruleForm.mqf,
+                            shuidian: this.ruleForm.sdf,
+                            dianhua: this.ruleForm.dhf,
+                            zhian: this.ruleForm.zaf,
+                            youxian: this.ruleForm.yxdsf,
+                            wangluo: this.ruleForm.wlsyf,
+                            huanjing: this.ruleForm.hjwsf,
+                            zhifuadd: this.ruleForm.zjzfdd,
+                            fangshi: this.ruleForm.zjzffs,
+                            kuanyuqinum: this.ruleForm.fkyqts,
+                            fkbaifenbi: this.ruleForm.fkyqpcj,
+                            htyuqinum: this.ruleForm.htyqts,
+                            htyuqipeichang: this.ruleForm.htyqpc,
+                            yuqidaxie: this.ruleForm.fkyqts
                         }).then(res => {
                             if(res.flag == 0){ 
                                 this.$message({
                                     message: '保存成功',
                                     type: 'success'
                                 });  
-                                this.$emit('update:visible', false);
+                                // this.$emit('update:visible', false);
                                 this.reload();
                             }else{
                                 this.$message({
@@ -362,6 +478,12 @@ export default {
                 this.zhyq =res.data;
             }
         }); 
+        Getwordlist({                                                
+        }).then(res => {
+            if(res.flag == 0){          
+                this.options=res.data;
+            }
+        }); 
     }
 }
 </script>
@@ -408,6 +530,7 @@ export default {
     padding: 20px;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 .ht-dialog .el-dialog__body .demo-ruleForm label{
     text-align: left;
@@ -515,6 +638,9 @@ export default {
 }
 .ht-dialog .el-dialog__body .demo-ruleForm .tc-form-content .tc-form-contents .form-item-flex .el-form-item__content .el-select .el-input{
     width: 100%;
+}
+.ht-dialog .el-dialog__body .demo-ruleForm .ht-dialog-bottom .tc-form-content .tc-form-contents .el-form-item{
+    width: calc(25% - 10px);
 }
 
 .ht-dialog .el-dialog__footer{

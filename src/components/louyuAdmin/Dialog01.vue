@@ -59,9 +59,9 @@
                     <el-input v-model="ruleForm.zdmj" placeholder="请填写占地面积"></el-input>
                     <span class="form-03-span">m²</span>
                 </el-form-item>
-                <el-form-item label="建成时间" prop="value">
+                <el-form-item label="建成时间" prop="createTime">
                     <el-date-picker
-                    v-model="ruleForm.value"
+                    v-model="ruleForm.createTime"
                     type="date"
                     placeholder="请选择选择日期">
                     </el-date-picker>
@@ -112,9 +112,9 @@
             </div>
         </div>
         <div class="hide-bottom">
-            <span class="hide-bottom-span" @click="msgShow">更多信息</span>  
+            <span class="hide-bottom-span"  >更多信息</span>  
             <transition name="el-fade-in-linear">
-                <div v-show="show" class="transition-box">
+                <div  class="transition-box">
                     <div class="form-public form-03">
                         <el-form-item label="项目名称" prop="xmmc">
                             <el-input v-model="ruleForm.xmmc" placeholder="请输入项目名称"></el-input>
@@ -199,7 +199,7 @@ export default {
                 chengshi:'',
                 quyu:'',
                 syrq:'',
-                value:'',
+                createTime:'',
             },
          rules: {
           region: [{ required: true, message: '请选择楼宇类型', trigger: 'change' }],
@@ -269,12 +269,13 @@ export default {
                  this.ruleForm.lyjzmj = res.data[0].build_area;
                  this.ruleForm.yt =res.data[0].use;
                  this.ruleForm.zdmj = res.data[0].floor_area;
-                 this.ruleForm.value = res.data[0].buildtime;
+                 this.ruleForm.createTime = res.data[0].createtime;
                  this.ruleForm.zdtq =res.data[0].bill_reminders;
                  this.ruleForm.htbh = res.data[0].contract_number;
                  this.imageUrl = res.data[0].images;
                  this.ruleForm.xmmc = res.data[0].more_name;
                  this.ruleForm.zcdz =res.data[0].more_address;
+                 this.ruleForm.htph =res.data[0].contract_number;
                  this.ruleForm.skr = res.data[0].more_payee;
                  this.ruleForm.skgs = res.data[0].more_company;
                  this.ruleForm.khh = res.data[0].more_bank;
@@ -324,9 +325,6 @@ export default {
         return testmsg && isLt2M;
       
         },
-        msgShow(){
-          this.show= !this.show;
-        },
         provinceAd(){
             this.ruleForm.chengshi="";
             this.ruleForm.quyu="";
@@ -364,7 +362,7 @@ export default {
             username:this.ruleForm.syrq,
             phone:this.ruleForm.zslxdh,
             use:this.ruleForm.yt,
-            buildtime:this.ruleForm.value,
+            buildtime:this.ruleForm.createTime,
             bill_reminders:this.ruleForm.zdtq,
             contract_number:this.ruleForm.htph,
             images:this.imageUrl,
@@ -405,7 +403,7 @@ export default {
             username:this.ruleForm.syrq,
             phone:this.ruleForm.zslxdh,
             use:this.ruleForm.yt,
-            buildtime:this.ruleForm.value,
+            buildtime:this.ruleForm.createTime,
             bill_reminders:this.ruleForm.zdtq,
             contract_number:this.ruleForm.htph,
             images:this.imageUrl,

@@ -412,6 +412,7 @@ export default {
     background: #fff;
     color: #353b4b;
     font-size: 14px;
+    cursor: pointer;
 }
 .zs-table .el-table tbody tr td{
     padding: 10px 0;
@@ -436,9 +437,6 @@ export default {
 } 
 .zsOneDrawer .ivu-drawer-body{
     padding: 0;
-}
-.zsOneDrawer .content{
-    height: 100%;
 }
 .zsOneDrawer .content .info{
   background-color: #fff;
@@ -679,6 +677,3 @@ export default {
     padding: 8px 42px;
 }
 </style>
-
-
-
