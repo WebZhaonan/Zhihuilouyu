@@ -345,6 +345,7 @@ export default {
                industrylet({                                                 
             }).then(res => {
                 if(res.flag == 0){  
+                    console.log(JSON.stringify(res))
                      that.hy=res.data; 
                 } 
             }) 

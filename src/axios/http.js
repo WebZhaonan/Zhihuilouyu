@@ -22,7 +22,10 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 var loadinginstace
 axios.interceptors.request.use(function (config) {
     // 参数格式转换
-    loadinginstace = Loading.service({ fullscreen: true })
+    loadinginstace = Loading.service({ 
+        fullscreen: true,
+        background: 'rgba(0, 0, 0, 0)' 
+    })
     if(config.method=="post"){
         config.data = qs.stringify(config.data);
     }
